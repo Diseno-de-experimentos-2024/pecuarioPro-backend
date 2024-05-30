@@ -1,0 +1,6 @@
+@PecuarioProPlatform.API_HostAddress = http://localhost:5147
+
+GET {{PecuarioProPlatform.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
