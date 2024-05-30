@@ -68,6 +68,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Bovine>().Property(b => b.Weight).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Date).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Observations).HasMaxLength(400);
+        
+        //Properties For Vaccine
+        builder.Entity<Vaccine>().HasKey(v => v.Id);
+        builder.Entity<Vaccine>().Property(v => v.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Vaccine>().Property(v => v.Name).IsRequired().HasMaxLength(30);
+        builder.Entity<Vaccine>().Property(v => v.Reason).HasMaxLength(100);
+        builder.Entity<Vaccine>().Property(v => v.Date).IsRequired();
+
 
        
         //Properties for ImageAsset
