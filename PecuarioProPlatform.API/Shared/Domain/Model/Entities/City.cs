@@ -4,8 +4,6 @@ public class City
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public int DepartmentId { get; set; }
-    public Department Department { get; set; }
     public List<District> Districts { get; set; }
 
     public City()
@@ -13,10 +11,9 @@ public class City
         Districts = new List<District>();
     }
 
-    public City(string name, int departmentId)
+    public City(string name)
     {
         Name = name;
-        DepartmentId = departmentId;
         Districts = new List<District>();
     }
 }

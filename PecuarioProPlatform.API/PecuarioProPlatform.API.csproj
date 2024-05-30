@@ -19,6 +19,8 @@
 
     <ItemGroup>
       <Folder Include="BusinessAdministration\Application\Internal\" />
+      <Folder Include="BusinessAdministration\Domain\Model\Commands\" />
+      <Folder Include="BusinessAdministration\Domain\Model\Queries\" />
       <Folder Include="BusinessAdministration\Domain\Repositories\" />
       <Folder Include="BusinessAdministration\Domain\Services\" />
       <Folder Include="BusinessAdministration\Infrastructure\" />
