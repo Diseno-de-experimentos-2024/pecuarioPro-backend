@@ -16,6 +16,8 @@ public partial class Campaign
         Objective = _Objective;
     }
     
+    
+    
     // public Campaign(CreateCampaignCommand command) : this(command.Name, command.DateStart, command.DateEnd, command.Objective){}
     
 }
