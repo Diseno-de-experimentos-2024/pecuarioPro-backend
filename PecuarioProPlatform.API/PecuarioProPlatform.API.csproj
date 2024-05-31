@@ -27,4 +27,21 @@
       <Folder Include="BusinessAdministration\Interfaces\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="BusinessAdministration\Domain\Model\ValueObjects\bovineid.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+    </ItemGroup>
+
 </Project>
