@@ -10,7 +10,7 @@ public class VaccineOrder
     public string Reason { get; private set; }
     public DateTime Date { get; private set; }
     public string Code { get; private set; }
-    private List<BovineVaccine> BovineVaccines { get; set; }
+    public List<BovineVaccine> BovineVaccines { get; set; }
 
     public VaccineOrder(Guid id, string name, string reason, DateTime date, string code)
     {
@@ -22,9 +22,9 @@ public class VaccineOrder
         BovineVaccines = new List<BovineVaccine>();
     }
 
-    public void AddBovineVaccine(IdBovine bovineId, StaffId staffId)
+    public void AddBovineVaccine(int bovineId, StaffId staffId)
     {
-        var bovineVaccine = new BovineVaccine(bovineId, staffId);
+        var bovineVaccine = new BovineVaccine(bovineId);
         BovineVaccines.Add(bovineVaccine);
     }
 }

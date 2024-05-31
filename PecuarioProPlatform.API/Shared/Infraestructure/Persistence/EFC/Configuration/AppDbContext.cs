@@ -2,6 +2,7 @@ using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
 
@@ -76,6 +77,29 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Vaccine>().Property(v => v.Reason).HasMaxLength(100);
         builder.Entity<Vaccine>().Property(v => v.Date).IsRequired();
 */
+        
+        
+        
+        //Properties for vaccineOrder
+        
+        builder.Entity<VaccineOrder>().HasKey(v => v.Id);
+        builder.Entity<VaccineOrder>().Property(v => v.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<VaccineOrder>().Property(v => v.Name).IsRequired().HasMaxLength(30);
+        builder.Entity<VaccineOrder>().Property(v => v.Reason).HasMaxLength(100);
+        builder.Entity<VaccineOrder>().Property(v => v.Date).IsRequired();
+        builder.Entity<VaccineOrder>().Property(v => v.Code).IsRequired().HasMaxLength(30);
+        builder.Entity<VaccineOrder>().HasMany(v => v.BovineVaccines);
+        
+        //Properties for BovineVaccine
+        builder.Entity<BovineVaccine>().HasKey(bv => bv.Id);
+        builder.Entity<BovineVaccine>().Property(bv => bv.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<BovineVaccine>().Property(bv => bv.BovineId).IsRequired();
+        builder.Entity<BovineVaccine>().OwnsOne(bv => bv.StaffId,
+            s =>
+            {
+                s.WithOwner().HasForeignKey("Id");
+                s.Property(p => p.Identifier).HasColumnName("AssetIdentifier");
+            });
 
        
         //Properties for ImageAsset
