@@ -1,6 +1,8 @@
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
 
-import PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects.vaccine.BovineId;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
+
+
 public class VaccineOrder
 {
     public Guid Id { get; private set; }
@@ -20,7 +22,7 @@ public class VaccineOrder
         BovineVaccines = new List<BovineVaccine>();
     }
 
-    public void AddBovineVaccine(BovineId bovineId, StaffId staffId)
+    public void AddBovineVaccine(IdBovine bovineId, StaffId staffId)
     {
         var bovineVaccine = new BovineVaccine(bovineId, staffId);
         BovineVaccines.Add(bovineVaccine);

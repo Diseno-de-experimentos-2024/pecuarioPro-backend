@@ -1,16 +1,19 @@
 
 
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
+
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
+
 
 public class BovineVaccine
 {
     
-    public BovineId BovineId { get; private set; }
+    public IdBovine IdBovine { get; private set; }
     public StaffId StaffId { get; private set; }
 
-    public BovineVaccine(BovineId bovineId, StaffId staffId)
+    public BovineVaccine(IdBovine bovineId, StaffId staffId)
     {
-        BovineId = bovineId;
+        IdBovine = bovineId;
         StaffId = staffId;
     }
 }
