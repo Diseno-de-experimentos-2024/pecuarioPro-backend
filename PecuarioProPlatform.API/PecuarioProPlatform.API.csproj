@@ -24,6 +24,9 @@
       <Folder Include="BusinessAdministration\Domain\Repositories\" />
       <Folder Include="BusinessAdministration\Infrastructure\" />
       <Folder Include="BusinessAdministration\Interfaces\" />
+      <Folder Include="StaffManagement\Application\" />
+      <Folder Include="StaffManagement\Infrastructure\Persistence\" />
+      <Folder Include="StaffManagement\Interfaces\" />
     </ItemGroup>
 
     <ItemGroup>
