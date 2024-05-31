@@ -10,13 +10,17 @@ public partial class Batch
     public double Area { get; private set; }
     
     public District District { get; }
+    public Campaign Campaign { get; }
     public int DistrictId { get; private set; }
+    
+    public int CampaignId { get; private set; }
 
-    public Batch(string _Name, double _Area , int campaignId, int districtId)
+    public Batch(string _Name, double _Area , int districtId,int campaignId)  
     {
         Name = _Name;
         Area = _Area;
         DistrictId = districtId;
+        CampaignId = campaignId;
     }
     
     // public Batch(CreateBatchCommand command) :this(command.Name, command.Area, command.CampaignId){}

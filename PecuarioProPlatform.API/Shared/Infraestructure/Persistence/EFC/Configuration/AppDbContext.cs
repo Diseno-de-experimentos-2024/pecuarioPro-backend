@@ -92,10 +92,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         
         //Relationship Bounded Context BusinessAdministration
         builder.Entity<Campaign>().HasMany(c => c.Batches);
-        builder.Entity<Batch>().HasMany(b => b.Bovines);
-        /*
-        builder.Entity<Bovine>().HasMany(bo => bo.Vaccines);
-        builder.Entity<Bovine>().HasMany(bo => bo.Images);*/
+        
+        builder.Entity<Bovine>().HasMany(bo => bo.Images);
         
         
         
