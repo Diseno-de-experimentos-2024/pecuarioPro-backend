@@ -10,11 +10,7 @@ public partial class Batch
     public double Area { get; private set; }
     
     public District District { get; }
-    
-    public Campaign Campaign { get; }
-    public int CampaignId { get; private set; }
     public int DistrictId { get; private set; }
-    
 
     public Batch(string _Name, double _Area , int campaignId, int districtId)
     {

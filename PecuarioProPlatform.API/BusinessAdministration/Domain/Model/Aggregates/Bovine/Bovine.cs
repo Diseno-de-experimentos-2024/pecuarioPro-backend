@@ -15,14 +15,6 @@ public partial class Bovine
     public District District { get; }
     public Race Race { get; }
     
-    
-    // public Vaccine Vaccine { get; }
-    // public int VaccineId { get; private set; }
-    
-    public Batch Batch { get; }
-
-    public int BatchId { get; private set; }
-    
     public int DistrictId { get; private set; }
     public int RaceId { get; private set; }
 
@@ -35,6 +27,5 @@ public partial class Bovine
         Observations = observations;
         DistrictId = districtId;
         RaceId = raceId;
-        // VaccineId = vaccineId;
     }
 }

@@ -19,12 +19,37 @@
 
     <ItemGroup>
       <Folder Include="BusinessAdministration\Application\Internal\" />
-      <Folder Include="BusinessAdministration\Domain\Model\Commands\" />
       <Folder Include="BusinessAdministration\Domain\Model\Queries\" />
       <Folder Include="BusinessAdministration\Domain\Repositories\" />
-      <Folder Include="BusinessAdministration\Domain\Services\" />
       <Folder Include="BusinessAdministration\Infrastructure\" />
       <Folder Include="BusinessAdministration\Interfaces\" />
+      <Folder Include="StaffManagement\Application\" />
+      <Folder Include="StaffManagement\Infrastructure\Persistence\" />
+      <Folder Include="StaffManagement\Interfaces\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="BusinessAdministration\Domain\Model\ValueObjects\bovineid.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Aggregates\Vaccine\Vaccine.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Aggregates\Vaccine\IVaccineOrder.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Commands\CreateBovineVaccineCommand.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+      <EmbeddedResource Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+      <Content Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
+      <None Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
     </ItemGroup>
 
 </Project>
