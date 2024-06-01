@@ -14,12 +14,14 @@ public partial class Bovine
     
     public District District { get; }
     public Race Race { get; }
-    
+    public Batch Batch { get; }
+
     public int DistrictId { get; private set; }
     public int RaceId { get; private set; }
+    public int BatchId { get; private set; }
 
 
-    public Bovine(string name, double weight, DateOnly date, string observations, int districtId, int raceId)
+    public Bovine(string name, double weight, DateOnly date, string observations, int districtId, int raceId,int batchId)
     {
         Name = name;
         Weight = weight;
@@ -27,5 +29,7 @@ public partial class Bovine
         Observations = observations;
         DistrictId = districtId;
         RaceId = raceId;
+        BatchId = batchId;
+
     }
 }

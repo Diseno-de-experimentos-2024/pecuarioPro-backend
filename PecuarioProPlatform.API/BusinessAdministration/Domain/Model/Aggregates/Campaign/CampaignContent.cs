@@ -7,11 +7,14 @@ public partial class Campaign
     public ECampaignCondition Condition { get; protected set; }
     public int Duration { get; protected set; }
     public ICollection<Batch> Batches { get; }
+    
+    public UserId UserId { get; }
 
     public Campaign()
     {
         Batches = new List<Batch>();
         Condition = ECampaignCondition.Inactive;
+        UserId = new UserId();
     }
 
     public void ConditionActive()

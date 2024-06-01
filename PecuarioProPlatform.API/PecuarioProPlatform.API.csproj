@@ -19,8 +19,6 @@
 
     <ItemGroup>
       <Folder Include="BusinessAdministration\Application\Internal\" />
-      <Folder Include="BusinessAdministration\Domain\Repositories\" />
-      <Folder Include="BusinessAdministration\Infrastructure\" />
       <Folder Include="BusinessAdministration\Interfaces\" />
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
@@ -34,6 +32,8 @@
       <Compile Remove="BusinessAdministration\Domain\Model\Aggregates\Vaccine\IVaccineOrder.cs" />
       <Compile Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
       <Compile Remove="BusinessAdministration\Domain\Model\Commands\CreateBovineVaccineCommand.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\ValueObjects\IdBovine.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Queries\GetAllBovinesByCampaignIdAndBatchIdQuery.cs" />
     </ItemGroup>
 
     <ItemGroup>
