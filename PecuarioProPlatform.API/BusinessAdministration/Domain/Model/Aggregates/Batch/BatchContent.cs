@@ -10,5 +10,9 @@ public partial class Batch
         Status = EBatchStatus.Empty;
     }
 
-
+    public void UpdateStatus(EBatchStatus status)
+    {
+        Status = status;
+    }
+    
 }

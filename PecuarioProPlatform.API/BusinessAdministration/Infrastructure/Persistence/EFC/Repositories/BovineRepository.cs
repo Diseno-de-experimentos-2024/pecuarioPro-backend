@@ -49,6 +49,7 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
         
         
     }
+    
 
     public new async Task<Bovine?> FindByIdAsync(int id)
     {

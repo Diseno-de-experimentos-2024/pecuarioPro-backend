@@ -1,3 +1,4 @@
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using ZstdSharp.Unsafe;
@@ -32,4 +33,18 @@ public partial class Bovine
         BatchId = batchId;
 
     }
+
+    public Bovine(CreateBovineCommand command):this(command.Name , command.Weight, command.Date, command.Observations, command.RaceId,command.DistrictId, command.BatchId)
+    { }
+    
+    public void SetWeight(double newWeight)
+    {
+        Weight = newWeight;
+    }
+
+    public void SetBatch(int batchId)
+    {
+        BatchId = batchId;
+    }
+
 }

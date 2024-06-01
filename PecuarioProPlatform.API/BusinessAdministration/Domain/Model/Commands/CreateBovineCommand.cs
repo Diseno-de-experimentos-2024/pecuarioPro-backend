@@ -1,3 +1,3 @@
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 
-public record CreateBovineCommand();
+public record CreateBovineCommand(string Name, double Weight,DateOnly Date, string Observations,int RaceId,int DistrictId, int BatchId);

@@ -15,6 +15,7 @@ public partial class Campaign
         Batches = new List<Batch>();
         Condition = ECampaignCondition.Inactive;
         UserId = new UserId();
+        Duration = 0;
     }
 
     public void ConditionActive()
@@ -30,6 +31,11 @@ public partial class Campaign
     public void ConditionFinished()
     {
         Condition = ECampaignCondition.Finished;
+    }
+
+    public void UpdateCondition(ECampaignCondition condition)
+    {
+        Condition = condition;
     }
 
     public void CalculateDuration()
@@ -65,6 +71,17 @@ public partial class Campaign
         } return 0;
     }
 
+    public void calculateDuration()
+    {
+        Duration = (DateEnd.DayNumber - DateStart.DayNumber);
+        
+    }
+
+    public void ModifyDuration(int duration)
+    {
+        Duration = duration;
+        DateEnd = DateStart.AddDays(duration);
+    }
 
 
 }

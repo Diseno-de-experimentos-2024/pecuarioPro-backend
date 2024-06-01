@@ -12,6 +12,17 @@ public partial class Bovine
         Images = new List<ImageAsset>();
         BovineIdentifier = new BovineIdentifier();
     }
+
+    private bool ExistImageWithUrl(string imageUrl)
+    {
+        return Images.Any(a => (string)a.GetContent() == imageUrl);
+    }
+    
+    public void AddImage(string imageUrl)
+    {
+        if (ExistImageWithUrl(imageUrl)) return;
+        Images.Add(new ImageAsset(imageUrl));
+    }
     
     
 }
