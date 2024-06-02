@@ -32,10 +32,11 @@ public class CampaignCommandService(ICampaignRepository campaignRepository, IUni
         var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
         if (campaign is null) throw new Exception("Campaign not found");
         var batch = await campaignRepository.FindByBatchIdAndCampaignId(command.batchId, campaign.Id);
+        campaign.AddBatch(batch);
+
         
         try
         {
-            campaign.AddBatch(batch);
             await unitOfWork.CompleteAsync();
             return campaign;
         }
@@ -82,12 +83,13 @@ public class CampaignCommandService(ICampaignRepository campaignRepository, IUni
     public async Task<Campaign?> Handle(ModifyDurationCampaignCommand command)
     {
         var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
-
+        if (command.duration < 0) throw new Exception("Duration is not valid");
+            
+        campaign.ModifyDuration(command.duration);
+        
         try
         {
-            if (command.duration < 0) throw new Exception("Duration is not valid");
-            
-            campaign.ModifyDuration(command.duration);
+           
             await unitOfWork.CompleteAsync();
             return campaign;
 
@@ -103,10 +105,10 @@ public class CampaignCommandService(ICampaignRepository campaignRepository, IUni
     public async Task<Campaign?> Handle(UpdateConditionCampaignCommand command)
     {
         var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+        campaign.UpdateCondition(command.condition);
 
         try
         {
-            campaign.UpdateCondition(command.condition);
             await unitOfWork.CompleteAsync();
             return campaign;
         }
@@ -121,10 +123,27 @@ public class CampaignCommandService(ICampaignRepository campaignRepository, IUni
     public async Task<Batch?> Handle(UpdateStatusBatchCommand command)
     {
         var batch = await campaignRepository.FindByBatchIdAndCampaignId(command.batchId, command.campaignId);
-
+        batch.UpdateStatus(command.status);
         try
         {
-            batch.UpdateStatus(command.status);
+            await unitOfWork.CompleteAsync();
+            return batch;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    public async  Task<Batch?> Handle(CreateBatchCommand command)
+    {
+        var batch = new Batch(command);
+        var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+        if (campaign is null) throw new Exception("Campaign not found");
+        campaign.AddBatch(batch);
+        try
+        {
             await unitOfWork.CompleteAsync();
             return batch;
         }

@@ -6,13 +6,13 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 public interface ICampaignCommandService
 {
     Task<Campaign?> Handle(CreateCampaignCommand command);
-    int Handle(AddBatchToCampaignCommand command);
-    int Handle(AddBovineToBatchCommand command);
-    int Handle(ConcludeCampaignCommand command);
-    int Handle(DeleteBatchToCampaignCommand command);
-    int Handle(DeleteBovineToBatchCommand command);
-    int Handle(ModifyDurationCampaignCommand command);
-    int Handle(UpdateConditionCampaignCommand command);
-    int Handle(UpdateStatusBatchCommand command);
-    
+    Task<Campaign?> Handle(AddBatchToCampaignCommand command);
+    Task<Campaign?> Handle(ConcludeCampaignCommand command);
+    Task<Campaign?> Handle(DeleteBatchToCampaignCommand command);
+    Task<Campaign?> Handle(ModifyDurationCampaignCommand command);
+    Task<Campaign?> Handle(UpdateConditionCampaignCommand command);
+    Task<Batch?> Handle(UpdateStatusBatchCommand command);
+
+    Task<Batch?> Handle(CreateBatchCommand command);
+
 }

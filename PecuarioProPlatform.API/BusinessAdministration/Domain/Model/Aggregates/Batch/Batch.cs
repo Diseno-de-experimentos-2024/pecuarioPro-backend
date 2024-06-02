@@ -1,3 +1,4 @@
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 
@@ -15,7 +16,7 @@ public partial class Batch
     public int DistrictId { get; private set; }
     public int CampaignId { get; private set; }
 
-    public Batch(string _Name, double _Area , int districtId, int campaignId)
+    public Batch(string _Name, double _Area , int campaignId, int districtId)
     {
         Name = _Name;
         Area = _Area;
@@ -24,5 +25,5 @@ public partial class Batch
 
     }
     
-    // public Batch(CreateBatchCommand command) :this(command.Name, command.Area, command.CampaignId){}
+     public Batch(CreateBatchCommand command) :this(command.Name, command.Area,command.campaignId,command.districtId){}
 }

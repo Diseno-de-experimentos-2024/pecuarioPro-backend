@@ -6,6 +6,10 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 public interface IBovineCommandService
 {
     Task<Bovine?> Handle(CreateBovineCommand command);
-    int Handle(AddImageAssetToBovineCommand command);
-    int Handle(ModifyWeightBovineCommand command);
+    Task<Bovine?> Handle(AddImageAssetToBovineCommand command);
+    Task<Bovine?> Handle(ModifyWeightBovineCommand command);
+
+    Task<Bovine> Handle(AddBovineToBatchCommand command);
+    
+    Task<Bovine> Handle(DeleteBovineToBatchCommand command);
 }

@@ -14,8 +14,8 @@ public partial class Campaign
     {
         Batches = new List<Batch>();
         Condition = ECampaignCondition.Inactive;
-        UserId = new UserId();
-        Duration = 0;
+        UserId = new UserId(); 
+        CalculateDuration();
     }
 
     public void ConditionActive()
@@ -40,7 +40,8 @@ public partial class Campaign
 
     public void CalculateDuration()
     {
-      
+        Duration = (DateEnd.DayNumber - DateStart.DayNumber);
+
     }
 
     public void AddBatch(Batch batch)
