@@ -1,4 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
+using PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Repositories;
@@ -50,15 +55,26 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 //Configure Dependency Injections
 
-//Shared Bounded Context Dependency
+//Shared Bounded Context Injection Configuration
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+//BusinessAdministration Bounded Context Dependency Injections
+builder.Services.AddScoped<IBovineRepository, BovineRepository>();
+builder.Services.AddScoped<IBovineCommandService, BovineCommandService>();
+builder.Services.AddScoped<IBovineQueryService, BovineQueryService>();
+
+builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
+builder.Services.AddScoped<ICampaignCommandService, CampaignCommandService>();
+builder.Services.AddScoped<ICampaignQueryService, CampaignQueryService>();
 
 
 
 var app = builder.Build();
 
 
-//BusinessAdministration Bounded Context Dependency Injections
+
 
 //Verify DataBase Objects are created
 using (var scope = app.Services.CreateScope() )

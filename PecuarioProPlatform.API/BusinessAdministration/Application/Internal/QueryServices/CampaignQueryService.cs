@@ -22,6 +22,11 @@ public class CampaignQueryService(ICampaignRepository campaignRepository): ICamp
         return await campaignRepository.FindByCampaignIdAndUserIdAsync(query.campaignId, query.userId);
     }
 
+    public async Task<Campaign?> Handle(GetCampaignByIDQuery query)
+    {
+        return await campaignRepository.FindByIdAsync(query.campaignId);
+    }
+
     public async Task<IEnumerable<Campaign>> Handle(GetAllCampaignsQuery query)
     {
         return await campaignRepository.ListAsync();
