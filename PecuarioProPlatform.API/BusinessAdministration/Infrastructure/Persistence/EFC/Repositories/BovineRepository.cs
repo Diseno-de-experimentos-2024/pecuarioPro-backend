@@ -10,6 +10,8 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persiste
 
 public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(context), IBovineRepository
 {
+    private IBovineRepository _bovineRepositoryImplementation;
+
     public async Task<IEnumerable<Bovine>> FindByRaceIdAsync(int raceId)
     {
         return await Context.Set<Bovine>()
@@ -62,7 +64,15 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
             .Where(b => b.Batch.Campaign.UserId == userId)
             .ToListAsync();
     }
-    
+
+    public async Task<IEnumerable<WeightRecord>> FindByBovineIdAsync(int bovineId)
+    {
+        var bovine = await Context.Set<Bovine>()
+            .Include(b => b.WeightRecords)
+            .FirstOrDefaultAsync(b => b.Id == bovineId);
+        return bovine.WeightRecords;
+    }
+
 
     public new async Task<Bovine?> FindByIdAsync(int id)
     {

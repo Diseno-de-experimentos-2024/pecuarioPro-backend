@@ -1,5 +1,6 @@
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
@@ -8,6 +9,8 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Application.Internal.Co
 
 public class BovineCommandService(IBovineRepository bovineRepository,IUnitOfWork unitOfWork) :IBovineCommandService
 {
+    private IBovineCommandService _bovineCommandServiceImplementation;
+
     public async Task<Bovine?> Handle(CreateBovineCommand command)
     {
         var bovine = new Bovine(command);
@@ -97,5 +100,23 @@ public class BovineCommandService(IBovineRepository bovineRepository,IUnitOfWork
             Console.WriteLine($"An error occurred when delete bovine to the batch.: {e.Message}");
             return null;
         }
+    }
+
+    public async Task<Bovine?> Handle(AddWeightRecordToBovineCommand command)
+    {
+        var bovine = await bovineRepository.FindByIdAsync(command.bovineId);
+        if (bovine is null) throw new Exception("Bovine not found");
+        bovine.AddWeightRecord(command.weight,command.DateTime);
+        try
+        {
+            await unitOfWork.CompleteAsync();
+            return bovine;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred when delete bovine to the batch.: {e.Message}");
+            return null;
+        }
+
     }
 }

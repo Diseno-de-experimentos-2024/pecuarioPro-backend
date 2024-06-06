@@ -15,4 +15,6 @@ public interface IBovineRepository : IBaseRepository<Bovine>
     Task<IEnumerable<Bovine>> FindByCampaignIdAsync(int campaignId);
     Task<Bovine?> FindByBovineIdentifierAsync(BovineIdentifier bovineIdentifier);
     Task<IEnumerable<Bovine>> FindByUserIdAsync(UserId userId);
+
+    Task<IEnumerable<WeightRecord>> FindByBovineIdAsync(int bovineId);
 }

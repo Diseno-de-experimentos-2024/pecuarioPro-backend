@@ -1,4 +1,5 @@
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Queries;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
@@ -7,6 +8,8 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Application.Internal.Qu
 
 public class BovineQueryService(IBovineRepository bovineRepository):IBovineQueryService
 {
+    private IBovineQueryService _bovineQueryServiceImplementation;
+
     public async Task<IEnumerable<Bovine>> Handle(GetAllBovinesByUserIdQuery query)
     {
 
@@ -38,5 +41,10 @@ public class BovineQueryService(IBovineRepository bovineRepository):IBovineQuery
     public async Task<IEnumerable<Bovine>> Handle(GetAllBovinesByRaceIdQuery query)
     {
         return await bovineRepository.FindByRaceIdAsync(query.raceId);
+    }
+
+    public async Task<IEnumerable<WeightRecord>> Handle(GetAllWeightRecordsByBovineIdQuery query)
+    {
+        return await bovineRepository.FindByBovineIdAsync(query.bovineId);
     }
 }
