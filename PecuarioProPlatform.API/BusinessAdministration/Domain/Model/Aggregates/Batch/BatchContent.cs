@@ -14,5 +14,23 @@ public partial class Batch
     {
         Status = status;
     }
+
+    public void UpdateStatus(string status)
+    {
+        switch (status)
+        {
+            case "Empty":
+                Status = EBatchStatus.Empty;
+                break;
+            case "Busy":
+                Status = EBatchStatus.Busy;
+                break;
+            case "Full":
+                Status = EBatchStatus.Full;
+                break;
+            default:
+                throw new ArgumentException("Estado no válido", nameof(status));
+        }
+    }
     
 }

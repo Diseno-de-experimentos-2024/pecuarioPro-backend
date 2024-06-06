@@ -38,7 +38,28 @@ public partial class Campaign
         Condition = condition;
     }
 
-    public void CalculateDuration()
+    public void UpdateCondition(string condition)
+    {
+      
+            switch (condition)
+            {
+                case "Inactive":
+                   ConditionInactive();
+                    break;
+                case "Active":
+                   ConditionActive();
+                    break;
+                case "Finished":
+                    ConditionFinished();
+                    break;
+                default:
+                    throw new ArgumentException("Estado no válido", nameof(condition));
+            }
+        
+    }
+    
+
+    private void CalculateDuration()
     {
         Duration = (DateEnd.DayNumber - DateStart.DayNumber);
 
