@@ -12,12 +12,22 @@ public class Origin
     public int DepartmentId { get; private set; }
     public Department Department { get; private set; }
 
-    private Origin() { } 
+    private Origin() { }
 
     public Origin(int districtId, int cityId, int departmentId)
     {
         DistrictId = districtId;
         CityId = cityId;
         DepartmentId = departmentId;
+    }
+
+    public Origin(int districtId,District district, int cityId,City city, int departmentId,Department department)
+    {
+        DistrictId = districtId;
+        CityId = cityId;
+        DepartmentId = departmentId;
+        Department = department;
+        District = district;
+        City = city;
     }
 }

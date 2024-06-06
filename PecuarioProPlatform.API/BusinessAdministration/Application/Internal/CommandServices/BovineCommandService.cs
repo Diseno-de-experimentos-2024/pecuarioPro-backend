@@ -7,13 +7,26 @@ using PecuarioProPlatform.API.Shared.Domain.Repositories;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Application.Internal.CommandServices;
 
-public class BovineCommandService(IBovineRepository bovineRepository,IUnitOfWork unitOfWork) :IBovineCommandService
+public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRepository districtRepository,
+    ICityRepository cityRepository,
+    IDepartmentRepository departmentRepository,
+    IRaceRepository raceRepository,
+    IUnitOfWork unitOfWork) :IBovineCommandService
 {
     private IBovineCommandService _bovineCommandServiceImplementation;
+    
 
     public async Task<Bovine?> Handle(CreateBovineCommand command)
     {
-        var bovine = new Bovine(command);
+        var district = districtRepository.FindByIdAsync(command.DistrictId);
+        var city = cityRepository.FindByIdAsync(command.CityId);
+        var department = departmentRepository.FindByIdAsync(command.DepartmentId);
+        var race = raceRepository.FindByIdAsync(command.RaceId);
+        var bovine = new Bovine(command.Name,
+            command.Weight,
+            command.Date,
+            command.Observations,
+            );
 
         try
         {

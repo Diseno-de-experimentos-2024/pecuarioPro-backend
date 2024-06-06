@@ -44,6 +44,17 @@ public partial class Bovine
         command.RaceId,command.DistrictId,command.CityId,
         command.DepartmentId, command.BatchId)
     { }
+
+    public Bovine(string name, double weight, DateOnly date, string observations, int raceId, District district,
+        City city, Department department, int batchId)
+    {
+        Name = name;
+        Weight = weight;
+        Date = date;
+        Observations = observations;
+        Origin = new Origin(district.Id,district,city.Id,city,department.Id,department);
+        BatchId = batchId;
+    }
     
     public void SetWeight(double newWeight)
     {
