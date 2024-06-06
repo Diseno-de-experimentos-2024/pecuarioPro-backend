@@ -9,6 +9,6 @@ public static class CampaignResourceFromEntityAssembler
     public static CampaignResource ToResourceFromEntity(Campaign entity)
     {
         return new CampaignResource(entity.Id, entity.Name, entity.DateStart, entity.DateEnd, entity.Condition.GetDisplayName(),
-            entity.Duration);
+            entity.Duration,entity.UserId.Identifier.ToString());
     }   
 }

@@ -8,6 +8,12 @@ public static class BatchResourceFromEntityAssembler
 {
     public static BatchResource ToResourceFromEntity(Batch entity)
     {
-        return new BatchResource(entity.Id, entity.Name, entity.Area, entity.District.Name, entity.Status.GetDisplayName());
+        return new BatchResource(
+            entity.Id,
+            entity.Name,
+            entity.Area,
+            OriginResourceFromEntityAssembler.ToResourceFromEntity(entity.Origin),
+            entity.Status.GetDisplayName(),
+            entity.CampaignId);
     }
 }
