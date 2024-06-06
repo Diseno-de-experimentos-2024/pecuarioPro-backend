@@ -12,54 +12,71 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
 {
     public async Task<IEnumerable<Bovine>> FindByRaceIdAsync(int raceId)
     {
-        return await Context.Set<Bovine>().Include(bovine =>bovine.Race).Include(bovine => bovine.District)
-            .Where(b => b.RaceId == raceId).ToListAsync();
+        return await Context.Set<Bovine>()
+            .Include(bovine => bovine.Race)
+            .Include(bovine => bovine.Origin) 
+            .Where(b => b.RaceId == raceId)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Bovine>> FindByDistrictIdAsync(int districtId)
     {
-        return await Context.Set<Bovine>().Include(bovine =>bovine.Race).Include(bovine => bovine.District)
-            .Where(b => b.DistrictId == districtId).ToListAsync();
+        return await Context.Set<Bovine>()
+            .Include(bovine => bovine.Race)
+            .Include(bovine => bovine.Origin) 
+            .Where(b => b.Origin.DistrictId == districtId) 
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Bovine>> FindByBatchIdAsync(int batchId)
     {
-        return await Context.Set<Bovine>().Include(bovine =>bovine.Race).Include(bovine => bovine.District)
+        return await Context.Set<Bovine>()
+            .Include(bovine => bovine.Race)
+            .Include(bovine => bovine.Origin) 
             .Where(b => b.BatchId == batchId)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Bovine>> FindByCampaignIdAsync(int campaignId)
     {
-        return await Context.Set<Bovine>().Include(bovine =>bovine.Race).Include(bovine => bovine.District)
+        return await Context.Set<Bovine>()
+            .Include(bovine => bovine.Race)
+            .Include(bovine => bovine.Origin) 
             .Where(b => b.Batch.CampaignId == campaignId)
-            .ToListAsync();    }
+            .ToListAsync();
+        
+    }
 
     public async Task<Bovine?> FindByBovineIdentifierAsync(BovineIdentifier bovineIdentifier)
     {
-        return await Context.Set<Bovine>().Include(bovine =>bovine.Race).Include(bovine => bovine.District)
+        return await Context.Set<Bovine>()
+            .Include(bovine =>bovine.Race)
+            .Include(bovine => bovine.Origin)
             .FirstOrDefaultAsync(b => b.BovineIdentifier == bovineIdentifier);
     }
 
     public async Task<IEnumerable<Bovine>> FindByUserIdAsync(UserId userId)
     {
-        return await Context.Set<Bovine>().Include(bovine =>bovine.Race).Include(bovine => bovine.District)
+        return await Context.Set<Bovine>().Include(bovine =>bovine.Race)
+            .Include(bovine => bovine.Origin)
             .Where(b => b.Batch.Campaign.UserId == userId)
             .ToListAsync();
-        
-        
     }
     
 
     public new async Task<Bovine?> FindByIdAsync(int id)
     {
-        return await Context.Set<Bovine>().Include(bovine => bovine.Race).Include(bovine => bovine.District)
+        return await Context.Set<Bovine>()
+            .Include(bovine => bovine.Race)
+            .Include(bovine => bovine.Origin)
             .FirstOrDefaultAsync(bovine => bovine.Id == id);
     }
 
     public new async Task<IEnumerable<Bovine>> ListAsync()
     {
-        return await Context.Set<Bovine>().Include(bovine => bovine.Race).Include(bovine => bovine.District)
+        return await Context.Set<Bovine>()
+            .Include(bovine => bovine.Race)
+            .Include(bovine => bovine.Origin)
             .ToListAsync();
     }
     

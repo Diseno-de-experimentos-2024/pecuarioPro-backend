@@ -22,7 +22,8 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
 
     public async Task<IEnumerable<Batch>> FindByCampaignIdAsync(int campaignId)
     {
-        var campaign = await Context.Set<Campaign>().Include(c => c.Batches)
+        var campaign = await Context.Set<Campaign>()
+            .Include(c => c.Batches)
             .FirstOrDefaultAsync(c => c.Id == campaignId);
 
         return campaign.Batches;
@@ -31,7 +32,8 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
 
     public async Task<Batch?> FindByBatchIdAndCampaignId(int batchId, int campaignId)
     {
-        var campaign = await Context.Set<Campaign>().Include(c => c.Batches)
+        var campaign = await Context.Set<Campaign>()
+            .Include(c => c.Batches)
             .FirstOrDefaultAsync(c => c.Id == campaignId);
         
         return campaign.Batches.FirstOrDefault(b =>b.Id == batchId);    }
@@ -39,13 +41,15 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
 
     public new async Task<Campaign?> FindByIdAsync(int id)
     {
-        return await Context.Set<Campaign>().Include(campaign => campaign.Batches)
+        return await Context.Set<Campaign>()
+            .Include(campaign => campaign.Batches)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public new async Task<IEnumerable<Campaign>> ListAsync()
     {
-        return await Context.Set<Campaign>().Include(campaign => campaign.Batches)
+        return await Context.Set<Campaign>()
+            .Include(campaign => campaign.Batches)
             .ToListAsync();
     }
     
