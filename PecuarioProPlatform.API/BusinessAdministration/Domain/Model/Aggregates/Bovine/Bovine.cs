@@ -31,6 +31,11 @@ public partial class Bovine
         Origin  = new Origin(districtId,cityId,departmentId);
         RaceId = raceId;
         BatchId = batchId;
+        
+        
+        //When Bovine is created , the system register the first weight in WeightRecords :)
+        DateTime currentDateTime = DateTime.Now;
+        AddWeightRecord(Weight,currentDateTime);
 
     }
 
