@@ -33,6 +33,7 @@
       <Compile Remove="BusinessAdministration\Domain\Model\ValueObjects\IdBovine.cs" />
       <Compile Remove="BusinessAdministration\Domain\Model\Queries\GetAllBovinesByCampaignIdAndBatchIdQuery.cs" />
       <Compile Remove="BusinessAdministration\Domain\Model\Queries\GetBovineByIdAndBatchIdQuery.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Repositories\IBatchRepository.cs" />
     </ItemGroup>
 
     <ItemGroup>
