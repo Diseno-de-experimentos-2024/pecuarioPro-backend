@@ -138,6 +138,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Campaign>().HasMany(c => c.Batches);
         
         builder.Entity<Bovine>().HasMany(bo => bo.Images);
+
+        builder.Entity<Bovine>().HasMany(bo => bo.WeightRecords)
+            .WithOne(wr => wr.Bovine)
+            .HasForeignKey(wr => wr.BovineId);
         
         
         
