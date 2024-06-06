@@ -25,23 +25,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<District>().HasKey(d => d.Id);
         builder.Entity<District>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<District>().Property(d => d.Name).IsRequired().HasMaxLength(30);
-        
-        
+        builder.Entity<District>().HasOne(d => d.City).WithMany().HasForeignKey(d => d.CityId);
+
         // Properties for City
         builder.Entity<City>().HasKey(c => c.Id);
         builder.Entity<City>().Property(c => c.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<City>().Property(c => c.Name).IsRequired().HasMaxLength(30);
-        
+        builder.Entity<City>().HasOne(c => c.Department).WithMany().HasForeignKey(c => c.DepartmentId);
 
         // Properties for Department
         builder.Entity<Department>().HasKey(d => d.Id);
         builder.Entity<Department>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Department>().Property(d => d.Name).IsRequired().HasMaxLength(30);
-        
-        
-
-        builder.Entity<Department>().HasMany(d => d.Cities);
-        builder.Entity<City>().HasMany(c => c.Districts);
         
         // Properties for Race
         builder.Entity<Race>().HasKey(r => r.Id);
@@ -68,6 +63,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Batch>().Property(b => b.Area).IsRequired();
         builder.Entity<Batch>().Property(b => b.Status).IsRequired();
         
+        builder.Entity<Batch>().OwnsOne(b => b.Origin, origin =>
+        {
+            origin.Property(o => o.DistrictId).HasColumnName("DistrictId");
+            origin.Property(o => o.CityId).HasColumnName("CityId");
+            origin.Property(o => o.DepartmentId).HasColumnName("DepartmentId");
+        });
+        
+        
         // Properties for Bovine
         builder.Entity<Bovine>().HasKey(b => b.Id);
         builder.Entity<Bovine>().Property(b => b.Id).IsRequired().ValueGeneratedOnAdd();
@@ -75,6 +78,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Bovine>().Property(b => b.Weight).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Date).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Observations).HasMaxLength(400);
+        
+        builder.Entity<Bovine>().OwnsOne(b => b.Origin, origin =>
+        {
+            origin.Property(o => o.DistrictId).HasColumnName("DistrictId");
+            origin.Property(o => o.CityId).HasColumnName("CityId");
+            origin.Property(o => o.DepartmentId).HasColumnName("DepartmentId");
+        });
+        
+        
+        
+        
         /*
         //Properties For Vaccine
         builder.Entity<Vaccine>().HasKey(v => v.Id);

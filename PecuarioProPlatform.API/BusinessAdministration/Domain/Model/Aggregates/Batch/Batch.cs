@@ -12,18 +12,17 @@ public partial class Batch
     public Campaign Campaign { get; }
 
     
-    public District District { get; }
-    public int DistrictId { get; private set; }
+    public Origin Origin { get; }
     public int CampaignId { get; private set; }
 
-    public Batch(string _Name, double _Area , int campaignId, int districtId)
+    public Batch(string _Name, double _Area , int campaignId, int districtId,int cityId,int departmentId)
     {
         Name = _Name;
         Area = _Area;
-        DistrictId = districtId;
+        Origin = new Origin(districtId, cityId, departmentId);
         CampaignId = campaignId;
 
     }
     
-     public Batch(CreateBatchCommand command) :this(command.Name, command.Area,command.campaignId,command.districtId){}
+     public Batch(CreateBatchCommand command) :this(command.Name, command.Area,command.campaignId,command.districtId,command.cityId,command.departmentId){}
 }

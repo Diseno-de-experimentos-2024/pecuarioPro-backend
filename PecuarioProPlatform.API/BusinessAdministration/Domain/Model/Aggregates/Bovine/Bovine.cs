@@ -1,5 +1,6 @@
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using ZstdSharp.Unsafe;
 
@@ -13,28 +14,30 @@ public partial class Bovine
     public DateOnly Date { get; private set; }
     public string Observations { get; private set; }
     
-    public District District { get; }
     public Race Race { get; }
     public Batch Batch { get; }
-
-    public int DistrictId { get; private set; }
+    
+    public Origin Origin { get; }
     public int RaceId { get; private set; }
     public int BatchId { get; private set; }
 
 
-    public Bovine(string name, double weight, DateOnly date, string observations, int districtId, int raceId,int batchId)
+    public Bovine(string name, double weight, DateOnly date, string observations, int raceId, int districtId,int cityId,int departmentId,int batchId)
     {
         Name = name;
         Weight = weight;
         Date = date;
         Observations = observations;
-        DistrictId = districtId;
+        Origin  = new Origin(districtId,cityId,departmentId);
         RaceId = raceId;
         BatchId = batchId;
 
     }
 
-    public Bovine(CreateBovineCommand command):this(command.Name , command.Weight, command.Date, command.Observations, command.RaceId,command.DistrictId, command.BatchId)
+    public Bovine(CreateBovineCommand command):this(command.Name ,
+        command.Weight, command.Date, command.Observations,
+        command.RaceId,command.DistrictId,command.CityId,
+        command.DepartmentId, command.BatchId)
     { }
     
     public void SetWeight(double newWeight)
