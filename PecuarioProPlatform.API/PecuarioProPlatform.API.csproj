@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Shared\Application\Internal\QueryServices\" />
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
       <Folder Include="StaffManagement\Interfaces\" />

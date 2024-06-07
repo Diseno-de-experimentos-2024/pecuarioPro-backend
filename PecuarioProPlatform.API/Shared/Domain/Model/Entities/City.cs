@@ -5,7 +5,7 @@ public class City
     public int Id { get; private set; }
     public string Name { get; private set; }
     public int DepartmentId { get; private set; }
-    public Department Department { get; private set; }
+    public Department Department { get;  set; }
 
     private City() { } 
 

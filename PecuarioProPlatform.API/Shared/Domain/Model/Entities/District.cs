@@ -5,7 +5,7 @@ public class District
     public int Id { get; private set; }
     public string Name { get; private set; }
     public int CityId { get; private set; }
-    public City City { get; private set; }
+    public City City { get;  set; }
 
     private District() { } 
 
