@@ -12,7 +12,7 @@ public static class OriginResourceFromEntityAssembler
             throw new ArgumentNullException(nameof(entity));
         }
         
-        Console.WriteLine($"Origin: DistrictId={entity.DistrictId}, CityId={entity.CityId}, DepartmentId={entity.DepartmentId}");
+        Console.WriteLine($"Origin: DistrictId={entity.DistrictId},District = {entity.District}, CityId={entity.CityId},City = {entity.City}, DepartmentId={entity.DepartmentId},Department = {entity.Department}");
         if (entity.District != null) Console.WriteLine($"District: {entity.District.Name}");
         if (entity.City != null) Console.WriteLine($"City: {entity.City.Name}");
         if (entity.Department != null) Console.WriteLine($"Department: {entity.Department.Name}");

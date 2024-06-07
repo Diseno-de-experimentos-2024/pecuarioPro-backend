@@ -24,7 +24,10 @@ public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRe
         var department = await departmentRepository.FindByIdAsync(command.DepartmentId);
         var race = await  raceRepository.FindByIdAsync(command.RaceId);
         var bovine = new Bovine(command);
-        bovine.Origin = new Origin(district.Id, district, city.Id, city, department.Id, department);
+        // bovine.Origin = new Origin(district.Id, district, city.Id, city, department.Id, department);
+        bovine.Origin.District = district;
+        bovine.Origin.City = city;
+        bovine.Origin.Department = department;
         bovine.Race = race;
         try
         {

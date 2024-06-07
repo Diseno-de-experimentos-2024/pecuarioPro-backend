@@ -30,8 +30,10 @@ public class BovinesController(IBovineCommandService bovineCommandService,
     public async Task<IActionResult> GetBovineById([FromRoute] int bovineId)
     {
         var bovine = await bovineQueryService.Handle(new GetBovineByIdQuery(bovineId));
+        Console.WriteLine(bovine);
         if (bovine == null) return NotFound();
         var resource = BovineResourceFromEntityAssembler.ToResourceFromEntity(bovine);
+        Console.WriteLine(resource);
         return Ok(resource);
     }
     

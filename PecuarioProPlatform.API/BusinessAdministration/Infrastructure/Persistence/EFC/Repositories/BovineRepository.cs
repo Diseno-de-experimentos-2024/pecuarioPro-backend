@@ -79,6 +79,11 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
         return await Context.Set<Bovine>()
             .Include(bovine => bovine.Race)
             .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.District)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.City)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.Department)
             .FirstOrDefaultAsync(bovine => bovine.Id == id);
     }
 
