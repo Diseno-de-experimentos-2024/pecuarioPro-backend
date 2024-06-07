@@ -6,11 +6,11 @@ public class Origin
 {
     public int Id { get; private set; }
     public int DistrictId { get; private set; }
-    public District District { get; private set; }
+    public District District { get;  set; }
     public int CityId { get; private set; }
-    public City City { get; private set; }
+    public City City { get;  set; }
     public int DepartmentId { get; private set; }
-    public Department Department { get; private set; }
+    public Department Department { get;  set; }
 
     private Origin() { }
 

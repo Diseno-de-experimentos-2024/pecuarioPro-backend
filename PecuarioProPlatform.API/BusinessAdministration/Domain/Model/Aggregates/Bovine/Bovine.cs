@@ -14,10 +14,10 @@ public partial class Bovine
     public DateOnly Date { get; private set; }
     public string Observations { get; private set; }
     
-    public Race Race { get; }
+    public Race Race { get; set; }
     public Batch Batch { get; }
     
-    public Origin Origin { get; }
+    public Origin Origin { get; set; }
     public int RaceId { get; private set; }
     public int BatchId { get; private set; }
 

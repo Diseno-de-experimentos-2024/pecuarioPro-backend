@@ -79,12 +79,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Bovine>().Property(b => b.Date).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Observations).HasMaxLength(400);
         
-        builder.Entity<Bovine>().OwnsOne(b => b.Origin, origin =>
-        {
-            origin.Property(o => o.DistrictId).HasColumnName("DistrictId");
-            origin.Property(o => o.CityId).HasColumnName("CityId");
-            origin.Property(o => o.DepartmentId).HasColumnName("DepartmentId");
-        });
+      
         
         
         
@@ -134,6 +129,25 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             });
         
         
+        builder.Entity<Bovine>().OwnsOne(b => b.Origin, origin =>
+        {
+            origin.WithOwner().HasForeignKey("Id");
+            origin.Property(p => p.DistrictId).HasColumnName("DistrictId");
+            origin.Property(p => p.CityId).HasColumnName("CityId");
+            origin.Property(p => p.DepartmentId).HasColumnName("DepartmentId");
+            
+        });
+        
+        builder.Entity<Batch>().OwnsOne(b => b.Origin, origin =>
+        {
+            origin.WithOwner().HasForeignKey("Id");
+            origin.Property(p => p.DistrictId).HasColumnName("DistrictId");
+            origin.Property(p => p.CityId).HasColumnName("CityId");
+            origin.Property(p => p.DepartmentId).HasColumnName("DepartmentId");
+            
+        });
+        
+        
         //Relationship Bounded Context BusinessAdministration
         builder.Entity<Campaign>().HasMany(c => c.Batches);
         
@@ -143,6 +157,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithOne(wr => wr.Bovine)
             .HasForeignKey(wr => wr.BovineId);
         
+        
+        builder.Entity<Campaign>()
+            .Property(c => c.DateStart)
+            .HasConversion(
+                v => v.ToDateTime(TimeOnly.MinValue),
+                v => DateOnly.FromDateTime(v)
+            );
+
+        builder.Entity<Campaign>()
+            .Property(c => c.DateEnd)
+            .HasConversion(
+                v => v.ToDateTime(TimeOnly.MinValue),
+                v => DateOnly.FromDateTime(v)
+            );
+
+
+        builder.Entity<Bovine>().Property(b => b.Date).HasConversion(
+            v => v.ToDateTime(TimeOnly.MinValue),
+            v => DateOnly.FromDateTime(v)
+        );
         
         
         

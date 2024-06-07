@@ -1,6 +1,7 @@
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
@@ -18,16 +19,13 @@ public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRe
 
     public async Task<Bovine?> Handle(CreateBovineCommand command)
     {
-        var district = districtRepository.FindByIdAsync(command.DistrictId);
-        var city = cityRepository.FindByIdAsync(command.CityId);
-        var department = departmentRepository.FindByIdAsync(command.DepartmentId);
-        var race = raceRepository.FindByIdAsync(command.RaceId);
-        var bovine = new Bovine(command.Name,
-            command.Weight,
-            command.Date,
-            command.Observations,
-            );
-
+        var district = await districtRepository.FindByIdAsync(command.DistrictId);
+        var city =await cityRepository.FindByIdAsync(command.CityId);
+        var department = await departmentRepository.FindByIdAsync(command.DepartmentId);
+        var race = await  raceRepository.FindByIdAsync(command.RaceId);
+        var bovine = new Bovine(command);
+        bovine.Origin = new Origin(district.Id, district, city.Id, city, department.Id, department);
+        bovine.Race = race;
         try
         {
             await bovineRepository.AddAsync(bovine);

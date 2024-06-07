@@ -69,6 +69,16 @@ builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
 builder.Services.AddScoped<ICampaignCommandService, CampaignCommandService>();
 builder.Services.AddScoped<ICampaignQueryService, CampaignQueryService>();
 
+builder.Services.AddScoped<IRaceRepository, RaceRepository>();
+builder.Services.AddScoped<IRaceCommandService, RaceCommandService>();
+builder.Services.AddScoped<IRaceQueryService, RaceQueryService>();
+
+
+
+builder.Services.AddScoped<IDistrictRepository, DistrictRepository>();
+builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
 
 
 var app = builder.Build();

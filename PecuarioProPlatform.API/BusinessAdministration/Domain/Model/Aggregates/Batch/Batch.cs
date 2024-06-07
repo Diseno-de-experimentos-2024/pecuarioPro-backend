@@ -12,7 +12,7 @@ public partial class Batch
     public Campaign Campaign { get; }
 
     
-    public Origin Origin { get; }
+    public Origin Origin { get; set; }
     public int CampaignId { get; private set; }
 
     public Batch(string _Name, double _Area , int campaignId, int districtId,int cityId,int departmentId)

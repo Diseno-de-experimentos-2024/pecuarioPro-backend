@@ -7,6 +7,6 @@ public static class CreateBatchCommandFromResourceAssembler
 {
     public static CreateBatchCommand ToCommandFromResource(CreateBatchResource resource)
     {
-        return new CreateBatchCommand(resource.Name, resource.Area, resource.campaignId, resource.districtId);
+        return new CreateBatchCommand(resource.Name, resource.Area, resource.campaignId, resource.districtId,resource.cityId,resource.departmentId);
     }
 }
