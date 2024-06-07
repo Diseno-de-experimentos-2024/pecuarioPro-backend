@@ -4,7 +4,10 @@ using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.QueryS
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 using PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.Shared.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.Shared.Application.Internal.QueryServices;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
+using PecuarioProPlatform.API.Shared.Domain.Services;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.Shared.Interfaces.ASP.Configuration;
@@ -76,8 +79,18 @@ builder.Services.AddScoped<IRaceQueryService, RaceQueryService>();
 
 
 builder.Services.AddScoped<IDistrictRepository, DistrictRepository>();
+builder.Services.AddScoped<IDistrictCommandService, DistrictCommandService>();
+builder.Services.AddScoped<IDistrictQueryService, DistrictQueryService>();
+
+
 builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<ICityCommandService, CityCommandService>();
+builder.Services.AddScoped<ICityQueryService, CityQueryService>();
+
+
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDepartmentCommandService, DepartmentCommandService>();
+builder.Services.AddScoped<IDepartmentQueryService, DepartmentQueryService>();
 
 
 

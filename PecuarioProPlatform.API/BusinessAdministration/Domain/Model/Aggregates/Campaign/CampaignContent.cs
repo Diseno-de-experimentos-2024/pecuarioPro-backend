@@ -15,7 +15,7 @@ public partial class Campaign
         Batches = new List<Batch>();
         Condition = ECampaignCondition.Inactive;
         UserId = new UserId(); 
-        CalculateDuration();
+      
     }
 
     public void ConditionActive()
@@ -91,12 +91,6 @@ public partial class Campaign
         {
             return CountBatchesByStatus(status) / Batches.Count;
         } return 0;
-    }
-
-    public void calculateDuration()
-    {
-        Duration = (DateEnd.DayNumber - DateStart.DayNumber);
-        
     }
 
     public void ModifyDuration(int duration)

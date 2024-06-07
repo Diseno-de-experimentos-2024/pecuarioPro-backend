@@ -16,6 +16,7 @@ public partial class Campaign
         DateStart = _DateStart;
         DateEnd = _DateEnd ?? DateStart;
         Objective = _Objective;
+        CalculateDuration();
     }
     
     
