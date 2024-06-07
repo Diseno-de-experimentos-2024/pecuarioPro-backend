@@ -22,7 +22,7 @@ public partial class Bovine
     public int BatchId { get; private set; }
 
 
-    public Bovine(string name, double weight, DateOnly date, string observations, int raceId, int districtId,int cityId,int departmentId,int batchId)
+    public Bovine(string name, double weight, DateOnly date, string observations, int raceId, int districtId,int cityId,int departmentId,int batchId):this()
     {
         Name = name;
         Weight = weight;
@@ -31,7 +31,8 @@ public partial class Bovine
         Origin  = new Origin(districtId,cityId,departmentId);
         RaceId = raceId;
         BatchId = batchId;
-        
+        WeightRecords = new List<WeightRecord>();
+
         
         //When Bovine is created , the system register the first weight in WeightRecords :)
         DateTime currentDateTime = DateTime.Now;

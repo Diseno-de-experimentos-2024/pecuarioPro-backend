@@ -3,10 +3,27 @@ using PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST.Resources;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST.Transform;
 
-public class OriginResourceFromEntityAssembler
+public static class OriginResourceFromEntityAssembler
 {
     public static OriginResource ToResourceFromEntity(Origin entity)
     {
-        return new OriginResource(entity.District.Name, entity.City.Name, entity.Department.Name);
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+        
+        Console.WriteLine($"Origin: DistrictId={entity.DistrictId}, CityId={entity.CityId}, DepartmentId={entity.DepartmentId}");
+        if (entity.District != null) Console.WriteLine($"District: {entity.District.Name}");
+        if (entity.City != null) Console.WriteLine($"City: {entity.City.Name}");
+        if (entity.Department != null) Console.WriteLine($"Department: {entity.Department.Name}");
+        
+        
+        Console.WriteLine(entity);
+        // return new OriginResource(entity.District.Name, entity.City.Name, entity.Department.Name);
+        return new OriginResource(
+            entity.District?.Name ?? "Unknown",
+            entity.City?.Name ?? "Unknown",
+            entity.Department?.Name ?? "Unknown"
+        );
     }
 }
