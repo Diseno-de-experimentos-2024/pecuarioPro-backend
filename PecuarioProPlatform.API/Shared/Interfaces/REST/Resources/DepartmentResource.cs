@@ -1,3 +1,3 @@
 namespace PecuarioProPlatform.API.Shared.Interfaces.REST.Resources;
 
-public record CreateDistrictResource(string Name, int CityId);
+public record DepartmentResource(int Id, string Name);

@@ -1,3 +1,3 @@
 namespace PecuarioProPlatform.API.Shared.Interfaces.REST.Resources;
 
-public record CreateDepartmentResource(string name);
+public record CreateDepartmentResource(string Name);
