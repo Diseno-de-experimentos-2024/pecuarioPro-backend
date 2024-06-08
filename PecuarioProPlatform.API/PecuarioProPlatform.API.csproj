@@ -21,6 +21,8 @@
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
       <Folder Include="StaffManagement\Interfaces\" />
+      <Folder Include="VaccineManagment\Domain\Model\Entities\" />
+      <Folder Include="VaccineManagment\Domain\Model\ValueObjects\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -34,21 +36,28 @@
       <Compile Remove="BusinessAdministration\Domain\Model\Queries\GetAllBovinesByCampaignIdAndBatchIdQuery.cs" />
       <Compile Remove="BusinessAdministration\Domain\Model\Queries\GetBovineByIdAndBatchIdQuery.cs" />
       <Compile Remove="BusinessAdministration\Domain\Repositories\IBatchRepository.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Aggregates\Vaccine\**" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Commands\UpdateVaccineDateOrderCommand.cs" />
+      <Compile Remove="BusinessAdministration\Domain\Model\Commands\CreateVaccineOrderCommand.cs" />
+      <Compile Remove="BusinessAdministration\Domain\services\VaccineOrderService.cs" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
       <EmbeddedResource Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
+      <EmbeddedResource Remove="BusinessAdministration\Domain\Model\Aggregates\Vaccine\**" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
       <Content Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
+      <Content Remove="BusinessAdministration\Domain\Model\Aggregates\Vaccine\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="BusinessAdministration\Domain\Model\ValueObjects\vaccines\**" />
       <None Remove="BusinessAdministration\Domain\Model\Entities\vaccine\**" />
+      <None Remove="BusinessAdministration\Domain\Model\Aggregates\Vaccine\**" />
     </ItemGroup>
 
 </Project>

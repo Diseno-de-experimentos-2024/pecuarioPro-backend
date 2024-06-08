@@ -5,6 +5,7 @@ using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.aggregates;
 
 namespace PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 
@@ -95,20 +96,27 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         
         
         
-        //Properties for vaccineOrder
+        //Properties for Vaccine
         
-        builder.Entity<VaccineOrder>().HasKey(v => v.Id);
-        builder.Entity<VaccineOrder>().Property(v => v.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<VaccineOrder>().Property(v => v.Name).IsRequired().HasMaxLength(30);
-        builder.Entity<VaccineOrder>().Property(v => v.Reason).HasMaxLength(100);
-        builder.Entity<VaccineOrder>().Property(v => v.Date).IsRequired();
-        builder.Entity<VaccineOrder>().Property(v => v.Code).IsRequired().HasMaxLength(30);
-        builder.Entity<VaccineOrder>().HasMany(v => v.BovineVaccines);
+        builder.Entity<Vaccines>().HasKey(v => v.Id);
+        builder.Entity<Vaccines>().Property(v => v.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Vaccines>().Property(v => v.Name).IsRequired().HasMaxLength(30);
+        builder.Entity<Vaccines>().Property(v => v.Reason).HasMaxLength(100);
+        builder.Entity<Vaccines>().Property(v => v.Code).IsRequired().HasMaxLength(100);
+        builder.Entity<Vaccines>().Property(v => v.Description).IsRequired().HasMaxLength(225);
+        
         
         //Properties for BovineVaccine
         builder.Entity<BovineVaccine>().HasKey(bv => bv.Id);
         builder.Entity<BovineVaccine>().Property(bv => bv.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<BovineVaccine>().Property(bv => bv.VaccinationDate).IsRequired().HasMaxLength(30);
         builder.Entity<BovineVaccine>().Property(bv => bv.BovineId).IsRequired();
+        builder.Entity<BovineVaccine>().OwnsOne(bv => bv.VaccineId,
+            v =>
+            {
+                v.WithOwner().HasForeignKey("Id");
+                v.Property(p => p.Identifier).HasColumnName("AssetIdentifier");
+            });
         builder.Entity<BovineVaccine>().OwnsOne(bv => bv.StaffId,
             s =>
             {
