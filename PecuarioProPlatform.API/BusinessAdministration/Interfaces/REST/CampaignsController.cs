@@ -47,5 +47,25 @@ public class CampaignsController(ICampaignCommandService campaignCommandService,
         var resource = CampaignResourceFromEntityAssembler.ToResourceFromEntity(campaign);
         return CreatedAtAction(nameof(GetCampaignById), new { campaignId = resource.Id }, resource);
     }
+
+    [HttpPost("add-batch")]
+    public async Task<IActionResult> AddBatchToCampaign([FromBody] CreateBatchResource createBatchResource)
+    {
+        var createBatchComannd = CreateBatchCommandFromResourceAssembler.ToCommandFromResource(createBatchResource);
+        var batch = await campaignCommandService.Handle(createBatchComannd);
+        if (batch is null) return BadRequest();
+        var resource = BatchResourceFromEntityAssembler.ToResourceFromEntity(batch);
+        var cId = resource.CampaignId;
+        return CreatedAtAction(nameof(GetBatchByIdAndCampaignId), new { campaignId = cId ,batchId = resource.Id }, createBatchResource);
+
+    }
     
+    [HttpGet("{campaignId:int}/batches/{batchId:int}")]
+    public async Task<IActionResult> GetBatchByIdAndCampaignId([FromRoute] int campaignId, [FromRoute] int batchId)
+    {
+        var batch = await campaignQueryService.Handle(new GetBatchByIdAndCampaignIdQuery(batchId, campaignId));
+        if (batch is null) return NotFound();
+        var resource = BatchResourceFromEntityAssembler.ToResourceFromEntity(batch);
+        return Ok(resource);
+    }
 }

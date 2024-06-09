@@ -34,9 +34,11 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
     {
         var campaign = await Context.Set<Campaign>()
             .Include(c => c.Batches)
+            .ThenInclude(b => b.Origin)
             .FirstOrDefaultAsync(c => c.Id == campaignId);
-        
-        return campaign.Batches.FirstOrDefault(b =>b.Id == batchId);    }
+    
+        return campaign?.Batches.FirstOrDefault(b => b.Id == batchId);
+    }
 
 
     public new async Task<Campaign?> FindByIdAsync(int id)

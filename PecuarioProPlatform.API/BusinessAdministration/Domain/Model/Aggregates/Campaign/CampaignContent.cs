@@ -6,7 +6,7 @@ public partial class Campaign
 {
     public ECampaignCondition Condition { get; protected set; }
     public int Duration { get; protected set; }
-    public ICollection<Batch> Batches { get; }
+    public ICollection<Batch> Batches { get; set; }
     
     public UserId UserId { get; }
 

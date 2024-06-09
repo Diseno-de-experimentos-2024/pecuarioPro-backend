@@ -145,7 +145,10 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
         var city =await cityRepository.FindByIdAsync(command.cityId);
         var department = await departmentRepository.FindByIdAsync(command.departmentId);
         var batch = new Batch(command);
-        batch.Origin = new Origin(command.districtId, district, command.cityId, city, command.departmentId, department);
+        batch.Campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+        batch.Origin.District = district;
+        batch.Origin.City = city;
+        batch.Origin.Department = department;  
         var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
         if (campaign is null) throw new Exception("Campaign not found");
         campaign.AddBatch(batch);
