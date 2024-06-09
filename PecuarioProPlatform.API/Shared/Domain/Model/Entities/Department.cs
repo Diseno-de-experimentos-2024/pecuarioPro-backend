@@ -2,18 +2,18 @@ namespace PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 
 public class Department
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public List<City> Cities { get; set; }
+    public int Id { get; private set; }
+    public string Name { get; private set; }
 
-    public Department()
-    {
-        Cities = new List<City>();
-    }
+    private Department() { } 
 
     public Department(string name)
     {
         Name = name;
-        Cities = new List<City>();
+    }
+
+    public void UpdateName(string name)
+    {
+        Name = name;
     }
 }

@@ -12,8 +12,8 @@ public class ImageAsset :IEntityWithCreatedUpdatedDate
     
     public string Name { get; private set; }
     public Uri? ImageUri { get; private set; }
-    public int BovineId { get; private set; }
-    public Bovine Bovine { get; private set; }
+    // public int BovineId { get; private set; }
+    // public Bovine Bovine { get; private set; }
 
 
     public string GetContent()
@@ -21,7 +21,13 @@ public class ImageAsset :IEntityWithCreatedUpdatedDate
         return ImageUri?.AbsoluteUri ?? string.Empty;
     }
 
-    public ImageAsset(string imageUrl)
+    public ImageAsset()
+    {
+        _AssetIdentifier = new AssetIdentifier();
+        Name = String.Empty;
+
+    }
+    public ImageAsset(string imageUrl):this()
     {
         ImageUri = new Uri(imageUrl) ;
     }

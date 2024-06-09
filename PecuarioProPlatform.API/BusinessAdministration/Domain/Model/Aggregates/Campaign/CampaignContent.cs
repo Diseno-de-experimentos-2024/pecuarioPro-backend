@@ -6,12 +6,16 @@ public partial class Campaign
 {
     public ECampaignCondition Condition { get; protected set; }
     public int Duration { get; protected set; }
-    public ICollection<Batch> Batches { get; }
+    public ICollection<Batch> Batches { get; set; }
+    
+    public UserId UserId { get; }
 
     public Campaign()
     {
         Batches = new List<Batch>();
         Condition = ECampaignCondition.Inactive;
+        UserId = new UserId(); 
+      
     }
 
     public void ConditionActive()
@@ -29,9 +33,36 @@ public partial class Campaign
         Condition = ECampaignCondition.Finished;
     }
 
-    public void CalculateDuration()
+    public void UpdateCondition(ECampaignCondition condition)
+    {
+        Condition = condition;
+    }
+
+    public void UpdateCondition(string condition)
     {
       
+            switch (condition)
+            {
+                case "Inactive":
+                   ConditionInactive();
+                    break;
+                case "Active":
+                   ConditionActive();
+                    break;
+                case "Finished":
+                    ConditionFinished();
+                    break;
+                default:
+                    throw new ArgumentException("Estado no válido", nameof(condition));
+            }
+        
+    }
+    
+
+    private void CalculateDuration()
+    {
+        Duration = (DateEnd.DayNumber - DateStart.DayNumber);
+
     }
 
     public void AddBatch(Batch batch)
@@ -62,6 +93,11 @@ public partial class Campaign
         } return 0;
     }
 
+    public void ModifyDuration(int duration)
+    {
+        Duration = duration;
+        DateEnd = DateStart.AddDays(duration);
+    }
 
 
 }
