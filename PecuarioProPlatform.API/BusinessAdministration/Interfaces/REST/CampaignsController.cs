@@ -38,7 +38,7 @@ public class CampaignsController(ICampaignCommandService campaignCommandService,
         return Ok(resource);
     }
 
-    [HttpPut("{campaignId:int}")]
+    [HttpPut("{campaignId:int}/modify-duration")]
     public async Task<IActionResult> ModifyCampaignDuration([FromRoute] int campaignId, [FromBody] ModifyDurationCampaignResource modifyDurationCampaignResource)
     {
         var modifyDurationCampaignCommand = ModifyDurationCampaingFromResourceAssembler.ToCommandFromResource(modifyDurationCampaignResource, campaignId);
