@@ -37,5 +37,15 @@ public class CampaignsController(ICampaignCommandService campaignCommandService,
         var resource = CampaignResourceFromEntityAssembler.ToResourceFromEntity(campaign);
         return Ok(resource);
     }
+
+    [HttpPut("{campaignId:int}")]
+    public async Task<IActionResult> ModifyCampaignDuration([FromRoute] int campaignId, [FromBody] ModifyDurationCampaignResource modifyDurationCampaignResource)
+    {
+        var modifyDurationCampaignCommand = ModifyDurationCampaingFromResourceAssembler.ToCommandFromResource(modifyDurationCampaignResource, campaignId);
+        var campaign = await campaignCommandService.Handle(modifyDurationCampaignCommand);
+        if (campaign is null) return BadRequest();
+        var resource = CampaignResourceFromEntityAssembler.ToResourceFromEntity(campaign);
+        return CreatedAtAction(nameof(GetCampaignById), new { campaignId = resource.Id }, resource);
+    }
     
 }
