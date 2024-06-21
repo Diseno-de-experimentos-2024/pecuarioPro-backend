@@ -1,4 +1,3 @@
 namespace PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Resources;
 
-public record VeterinarianResource(int Id, string FirstName, string LastName, 
-    int VetPermit, int ContactNumber, bool Status, string Specialty);
+public record VeterinarianResource(int Id, string FirstName, string LastName,string Specialty, int PhoneNumber, long Email, string PhotoUrl);

@@ -7,7 +7,6 @@ public class VeterinarianResourceFromEntityAssembler
 {
     public static VeterinarianResource ToResourceFromEntity(Veterinarians entity)
     {
-        return new VeterinarianResource(entity.Id, entity.FirstName, entity.LastName, entity.VetPermit,
-            entity.ContactNumber, entity.Status, entity.Specialty);
+        return new VeterinarianResource(entity.Id, entity.FirstName, entity.LastName,entity.Specialty, entity.PhoneNumber, entity.Email, entity.PhotoUrl);
     }
 }

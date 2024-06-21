@@ -10,29 +10,30 @@ public class Veterinarians
     [Required]
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
-    public int VetPermit { get; private set; }
-    public int ContactNumber { get; private set; }
-    public bool Status { get; private set; }
     public string Specialty { get; private set; }
+    public int PhoneNumber { get; private set; }
+    public long Email { get; private set; }
+    public string PhotoUrl { get; private set; }
     
-    public Veterinarians(int id, string firstName, string lastName, int vetPermit, int contactNumber, bool status, string specialty)
+    
+    public Veterinarians(int id, string firstName, string lastName, string specialty,  int phoneNumber, long email, string photoUrl)
     {
         Id = id;
         FirstName = firstName;
         LastName = lastName;
-        VetPermit = vetPermit;
-        ContactNumber = contactNumber;
-        Status = status;
         Specialty = specialty;
+        PhoneNumber = phoneNumber;
+        Email = email;
+        PhotoUrl = photoUrl;
     }
 
     public Veterinarians(CreateVeterinarianCommand command)
     {
         FirstName = command.FirstName;
         LastName = command.LastName;
-        VetPermit = command.VetPermit;
-        ContactNumber = command.ContactNumber;
-        Status = command.Status;
         Specialty = command.Specialty;
+        PhoneNumber = command.PhoneNumber;
+        Email = command.Email;
+        PhotoUrl = command.PhotoUrl;
     }
 }
