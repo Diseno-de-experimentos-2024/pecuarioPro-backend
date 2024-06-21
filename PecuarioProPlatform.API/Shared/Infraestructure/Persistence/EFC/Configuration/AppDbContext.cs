@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
@@ -6,6 +7,7 @@ using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vacci
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.aggregates;
+using PecuarioProPlatform.API.StaffManagement.Domain.Model.Aggregates;
 
 namespace PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 
@@ -186,8 +188,40 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             v => DateOnly.FromDateTime(v)
         );
         
+        // Properties for Staff
+        
+        builder.Entity<Staff>().HasKey(s => s.Id);
+        builder.Entity<Staff>().Property(s => s.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Staff>().OwnsOne(p => p.Name,
+            n =>
+            {
+                n.WithOwner().HasForeignKey("Id");
+                n.Property(p => p.FirstName).HasColumnName("FirstName");
+                n.Property(p => p.LastName).HasColumnName("LastName");
+            });
+
+        builder.Entity<Staff>().OwnsOne(p => p.Email,
+            e =>
+            {
+                e.WithOwner().HasForeignKey("Id");
+                e.Property(a => a.Address).HasColumnName("EmailAddress");
+            });
+
+        builder.Entity<Staff>().OwnsOne(p => p.Address,
+            a =>
+            {
+                a.WithOwner().HasForeignKey("Id");
+                a.Property(s => s.Street).HasColumnName("AddressStreet");
+                a.Property(s => s.Number).HasColumnName("AddressNumber");
+                a.Property(s => s.City).HasColumnName("AddressCity");
+                a.Property(s => s.PostalCode).HasColumnName("AddressPostalCode");
+                a.Property(s => s.Country).HasColumnName("AddressCountry");
+            });
+        
         
         
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
+        
+        
     }
 }
