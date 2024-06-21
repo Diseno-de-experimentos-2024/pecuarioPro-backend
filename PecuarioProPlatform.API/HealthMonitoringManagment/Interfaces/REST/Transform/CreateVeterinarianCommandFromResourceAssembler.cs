@@ -1,4 +1,3 @@
-using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Commands;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Resources;
 

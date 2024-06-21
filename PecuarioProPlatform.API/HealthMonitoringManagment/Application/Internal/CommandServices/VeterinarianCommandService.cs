@@ -1,5 +1,5 @@
-using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Commands;
+using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Entities;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Repositories;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Services;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;

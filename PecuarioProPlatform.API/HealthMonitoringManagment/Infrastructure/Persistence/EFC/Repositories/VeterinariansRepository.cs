@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Entities;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Repositories;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Repositories;

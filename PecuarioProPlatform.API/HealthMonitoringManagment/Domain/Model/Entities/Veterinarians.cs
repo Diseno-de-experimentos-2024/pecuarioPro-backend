@@ -1,13 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Commands;
-namespace PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Aggregates;
+namespace PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Entities;
 
 public class Veterinarians
 {
 
-    public int Id { get; }
-    
     [Required]
+    public int Id { get; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Specialty { get; private set; }

@@ -1,4 +1,4 @@
-using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.HealthMonitoringManagment.Domain.Model.Entities;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Resources;
 
 namespace PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Transform.Transform;

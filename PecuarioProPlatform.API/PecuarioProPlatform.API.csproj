@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="HealthMonitoringManagment\Domain\Model\Entities\" />
+      <Folder Include="HealthMonitoringManagment\Domain\Model\Aggregates\" />
       <Folder Include="HealthMonitoringManagment\Domain\Model\ValueObjects\" />
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
