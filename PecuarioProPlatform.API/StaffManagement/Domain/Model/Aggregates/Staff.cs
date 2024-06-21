@@ -31,6 +31,7 @@ public partial class Staff
         Address = new StaffAddress(command.Street, command.Number, command.City, command.PostalCode, command.Country);
     }
 
+    public int Id { get; }
     public StaffName Name { get; private set; }
     public EmailAddress Email { get; private set; }
     public StaffAddress Address { get; private set; }
