@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Model.Queries;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Services;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Resources;
-using PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Transform;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Transform.Transform;
 
-namespace PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Transform;
+namespace PecuarioProPlatform.API.HealthMonitoringManagement.Interfaces.REST;
 
 
 [ApiController]
@@ -23,7 +22,6 @@ public class VeterinarianController(
         var createVeterinarianCommand =
             CreateVeterinarianCommandFromResourceAssembler.ToCommandFromResource(createVeterinarianResource);
         var veterinarian = await veterinarianCommandService.Handle(createVeterinarianCommand);
-        if (veterinarian is null) return BadRequest();
         var resource = VeterinarianResourceFromEntityAssembler.ToResourceFromEntity(veterinarian);
         return CreatedAtAction(nameof(GetVeterinariansByIdQuery), new { veterinarianid = resource.Id }, resource);
     }

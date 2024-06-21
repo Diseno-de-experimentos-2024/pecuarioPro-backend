@@ -8,14 +8,21 @@ namespace PecuarioProPlatform.API.HealthMonitoringManagement.Application.Interna
 
 public class VeterinarianCommandService(IVeterinarianRepository veterinarianRepository, IUnitOfWork unitOfWork) : IVeterinarianCommandService
 {
-  public async Task<Veterinarians> Handle(CreateVeterinarianCommand command)
+  public async Task<Veterinarians?> Handle(CreateVeterinarianCommand command)
   {
     var veterinarian = new Veterinarians(command);
+    try
+    {
+
       await veterinarianRepository.AddAsync(veterinarian);
       await unitOfWork.CompleteAsync();
       return veterinarian;
+    }
+    catch
+    {
+      return null;
+    }
   }
-
   public Task<Veterinarians> Handle(DeleteVeterinarianCommand command)
   {
     throw new NotImplementedException();
