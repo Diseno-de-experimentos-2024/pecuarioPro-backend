@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Queries;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
+using PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST.Resources;
 using PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST.Transform;
 
@@ -25,6 +26,24 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         var resource = BovineResourceFromEntityAssembler.ToResourceFromEntity(bovine);
         return CreatedAtAction(nameof(GetBovineById), new { bovineId = resource.Id }, resource);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllBovines()
+    {
+        var getAllBovinesQuery = new GetAllBovinesQuery();
+        var bovines = await bovineQueryService.Handle(getAllBovinesQuery);
+        var resources = bovines.Select(BovineResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
+
+    [HttpGet("batches/{batchId:int}/bovines")]
+    public async Task<IActionResult> GetAllBovinesByBatchId([FromRoute]int batchId)
+    {
+        var getAllBovinesByBatchIdQuery =  new GetAllBovinesByBatchIdQuery(batchId);
+        var bovines = await bovineQueryService.Handle(getAllBovinesByBatchIdQuery);
+        var resources = bovines.Select(BovineResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
     
     
     [HttpGet("{bovineId:int}")]
@@ -38,6 +57,9 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         return Ok(resource);
     }
     
+    
+    
+    
     [HttpPut("{bovineId:int}")]
     public async Task<IActionResult> ModifyWeightBovine([FromRoute] int bovineId, [FromBody] ModifyWeightBovineResource modifyWeightBovineResource)
     {
@@ -47,20 +69,7 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         var resource = BovineResourceFromEntityAssembler.ToResourceFromEntity(bovine);
         return CreatedAtAction(nameof(GetBovineById), new { bovineId = resource.Id }, resource);
     }
-    //
-    // [HttpPut("{bovineId:int}")]
-    // public async Task<IActionResult> AddWeightRecord([FromRoute] int bovineId, [FromBody] AddNewWeightRecordResource addNewWeightRecordResource)
-    // {
-    //     var addNewWeightRecordCommand =
-    //         AddWeightRecordToBovineCommandFromResourceAssembler.ToCommandFromResource(bovineId,
-    //             addNewWeightRecordResource);
-    //     var bovine = await bovineCommandService.Handle(addNewWeightRecordCommand);
-    //     if (bovine is null) return BadRequest();
-    //     var weightRecord = bovine.WeightRecords.Last();
-    //     var resource = WeightRecordResourceFromEntityAssembler.ToResourceFromEntity(weightRecord);
-    //     
-    // }
-    
+
     [HttpPut("{bovineId:int}/add-weight-record")]
     public async Task<IActionResult> AddWeightRecord([FromRoute] int bovineId, [FromBody] AddNewWeightRecordResource addNewWeightRecordResource)
     {
@@ -73,6 +82,18 @@ public class BovinesController(IBovineCommandService bovineCommandService,
 
         return Ok(resourceList);
     }
+    
+    [HttpPut("{bovineId:int}/add-images")]
+    public async Task<IActionResult> AddImageAssetToBovine([FromRoute] int bovineId, [FromBody] AddImageAssetToBovineResource addImageAssetToBovineResource)
+    {
+        var addImageToBovineCommand =
+            AddImageToBovineCommandFromResourceAssembler.ToCommandFromResource(addImageAssetToBovineResource,bovineId);
+        var bovine = await  bovineCommandService.Handle(addImageToBovineCommand);
+        if (bovine is null) return BadRequest();
+        var resource = BovineResourceFromEntityAssembler.ToResourceFromEntity(bovine);
+        return CreatedAtAction(nameof(GetBovineById), new { bovineId = resource.Id }, resource);
+    }
+    
     
     [HttpGet("{bovineId:int}/weight-records")]
     public async Task<IActionResult> GetAllWeightRecordsByBovineId([FromRoute] int bovineId)
@@ -89,5 +110,7 @@ public class BovinesController(IBovineCommandService bovineCommandService,
 
         return Ok(resourceList);
     }
+
+   
     
 }

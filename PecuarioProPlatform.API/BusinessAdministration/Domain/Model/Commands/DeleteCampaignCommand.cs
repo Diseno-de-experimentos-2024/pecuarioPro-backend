@@ -1,3 +1,3 @@
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 
-public record CreateBovineVaccineCommands(int BovineId);
+public record DeleteCampaignCommand(int campaignId);

@@ -55,6 +55,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //Configure Lowercase URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+//Add CORS Policy
+
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowedAllPolicy",
+            policy => policy.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+    });
 
 //Configure Dependency Injections
 
@@ -72,9 +81,9 @@ builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
 builder.Services.AddScoped<ICampaignCommandService, CampaignCommandService>();
 builder.Services.AddScoped<ICampaignQueryService, CampaignQueryService>();
 
-builder.Services.AddScoped<IRaceRepository, RaceRepository>();
-builder.Services.AddScoped<IRaceCommandService, RaceCommandService>();
-builder.Services.AddScoped<IRaceQueryService, RaceQueryService>();
+builder.Services.AddScoped<IBreedRepository, BreedRepository>();
+builder.Services.AddScoped<IBreedCommandService, BreedCommandService>();
+builder.Services.AddScoped<IBreedQueryService, BreedQueryService>();
 
 
 
@@ -113,6 +122,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Apply CORS Policy
+
+app.UseCors("AllowedAllPolicy");
 
 app.UseHttpsRedirection();
 

@@ -39,10 +39,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Department>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Department>().Property(d => d.Name).IsRequired().HasMaxLength(30);
         
-        // Properties for Race
-        builder.Entity<Race>().HasKey(r => r.Id);
-        builder.Entity<Race>().Property(r => r.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Race>().Property(r => r.Name).IsRequired().HasMaxLength(30);
+        // Properties for Breed
+        builder.Entity<Breed>().HasKey(r => r.Id);
+        builder.Entity<Breed>().Property(r => r.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Breed>().Property(r => r.Name).IsRequired().HasMaxLength(30);
         
         
         // BusinessAdministration context

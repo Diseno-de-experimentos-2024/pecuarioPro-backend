@@ -3,7 +3,7 @@ using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 
-public interface IRaceCommandService
+public interface IBreedCommandService
 {
-    Task<Race?> Handle(CreateRaceCommand command);
+    Task<Breed?> Handle(CreateBreedCommand command);
 }

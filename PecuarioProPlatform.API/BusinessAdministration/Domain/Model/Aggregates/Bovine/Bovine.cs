@@ -14,22 +14,22 @@ public partial class Bovine
     public DateOnly Date { get; private set; }
     public string Observations { get; private set; }
     
-    public Race Race { get; set; }
+    public Breed Breed { get; set; }
     public Batch Batch { get; }
     
     public Origin Origin { get; set; }
-    public int RaceId { get; private set; }
+    public int BreedId { get; private set; }
     public int BatchId { get; private set; }
 
 
-    public Bovine(string name, double weight, DateOnly date, string observations, int raceId, int districtId,int cityId,int departmentId,int batchId):this()
+    public Bovine(string name, double weight, DateOnly date, string observations, int breedId, int districtId,int cityId,int departmentId,int batchId):this()
     {
         Name = name;
         Weight = weight;
         Date = date;
         Observations = observations;
         Origin  = new Origin(districtId,cityId,departmentId);
-        RaceId = raceId;
+        BreedId = breedId;
         BatchId = batchId;
         WeightRecords = new List<WeightRecord>();
 
@@ -46,7 +46,7 @@ public partial class Bovine
         command.DepartmentId, command.BatchId)
     { }
 
-    public Bovine(string name, double weight, DateOnly date, string observations, int raceId, District district,
+    public Bovine(string name, double weight, DateOnly date, string observations, int breedId, District district,
         City city, Department department, int batchId)
     {
         Name = name;

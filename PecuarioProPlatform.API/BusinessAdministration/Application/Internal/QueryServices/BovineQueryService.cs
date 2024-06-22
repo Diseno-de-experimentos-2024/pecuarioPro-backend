@@ -38,9 +38,14 @@ public class BovineQueryService(IBovineRepository bovineRepository):IBovineQuery
         return await bovineRepository.FindByIdAsync(query.bovineId);
     }
 
+    public async Task<IEnumerable<Bovine>> Handle(GetAllBovinesQuery query)
+    {
+        return await bovineRepository.ListAsync();
+    }
+
     public async Task<IEnumerable<Bovine>> Handle(GetAllBovinesByRaceIdQuery query)
     {
-        return await bovineRepository.FindByRaceIdAsync(query.raceId);
+        return await bovineRepository.FindByBreedIdAsync(query.raceId);
     }
 
     public async Task<IEnumerable<WeightRecord>> Handle(GetAllWeightRecordsByBovineIdQuery query)

@@ -67,22 +67,45 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
         }
     }
 
-    public async Task<Campaign?> Handle(DeleteBatchToCampaignCommand command)
+    public async Task<IEnumerable<Batch>> Handle(DeleteBatchToCampaignCommand command)
     {
         var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
         campaign.RemoveBatch(command.batchId);
         try
         {
             await unitOfWork.CompleteAsync();
-            return campaign;
+            var batches = campaign.Batches;
+            return batches;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            throw;
+        }
+        
+    }
+
+
+    public async Task<IEnumerable<Campaign>> Handle(DeleteCampaignCommand command)
+    {
+        var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+
+        try
+        {
+            campaignRepository.Remove(campaign);
+            await unitOfWork.CompleteAsync();
+            var campaigns = await campaignRepository.ListAsync();
+            return campaigns;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
-   
+
+
     public async Task<Campaign?> Handle(ModifyDurationCampaignCommand command)
     {
         var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
@@ -142,6 +165,7 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
     public async  Task<Batch?> Handle(CreateBatchCommand command)
     {
         var district = await districtRepository.FindByIdAsync(command.districtId);
+        Console.WriteLine(district);
         var city =await cityRepository.FindByIdAsync(command.cityId);
         var department = await departmentRepository.FindByIdAsync(command.departmentId);
         var batch = new Batch(command);
@@ -154,6 +178,7 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
         campaign.AddBatch(batch);
         try
         {
+            await campaignRepository.AddAsync(campaign);
             await unitOfWork.CompleteAsync();
             return batch;
         }

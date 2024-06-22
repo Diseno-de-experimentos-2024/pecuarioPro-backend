@@ -1,13 +1,13 @@
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 
-public class Race
+public class Breed
 {
     public int Id { get; set; }
     public string Name { get; set; }
 
-    public Race(){}
+    public Breed(){}
 
-    public Race(string name)
+    public Breed(string name)
     {
         Name = name;
     }

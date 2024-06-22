@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
@@ -28,6 +29,24 @@ public class CampaignsController(ICampaignCommandService campaignCommandService,
         return CreatedAtAction(nameof(GetCampaignById), new { campaignId = resource.Id }, resource);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllCampaigns()
+    {
+        var getAllCampaignsQuery = new GetAllCampaignsQuery();
+        var campaigns = await campaignQueryService.Handle(getAllCampaignsQuery);
+        var resources = campaigns.Select(CampaignResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
+    
+    [HttpGet("{campaignId:int}/batches")]
+    public async Task<IActionResult> GetAllBatchesByCampaignId([FromRoute] int campaignId)
+    {
+        var getAllBatchesByCampaignIdQuery = new GetAllBatchesByCampaignIdQuery(campaignId);
+        var batches = await campaignQueryService.Handle(getAllBatchesByCampaignIdQuery);
+        var resources = batches.Select(BatchResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
+    
 
     [HttpGet("{campaignId:int}")]
     public async Task<IActionResult> GetCampaignById([FromRoute] int campaignId)
@@ -64,8 +83,32 @@ public class CampaignsController(ICampaignCommandService campaignCommandService,
     public async Task<IActionResult> GetBatchByIdAndCampaignId([FromRoute] int campaignId, [FromRoute] int batchId)
     {
         var batch = await campaignQueryService.Handle(new GetBatchByIdAndCampaignIdQuery(batchId, campaignId));
+        Console.WriteLine("Soy batch ", batch);
         if (batch is null) return NotFound();
         var resource = BatchResourceFromEntityAssembler.ToResourceFromEntity(batch);
         return Ok(resource);
     }
+
+
+    [HttpDelete("{campaignId:int}")]
+    public async Task<IActionResult> DeleteCampaign([FromRoute] int campaignId)
+    {
+
+        var campaigns =await  campaignCommandService.Handle(new DeleteCampaignCommand(campaignId));
+        var resources = campaigns.Select(CampaignResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
+
+    [HttpDelete("{campaignId:int}/batch")]
+    public async Task<IActionResult> DeleteBatchToCampaign([FromRoute] int campaignId,[FromBody] DeleteBatchResource deleteBatchResource)
+    {
+        var deleteBatchToCampaignCommand = DeleteBatchCommandFromResourceAssembler.ToCommandFromResource(campaignId, deleteBatchResource);
+        var batches= await campaignCommandService.Handle(deleteBatchToCampaignCommand);
+        var resources = batches.Select(BatchResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);    
+    }
+    
+    // [HttpGet()]
+    
+    
 }

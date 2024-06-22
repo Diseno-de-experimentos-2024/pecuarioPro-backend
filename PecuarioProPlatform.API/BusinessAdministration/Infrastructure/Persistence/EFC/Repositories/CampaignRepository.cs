@@ -24,6 +24,7 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
     {
         var campaign = await Context.Set<Campaign>()
             .Include(c => c.Batches)
+            .ThenInclude(b => b.Origin)
             .FirstOrDefaultAsync(c => c.Id == campaignId);
 
         return campaign.Batches;
@@ -35,9 +36,26 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
         var campaign = await Context.Set<Campaign>()
             .Include(c => c.Batches)
             .ThenInclude(b => b.Origin)
+            .ThenInclude(o => o.District)
+            .Include(c => c.Batches)
+            .ThenInclude(b => b.Origin)
+            .ThenInclude(o => o.City)
+            .Include(c => c.Batches)
+            .ThenInclude(b => b.Origin)
+            .ThenInclude(o => o.Department)
             .FirstOrDefaultAsync(c => c.Id == campaignId);
+
+        var batch = campaign?.Batches.FirstOrDefault(b => b.Id == batchId);
     
-        return campaign?.Batches.FirstOrDefault(b => b.Id == batchId);
+        if (batch != null)
+        {
+            Console.WriteLine($"Batch ID: {batch.Id}, Name: {batch.Name}");
+            Console.WriteLine($"District: {batch.Origin?.District?.Name ?? "Not Loaded"}");
+            Console.WriteLine($"City: {batch.Origin?.City?.Name ?? "Not Loaded"}");
+            Console.WriteLine($"Department: {batch.Origin?.Department?.Name ?? "Not Loaded"}");
+        }
+    
+        return batch;
     }
 
 
@@ -45,6 +63,7 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
     {
         return await Context.Set<Campaign>()
             .Include(campaign => campaign.Batches)
+            .ThenInclude(b => b.Origin)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
@@ -52,6 +71,7 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
     {
         return await Context.Set<Campaign>()
             .Include(campaign => campaign.Batches)
+            .ThenInclude(b => b.Origin)
             .ToListAsync();
     }
     

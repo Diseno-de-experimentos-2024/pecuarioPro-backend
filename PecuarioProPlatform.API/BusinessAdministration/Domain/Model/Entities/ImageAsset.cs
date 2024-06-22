@@ -11,7 +11,7 @@ public class ImageAsset :IEntityWithCreatedUpdatedDate
     public AssetIdentifier _AssetIdentifier { get; private set; }
     
     public string Name { get; private set; }
-    public Uri? ImageUri { get; private set; }
+    public Uri? ImageUri { get; set; }
     // public int BovineId { get; private set; }
     // public Bovine Bovine { get; private set; }
 

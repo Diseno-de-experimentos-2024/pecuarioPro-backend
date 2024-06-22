@@ -6,16 +6,16 @@ using PecuarioProPlatform.API.Shared.Domain.Repositories;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Application.Internal.CommandServices;
 
-public class RaceCommandService(IRaceRepository raceRepository,IUnitOfWork unitOfWork): IRaceCommandService
+public class BreedCommandService(IBreedRepository breedRepository,IUnitOfWork unitOfWork): IBreedCommandService
 {
-    private IRaceCommandService _raceCommandServiceImplementation;
-    public async Task<Race?> Handle(CreateRaceCommand command)
+    private IBreedCommandService _breedCommandServiceImplementation;
+    public async Task<Breed?> Handle(CreateBreedCommand command)
     {
-        var race = new Race(command.name);
+        var race = new Breed(command.name);
 
         try
         {
-            await raceRepository.AddAsync(race);
+            await breedRepository.AddAsync(race);
             await unitOfWork.CompleteAsync();
             return race;
         }

@@ -3,10 +3,10 @@ using PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST.Resources;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST.Transform;
 
-public class RaceResourceFromEntityAssembler
+public class BreedResourceFromEntityAssembler
 {
-    public static RaceResource ToResourceFromEntity(Race entity)
+    public static BreedResource ToResourceFromEntity(Breed entity)
     {
-        return new RaceResource(entity.Id,entity.Name);
+        return new BreedResource(entity.Id,entity.Name);
     }
 }

@@ -5,6 +5,7 @@ using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Repositorie
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persistence.EFC.Repositories;
 
-public class RaceRepository(AppDbContext context): BaseRepository<Race>(context),IRaceRepository
+public class BreedRepository(AppDbContext context): BaseRepository<Breed>(context),IBreedRepository
 {
+    
 }

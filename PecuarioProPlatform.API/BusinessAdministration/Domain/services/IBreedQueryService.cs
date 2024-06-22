@@ -3,7 +3,8 @@ using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Queries;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 
-public interface IRaceQueryService
+public interface IBreedQueryService
 {
-    Task<Race?> Handle(GetRaceByIdQuery query);
+    Task<Breed?> Handle(GetBreedByIdQuery query);
+    Task<IEnumerable<Breed>> Handle(GetAllBreedsQuery query);
 }

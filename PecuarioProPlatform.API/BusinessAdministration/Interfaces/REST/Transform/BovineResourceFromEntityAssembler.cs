@@ -7,6 +7,9 @@ public static class BovineResourceFromEntityAssembler
 {
     public static BovineResource ToResourceFromEntity(Bovine entity)
     {
+        
+        var imageUrls = entity.Images.Select(image => image.GetContent()).ToList();
+
         return new BovineResource(
             entity.Id,
             entity.BovineIdentifier.Identifier.ToString(),
@@ -15,8 +18,9 @@ public static class BovineResourceFromEntityAssembler
             entity.Date,
             entity.Observations,
             OriginResourceFromEntityAssembler.ToResourceFromEntity(entity.Origin),
-            entity.Race.Name,
-            entity.BatchId
+            entity.Breed.Name,
+            entity.BatchId,
+            imageUrls
             );
     }
 }

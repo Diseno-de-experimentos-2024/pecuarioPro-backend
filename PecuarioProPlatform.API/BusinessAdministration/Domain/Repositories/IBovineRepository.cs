@@ -9,7 +9,7 @@ public interface IBovineRepository : IBaseRepository<Bovine>
 {
     // add to list vaccineOrders
 
-    Task<IEnumerable<Bovine>> FindByRaceIdAsync(int raceId);
+    Task<IEnumerable<Bovine>> FindByBreedIdAsync(int breedId);
     Task<IEnumerable<Bovine>> FindByDistrictIdAsync(int districtId);
     Task<IEnumerable<Bovine>> FindByBatchIdAsync(int batchId);
     Task<IEnumerable<Bovine>> FindByCampaignIdAsync(int campaignId);

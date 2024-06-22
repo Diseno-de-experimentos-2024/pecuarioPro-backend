@@ -11,7 +11,7 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Application.Internal.Co
 public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRepository districtRepository,
     ICityRepository cityRepository,
     IDepartmentRepository departmentRepository,
-    IRaceRepository raceRepository,
+    IBreedRepository breedRepository,
     IUnitOfWork unitOfWork) :IBovineCommandService
 {
     private IBovineCommandService _bovineCommandServiceImplementation;
@@ -22,13 +22,13 @@ public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRe
         var district = await districtRepository.FindByIdAsync(command.DistrictId);
         var city =await cityRepository.FindByIdAsync(command.CityId);
         var department = await departmentRepository.FindByIdAsync(command.DepartmentId);
-        var race = await  raceRepository.FindByIdAsync(command.RaceId);
+        var breed = await  breedRepository.FindByIdAsync(command.RaceId);
         var bovine = new Bovine(command);
         // bovine.Origin = new Origin(district.Id, district, city.Id, city, department.Id, department);
         bovine.Origin.District = district;
         bovine.Origin.City = city;
         bovine.Origin.Department = department;
-        bovine.Race = race;
+        bovine.Breed = breed;
         try
         {
             await bovineRepository.AddAsync(bovine);
