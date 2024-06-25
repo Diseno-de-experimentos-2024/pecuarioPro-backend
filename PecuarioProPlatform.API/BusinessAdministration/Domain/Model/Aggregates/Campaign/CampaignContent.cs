@@ -1,3 +1,4 @@
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
@@ -38,6 +39,20 @@ public partial class Campaign
         Condition = condition;
     }
 
+    public void UpdateInformation(UpdateCampaignCommand command)
+    {
+        this.Name = command.name;
+        this.DateStart = command.dateStart;
+        this.DateEnd = command.dateEnd;
+        this.Objective = command.objective;
+        this.CalculateDuration();
+        var date = new DateOnly();
+        if (date >= DateEnd)
+        {
+            this.UpdateCondition("Finished");
+
+        }
+    }
     public void UpdateCondition(string condition)
     {
       

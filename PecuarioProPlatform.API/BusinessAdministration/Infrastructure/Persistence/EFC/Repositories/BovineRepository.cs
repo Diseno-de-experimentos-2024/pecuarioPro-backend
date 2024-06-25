@@ -138,4 +138,9 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
             .ToListAsync();
     }
     
+    public void RemoveAssets(ImageAsset image)
+    {
+            Context.Set<ImageAsset>().Remove(image);
+    }
+    
 }

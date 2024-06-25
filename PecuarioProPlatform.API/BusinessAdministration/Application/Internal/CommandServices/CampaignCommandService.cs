@@ -69,12 +69,15 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
 
     public async Task<IEnumerable<Batch>> Handle(DeleteBatchToCampaignCommand command)
     {
-        var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+        var campaign = await campaignRepository.FindByIdAsync(command.campaignId); 
+        var batchRemove = campaign.Batches.FirstOrDefault(batch => batch.Id == command.batchId);
         campaign.RemoveBatch(command.batchId);
+        campaignRepository.RemoveBatch(batchRemove);
+        var batches = campaign.Batches;
+
         try
         {
             await unitOfWork.CompleteAsync();
-            var batches = campaign.Batches;
             return batches;
         }
         catch (Exception e)
@@ -89,12 +92,12 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
     public async Task<IEnumerable<Campaign>> Handle(DeleteCampaignCommand command)
     {
         var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+        campaignRepository.Remove(campaign);
+        var campaigns = await campaignRepository.ListAsync();
 
         try
         {
-            campaignRepository.Remove(campaign);
             await unitOfWork.CompleteAsync();
-            var campaigns = await campaignRepository.ListAsync();
             return campaigns;
 
         }
@@ -179,6 +182,47 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
         try
         {
             await campaignRepository.AddAsync(campaign);
+            await unitOfWork.CompleteAsync();
+            return batch;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    public async Task<Campaign?> Handle(UpdateCampaignCommand command)
+    {
+        var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+        campaign.UpdateInformation(command);
+
+        try
+        {
+            await unitOfWork.CompleteAsync();
+            return campaign;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
+
+    public async Task<Batch?> Handle(UpdateBatchCommand command)
+    {
+        var campaign = await campaignRepository.FindByIdAsync(command.campaignId);
+        var batch = campaign.Batches.FirstOrDefault(batch => batch.Id == command.batchId);
+        
+        batch.UpdateInformation(command);
+        
+        var district = await districtRepository.FindByIdAsync(command.districtId);
+        var city =await cityRepository.FindByIdAsync(command.cityId);
+        var department = await departmentRepository.FindByIdAsync(command.departmentId);
+        var origin = new Origin(district.Id, district, city.Id, city, department.Id, department);
+        batch.Origin = origin;
+        try
+        {
             await unitOfWork.CompleteAsync();
             return batch;
         }

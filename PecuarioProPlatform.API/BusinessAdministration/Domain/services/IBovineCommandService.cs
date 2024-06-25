@@ -12,8 +12,9 @@ public interface IBovineCommandService
 
     Task<Bovine> Handle(AddBovineToBatchCommand command);
     
-    Task<Bovine> Handle(DeleteBovineToBatchCommand command);
-
     Task<Bovine?> Handle(AddWeightRecordToBovineCommand command);
+
+    Task<Bovine?> Handle(UpdateBovineCommand command);
+    Task<Bovine?> Handle(DeleteBovineCommand command);
 
 }

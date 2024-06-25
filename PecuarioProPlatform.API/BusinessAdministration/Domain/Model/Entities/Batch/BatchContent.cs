@@ -1,3 +1,4 @@
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Commands;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
@@ -10,6 +11,13 @@ public partial class Batch
         Status = EBatchStatus.Empty;
     }
 
+    public void UpdateInformation(UpdateBatchCommand command)
+    {
+        this.Name = command.name;
+        this.Area = command.area;
+        
+    }
+    
     public void UpdateStatus(EBatchStatus status)
     {
         Status = status;

@@ -56,11 +56,20 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         Console.WriteLine(resource);
         return Ok(resource);
     }
-    
-    
-    
-    
+
     [HttpPut("{bovineId:int}")]
+    public async Task<IActionResult> UpdateBovine([FromRoute] int bovineId,
+        [FromBody] CreateBovineResource createBovineResource)
+    {
+        var updateBovineCommand =
+            UpdateBovineCommandFromResourceAssemble.ToCommandFromResource(bovineId, createBovineResource);
+        var bovine = await bovineCommandService.Handle(updateBovineCommand);
+        if (bovine == null) return NotFound();
+        var resource = BovineResourceFromEntityAssembler.ToResourceFromEntity(bovine);
+        return Ok(resource);
+    }
+    
+    [HttpPut("{bovineId:int}/modify-weight-bovine")]
     public async Task<IActionResult> ModifyWeightBovine([FromRoute] int bovineId, [FromBody] ModifyWeightBovineResource modifyWeightBovineResource)
     {
         var modifyWeightBovineCommand = ModifyWeightBovineFromResourceAssembler.ToCommandFromResource(modifyWeightBovineResource, bovineId);
@@ -111,6 +120,13 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         return Ok(resourceList);
     }
 
+    [HttpDelete("{bovineId:int}")]
+    public async Task<IActionResult> DeleteBovine([FromRoute] int bovineId)
+    {
+       var bovine = await bovineCommandService.Handle(new DeleteBovineCommand(bovineId));
+       if (bovine is null)return BadRequest();
+        return Ok();
+    }
    
     
 }

@@ -58,6 +58,11 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
         return batch;
     }
 
+    public void RemoveBatch(Batch batch)
+    {
+        Context.Set<Batch>().Remove(batch);
+    }
+
 
     public new async Task<Campaign?> FindByIdAsync(int id)
     {

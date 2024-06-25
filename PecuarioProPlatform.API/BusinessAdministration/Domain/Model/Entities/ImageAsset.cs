@@ -32,6 +32,11 @@ public class ImageAsset :IEntityWithCreatedUpdatedDate
         ImageUri = new Uri(imageUrl) ;
     }
 
+    public void updateUrl(Uri imgUrl)
+    {
+        this.ImageUri = imgUrl;
+    }
+
      [Column("CreatedAt")] public DateTimeOffset? CreatedDate { get; set; }
      [Column("UpdatedAt")] public DateTimeOffset? UpdatedDate { get; set; }
 }

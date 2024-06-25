@@ -46,6 +46,16 @@ public partial class Bovine
         command.DepartmentId, command.BatchId)
     { }
 
+    public void  updateInformation(String name, Double weight, DateOnly date, String observations, int breedId, int batchId)
+    {
+        this.Name = name;
+        this.Weight = weight;
+        this.Date = date;
+        this.Observations = observations;
+        this.BreedId = breedId;
+        this.BatchId = batchId;
+    }
+
     public Bovine(string name, double weight, DateOnly date, string observations, int breedId, District district,
         City city, Department department, int batchId)
     {

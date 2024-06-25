@@ -29,6 +29,12 @@ public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRe
         bovine.Origin.City = city;
         bovine.Origin.Department = department;
         bovine.Breed = breed;
+        
+        foreach (var url in command.Urls)
+        {
+            bovine.AddImage(url);
+        }
+        
         try
         {
             await bovineRepository.AddAsync(bovine);
@@ -98,23 +104,7 @@ public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRe
             return null;
         }
     }
-
-    public async Task<Bovine> Handle(DeleteBovineToBatchCommand command)
-    {
-        var bovine = await bovineRepository.FindByIdAsync(command.bovineId);
-        if (bovine is null) throw new Exception("Bovine not found");
-        bovine.SetBatch(0); 
-        try
-        {
-            await unitOfWork.CompleteAsync();
-            return bovine;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"An error occurred when delete bovine to the batch.: {e.Message}");
-            return null;
-        }
-    }
+    
 
     public async Task<Bovine?> Handle(AddWeightRecordToBovineCommand command)
     {
@@ -132,5 +122,66 @@ public class BovineCommandService(IBovineRepository bovineRepository,IDistrictRe
             return null;
         }
 
+    }
+
+    public async Task<Bovine?> Handle(UpdateBovineCommand command)
+    {
+        var district = await districtRepository.FindByIdAsync(command.districtId);
+        var city =await cityRepository.FindByIdAsync(command.cityId);
+        var department = await departmentRepository.FindByIdAsync(command.departmentId);
+        var breed = await  breedRepository.FindByIdAsync(command.breedId);
+
+        var bovine = await bovineRepository.FindByIdAsync(command.bovineId);
+        bovine.Origin.District = district;
+        bovine.Origin.City = city;
+        bovine.Origin.Department = department;
+        bovine.Breed = breed;
+        bovine.updateInformation(command.name,command.weight,command.date,command.observations,command.breedId,command.batchId);
+     
+        var listImageToRemove = bovine.Images.ToList();
+        foreach (var image in listImageToRemove)
+        {
+            bovine.RemoveAsset(image.Id);
+            bovineRepository.RemoveAssets(image);
+        }
+        
+        foreach (var url in command.imgUrls)
+        {
+            bovine.AddImage(url);
+        }
+        
+        try
+        {
+            await unitOfWork.CompleteAsync();
+            return bovine;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred when delete bovine to the batch.: {e.Message}");
+            return null;
+        }
+    }
+
+    public async Task<Bovine?> Handle(DeleteBovineCommand command)
+    {
+        var bovine = await bovineRepository.FindByIdAsync(command.bovineId);
+
+        if (bovine == null)
+        {
+            return null; 
+        }
+
+        bovineRepository.Remove(bovine);
+
+        try
+        {
+            await unitOfWork.CompleteAsync();
+            return bovine; 
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error deleting bovine: {e.Message}");
+            throw new Exception("Error deleting bovine", e);
+        }
     }
 }

@@ -31,6 +31,22 @@ public partial class Bovine
         if (ExistImageWithUrl(imageUrl)) return;
         Images.Add(new ImageAsset(imageUrl));
     }
+    public void RemoveAllImages()
+    {
+        // var imagesToRemove = Images.ToList(); 
+        // foreach (var image in imagesToRemove)
+        // {
+        //     Images.Remove(image);
+        // }
+        Images.Clear();
+    }
+
+    public void RemoveAsset(int imageId)
+    {
+        var imageToRemove = Images.FirstOrDefault(b => b.Id == imageId);
+        if (imageToRemove != null)
+            Images.Remove(imageToRemove);
+    }
 
     public void AddWeightRecord(double weight, DateTime dateTime)
     {

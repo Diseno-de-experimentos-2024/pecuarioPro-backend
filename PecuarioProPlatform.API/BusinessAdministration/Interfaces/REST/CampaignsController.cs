@@ -107,6 +107,29 @@ public class CampaignsController(ICampaignCommandService campaignCommandService,
         var resources = batches.Select(BatchResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(resources);    
     }
+
+    [HttpPut("{campaignId:int}")]
+    public async Task<IActionResult> UpdateCampaign([FromRoute] int campaignId, [FromBody] CreateCampaignResource updateCampaignResource)
+    {
+        var updateCampaignCommand =
+            UpdateCampaignCommandFromResourceAssembler.ToCommandFromResource(campaignId,updateCampaignResource);
+        var campaign = await campaignCommandService.Handle(updateCampaignCommand);
+        if (campaign == null) return BadRequest();
+        var resource = CampaignResourceFromEntityAssembler.ToResourceFromEntity(campaign);
+        return Ok(resource);
+    }
+
+    [HttpPut("{campaignId:int}/batches/{batchId:int}")]
+    public async Task<IActionResult> UpdateBatch([FromRoute] int campaignId, [FromRoute] int batchId,
+        [FromBody] UpdateBatchResource updateBatchResource)
+    {
+        var updateBatchCommand =
+            UpdateBatchCommandFromResourceAssembler.ToCommandFromResource(campaignId,batchId, updateBatchResource);
+        var batch = await campaignCommandService.Handle(updateBatchCommand);
+        if (batch == null) return BadRequest();
+        var resource = BatchResourceFromEntityAssembler.ToResourceFromEntity(batch);
+        return Ok(resource);
+    }
     
     // [HttpGet()]
     

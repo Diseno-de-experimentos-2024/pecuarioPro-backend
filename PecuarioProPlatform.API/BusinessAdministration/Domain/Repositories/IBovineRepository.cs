@@ -17,4 +17,5 @@ public interface IBovineRepository : IBaseRepository<Bovine>
     Task<IEnumerable<Bovine>> FindByUserIdAsync(UserId userId);
 
     Task<IEnumerable<WeightRecord>> FindByBovineIdAsync(int bovineId);
+    void RemoveAssets(ImageAsset image);
 }

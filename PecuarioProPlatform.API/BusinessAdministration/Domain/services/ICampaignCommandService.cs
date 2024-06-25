@@ -16,4 +16,8 @@ public interface ICampaignCommandService
     Task<Batch?> Handle(UpdateStatusBatchCommand command);
     Task<Batch?> Handle(CreateBatchCommand command);
 
+    Task<Campaign?> Handle(UpdateCampaignCommand command);
+
+    Task<Batch?> Handle(UpdateBatchCommand command);
+
 }

@@ -11,4 +11,5 @@ public interface ICampaignRepository: IBaseRepository<Campaign>
     
     Task<IEnumerable<Batch>> FindByCampaignIdAsync(int campaignId);
     Task<Batch?> FindByBatchIdAndCampaignId(int batchId, int campaignId);
+    void RemoveBatch(Batch batch);
 }
