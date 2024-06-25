@@ -5,5 +5,5 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 
 public interface IBreedRepository: IBaseRepository<Breed>
 {
-    
+    Task<Breed?> FindBreedByNameAsync(String breedName);
 }

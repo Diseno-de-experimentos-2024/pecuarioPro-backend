@@ -15,8 +15,14 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
     public async Task<IEnumerable<Bovine>> FindByBreedIdAsync(int breedId)
     {
         return await Context.Set<Bovine>()
+            .Include(bovine=>bovine.Images)
             .Include(bovine => bovine.Breed)
-            .Include(bovine => bovine.Origin) 
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.District)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.City)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.Department) 
             .Where(b => b.BreedId == breedId)
             .ToListAsync();
     }
@@ -24,8 +30,14 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
     public async Task<IEnumerable<Bovine>> FindByDistrictIdAsync(int districtId)
     {
         return await Context.Set<Bovine>()
+            .Include(bovine=>bovine.Images)
             .Include(bovine => bovine.Breed)
-            .Include(bovine => bovine.Origin) 
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.District)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.City)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.Department) 
             .Where(b => b.Origin.DistrictId == districtId) 
             .ToListAsync();
     }
@@ -33,8 +45,14 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
     public async Task<IEnumerable<Bovine>> FindByBatchIdAsync(int batchId)
     {
         return await Context.Set<Bovine>()
+            .Include(bovine=>bovine.Images)
             .Include(bovine => bovine.Breed)
-            .Include(bovine => bovine.Origin) 
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.District)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.City)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.Department) 
             .Where(b => b.BatchId == batchId)
             .ToListAsync();
     }
@@ -42,8 +60,14 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
     public async Task<IEnumerable<Bovine>> FindByCampaignIdAsync(int campaignId)
     {
         return await Context.Set<Bovine>()
+            .Include(bovine=>bovine.Images)
             .Include(bovine => bovine.Breed)
-            .Include(bovine => bovine.Origin) 
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.District)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.City)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.Department) 
             .Where(b => b.Batch.CampaignId == campaignId)
             .ToListAsync();
         
@@ -52,15 +76,27 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
     public async Task<Bovine?> FindByBovineIdentifierAsync(BovineIdentifier bovineIdentifier)
     {
         return await Context.Set<Bovine>()
+            .Include(bovine=>bovine.Images)
             .Include(bovine =>bovine.Breed)
             .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.District)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.City)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.Department)
             .FirstOrDefaultAsync(b => b.BovineIdentifier == bovineIdentifier);
     }
 
     public async Task<IEnumerable<Bovine>> FindByUserIdAsync(UserId userId)
     {
         return await Context.Set<Bovine>().Include(bovine =>bovine.Breed)
+            .Include(bovine=>bovine.Images)
             .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.District)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.City)
+            .Include(bovine => bovine.Origin)
+            .ThenInclude(origin => origin.Department)
             .Where(b => b.Batch.Campaign.UserId == userId)
             .ToListAsync();
     }
@@ -77,6 +113,7 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
     public new async Task<Bovine?> FindByIdAsync(int id)
     {
         return await Context.Set<Bovine>()
+            .Include(bovine=>bovine.Images)
             .Include(bovine => bovine.Breed)
             .Include(bovine => bovine.Origin)
             .ThenInclude(origin => origin.District)
@@ -90,6 +127,7 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
     public new async Task<IEnumerable<Bovine>> ListAsync()
     {
         return await Context.Set<Bovine>()
+            .Include(bovine=>bovine.Images)
             .Include(bovine => bovine.Breed)
             .Include(bovine => bovine.Origin)
             .ThenInclude(origin => origin.District)

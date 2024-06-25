@@ -70,7 +70,7 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         return CreatedAtAction(nameof(GetBovineById), new { bovineId = resource.Id }, resource);
     }
 
-    [HttpPut("{bovineId:int}/add-weight-record")]
+    [HttpPost("{bovineId:int}/add-weight-record")]
     public async Task<IActionResult> AddWeightRecord([FromRoute] int bovineId, [FromBody] AddNewWeightRecordResource addNewWeightRecordResource)
     {
         var addNewWeightRecordCommand = AddWeightRecordToBovineCommandFromResourceAssembler.ToCommandFromResource(bovineId, addNewWeightRecordResource);
@@ -83,7 +83,7 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         return Ok(resourceList);
     }
     
-    [HttpPut("{bovineId:int}/add-images")]
+    [HttpPost("{bovineId:int}/add-images")]
     public async Task<IActionResult> AddImageAssetToBovine([FromRoute] int bovineId, [FromBody] AddImageAssetToBovineResource addImageAssetToBovineResource)
     {
         var addImageToBovineCommand =

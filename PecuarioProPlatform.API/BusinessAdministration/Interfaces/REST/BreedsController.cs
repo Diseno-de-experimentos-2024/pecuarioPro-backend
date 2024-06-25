@@ -13,7 +13,7 @@ namespace PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-public class BreedController(IBreedCommandService breedCommandService, IBreedQueryService breedQueryService): ControllerBase
+public class BreedsController(IBreedCommandService breedCommandService, IBreedQueryService breedQueryService): ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllBreeds()
@@ -32,6 +32,15 @@ public class BreedController(IBreedCommandService breedCommandService, IBreedQue
         var resource = BreedResourceFromEntityAssembler.ToResourceFromEntity(breed);
         return Ok(resource);
 
+    }
+
+    [HttpGet("name/{breedName}")]
+    public async Task<IActionResult> GetBreedByName([FromRoute] string breedName)
+    {
+        var breed = await breedQueryService.Handle(new GetBreedByNameQuery(breedName));
+        if (breed is null) return NotFound();
+        var resource = BreedResourceFromEntityAssembler.ToResourceFromEntity(breed);
+        return Ok(resource);
     }
     
     

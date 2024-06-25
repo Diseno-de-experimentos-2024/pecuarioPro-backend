@@ -4,5 +4,6 @@ namespace PecuarioProPlatform.API.Shared.Domain.Repositories;
 
 public interface IDistrictRepository : IBaseRepository<District>
 {
-    
+    Task<District?> FindDistrictByNameAsync(String districtName);
+
 }

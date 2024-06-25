@@ -7,6 +7,6 @@ public static class CityResourceFromEntityAssembler
 {
     public static CityResource ToResourceFromEntity(City entity)
     {
-        return new CityResource(entity.Id, entity.Name);
+        return new CityResource(entity.Id, entity.Name,entity.DepartmentId);
     }
 }

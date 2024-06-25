@@ -12,4 +12,14 @@ public class DistrictQueryService(IDistrictRepository districtRepository) : IDis
     {
         return await districtRepository.FindByIdAsync(query.DistrictId);
     }
+
+    public async Task<IEnumerable<District>> Handle(GetAllDistrictsQuery query)
+    {
+        return await districtRepository.ListAsync();
+    }
+
+    public async Task<District?> Handle(GetDistrictByNameQuery query)
+    {
+        return await districtRepository.FindDistrictByNameAsync(query.districtName);
+    }
 }

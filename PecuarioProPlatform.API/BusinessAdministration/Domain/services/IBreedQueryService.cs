@@ -7,4 +7,6 @@ public interface IBreedQueryService
 {
     Task<Breed?> Handle(GetBreedByIdQuery query);
     Task<IEnumerable<Breed>> Handle(GetAllBreedsQuery query);
+
+    Task<Breed?> Handle(GetBreedByNameQuery query);
 }

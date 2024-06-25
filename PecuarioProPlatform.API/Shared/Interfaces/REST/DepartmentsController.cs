@@ -10,7 +10,7 @@ namespace PecuarioProPlatform.API.Shared.Interfaces.REST;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-public class DepartmentController(IDepartmentCommandService departmentCommandService, IDepartmentQueryService departmentQueryService) : ControllerBase
+public class DepartmentsController(IDepartmentCommandService departmentCommandService, IDepartmentQueryService departmentQueryService) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentResource createDepartmentResource)
@@ -21,7 +21,15 @@ public class DepartmentController(IDepartmentCommandService departmentCommandSer
         var resource = DepartmentResourceFromEntityAssembler.ToResourceFromEntity(department);
         return CreatedAtAction(nameof(GetDepartmentById), new { departmentId = resource.Id }, resource);
     }
-
+    [HttpGet]
+    public async Task<IActionResult> GetAllCities()
+    {
+        var getAllDepartmentsQuery = new GetAllDepartmentsQuery();
+        var departments = await departmentQueryService.Handle(getAllDepartmentsQuery);
+        var resources = departments.Select(DepartmentResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
+    
     [HttpGet("{departmentId:int}")]
     public async Task<IActionResult> GetDepartmentById([FromRoute] int departmentId)
     {
@@ -30,4 +38,15 @@ public class DepartmentController(IDepartmentCommandService departmentCommandSer
         var resource = DepartmentResourceFromEntityAssembler.ToResourceFromEntity(department);
         return Ok(resource);
     }
+    
+    [HttpGet("name/{departmentName}")]
+    public async Task<IActionResult> GetCityByName([FromRoute] string departmentName)
+    {
+        var department = await departmentQueryService.Handle(new GetDepartmentByNameQuery(departmentName));
+        if (department is null) return NotFound();
+        var resource = DepartmentResourceFromEntityAssembler.ToResourceFromEntity(department);
+        return Ok(resource);
+    }
+    
+    
 }

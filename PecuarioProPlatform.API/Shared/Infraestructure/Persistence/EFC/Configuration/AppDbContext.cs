@@ -126,6 +126,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
        
         //Properties for ImageAsset
+        builder.Entity<ImageAsset>().HasKey(i => i.Id);
         builder.Entity<ImageAsset>().Property(i => i.Name).HasMaxLength(50);
         builder.Entity<ImageAsset>().Property(p => p.ImageUri).IsRequired();
 

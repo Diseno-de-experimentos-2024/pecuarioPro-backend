@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Interfaces.REST.Resources;
 
@@ -9,6 +10,7 @@ public static class BovineResourceFromEntityAssembler
     {
         
         var imageUrls = entity.Images.Select(image => image.GetContent()).ToList();
+        Console.WriteLine(imageUrls);
 
         return new BovineResource(
             entity.Id,

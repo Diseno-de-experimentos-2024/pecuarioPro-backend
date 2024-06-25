@@ -19,4 +19,9 @@ public class BreedQueryService(IBreedRepository breedRepository): IBreedQuerySer
 
         return await breedRepository.ListAsync();
     }
+
+    public async Task<Breed?> Handle(GetBreedByNameQuery query)
+    {
+        return await breedRepository.FindBreedByNameAsync(query.breedName);
+    }
 }

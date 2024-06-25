@@ -12,4 +12,14 @@ public class DepartmentQueryService(IDepartmentRepository departmentRepository )
     {
         return await departmentRepository.FindByIdAsync(query.DepartmentId);
     }
+
+    public async Task<IEnumerable<Department>> Handle(GetAllDepartmentsQuery query)
+    {
+        return await departmentRepository.ListAsync();
+    }
+
+    public async Task<Department?> Handle(GetDepartmentByNameQuery query)
+    {
+        return await departmentRepository.FindDepartmentByNameAsync(query.departmentName);
+    }
 }

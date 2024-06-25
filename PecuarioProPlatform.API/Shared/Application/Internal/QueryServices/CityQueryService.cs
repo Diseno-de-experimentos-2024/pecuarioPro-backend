@@ -12,4 +12,14 @@ public class CityQueryService(ICityRepository cityRepository) : ICityQueryServic
     {
         return await cityRepository.FindByIdAsync(query.CityId);
     }
+
+    public async Task<IEnumerable<City>> Handle(GetAllCitiesQuery query)
+    {
+        return await cityRepository.ListAsync();
+    }
+
+    public async Task<City?> Handle(GetCityByNameQuery query)
+    {
+        return await cityRepository.FindCityByNameAsync(query.cityName);
+    }
 }
