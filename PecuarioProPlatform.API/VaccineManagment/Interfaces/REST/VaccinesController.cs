@@ -6,42 +6,31 @@ using PecuarioProPlatform.API.VaccineManagment.Interfaces.REST.Resources;
 using PecuarioProPlatform.API.VaccineManagment.Interfaces.REST.Transform;
 
 namespace PecuarioProPlatform.API.VaccineManagment.Interfaces.REST;
-
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 public class VaccinesController(IVaccineCommandService vaccineCommandService, IVaccineQueryService vaccineQueryService)
-    : ControllerBase
+:ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateVaccine(CreateVaccineResource createVaccineResource)
+    public async Task<IActionResult> CreateVaccine(CreateVaccineResource resource)
     {
-        var createVaccineCommand = CreateVaccinesCommandFromResourceAssembler.ToCommandFromResource(createVaccineResource);
+        var createVaccineCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
         var vaccine = await vaccineCommandService.Handle(createVaccineCommand);
         if (vaccine is null) return BadRequest();
-        var resource = VaccineResourceFromEntityAssembler.ToResourceFromEntity(vaccine);
-        return CreatedAtAction(nameof(GetVaccineByIdQuery), new { vaccineid = resource.Id }, resource);
+        var vaccineResource = VaccineResourceFromEntityAssembler.ToResourceFromEntity(vaccine);
+        return CreatedAtAction(nameof(GetVaccineByIdQuery), new { id = vaccineResource.Id }, vaccineResource);
     }
-    
-    [HttpGet("{vaccineid}")]
-    public async Task<IActionResult> GetVaccineByIdQuery(int vaccineid)
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetVaccineByIdQuery(int vaccineId)
     {
-        var getVaccineByIdQuery = new GetVaccineByIdQuery(vaccineid);
+        var getVaccineByIdQuery = new GetVaccineByIdQuery(vaccineId);
         var vaccine = await vaccineQueryService.Handle(getVaccineByIdQuery);
         if (vaccine is null) return NotFound();
         var vaccineResource = VaccineResourceFromEntityAssembler.ToResourceFromEntity(vaccine);
         return Ok(vaccineResource);
     }
-    
-    [HttpGet]
-    public async Task<IActionResult> GetVaccinesQuery()
-    {
-        var getVaccinesQuery = new GetAllVaccinesQuery();
-        var vaccines = await vaccineQueryService.Handle(getVaccinesQuery);
-        var vaccineResources = vaccines.Select(VaccineResourceFromEntityAssembler.ToResourceFromEntity);
-        return Ok(vaccineResources);
-    }
-    
-    
+        
     
 }

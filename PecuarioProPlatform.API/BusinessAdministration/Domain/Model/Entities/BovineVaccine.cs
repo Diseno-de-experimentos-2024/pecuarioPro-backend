@@ -2,7 +2,7 @@
 
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.aggregates;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates;
 
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
 

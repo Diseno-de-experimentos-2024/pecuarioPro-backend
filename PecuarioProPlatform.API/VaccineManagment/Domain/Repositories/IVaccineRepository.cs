@@ -1,12 +1,10 @@
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.aggregates;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.valueobjects;
 
 namespace PecuarioProPlatform.API.VaccineManagment.Domain.Repositories;
 
-public interface IVaccineRepository : IBaseRepository<Vaccines>
+public interface IVaccineRepository: IBaseRepository<Vaccine>
 {
-    Task<Vaccines?> FindByCodeAsync(string code);
-    Task<Vaccines?> FindByNameAsync(string name);
-    Task<Vaccines?> FindByNameAndCodeAsync(string name, string code);
-    new Task<Vaccines?> FindByIdAsync(int id);
+    Task<Vaccine?> FindVaccineByCodeAsync(VaccineCode code);
 }

@@ -7,8 +7,10 @@ using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vacci
 using PecuarioProPlatform.API.IAM.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.aggregates;
 using PecuarioProPlatform.API.StaffManagement.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.valueobjects;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.ValueObjects;
 
 namespace PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 
@@ -83,31 +85,24 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Bovine>().Property(b => b.Date).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Observations).HasMaxLength(400);
         
-      
-        
-        
-        
-        
-        /*
-        //Properties For Vaccine
+        //Properties for Vaccine
         builder.Entity<Vaccine>().HasKey(v => v.Id);
         builder.Entity<Vaccine>().Property(v => v.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Vaccine>().Property(v => v.Name).IsRequired().HasMaxLength(30);
-        builder.Entity<Vaccine>().Property(v => v.Reason).HasMaxLength(100);
         builder.Entity<Vaccine>().Property(v => v.Date).IsRequired();
-*/
-        
-        
-        
-        //Properties for Vaccine
-        
-        builder.Entity<Vaccines>().HasKey(v => v.Id);
-        builder.Entity<Vaccines>().Property(v => v.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Vaccines>().Property(v => v.Name).IsRequired().HasMaxLength(30);
-        builder.Entity<Vaccines>().Property(v => v.Reason).HasMaxLength(100);
-        builder.Entity<Vaccines>().Property(v => v.Code).IsRequired().HasMaxLength(100);
-        builder.Entity<Vaccines>().Property(v => v.Description).IsRequired().HasMaxLength(225);
-        
+        builder.Entity<Vaccine>().Property(v => v.Reason).HasMaxLength(200);
+
+        builder.Entity<Vaccine>()
+            .Property(v => v.Code)
+            .HasConversion(
+                v => v.ToString(), // Convert VaccineCode to string when writing to the database
+                v => new VaccineCode(v)); // Convert string to VaccineCode when reading from the database
+        builder.Entity<Vaccine>()
+            .Property(v => v.Date)
+            .HasConversion(
+                v => v.Value, // Convert VaccineDate to DateTime when writing to the database
+                v => (VaccineDate)v); // Convert DateTime to VaccineDate when reading from the database
+
         
         //Properties for BovineVaccine
         builder.Entity<BovineVaccine>().HasKey(bv => bv.Id);

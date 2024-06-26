@@ -1,5 +1,5 @@
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.aggregates;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Commands;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Repositories;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Services;
@@ -8,9 +8,9 @@ namespace PecuarioProPlatform.API.VaccineManagment.Application.Internal.CommandS
 
 public class VaccineCommandService(IVaccineRepository vaccineRepository, IUnitOfWork unitOfWork) : IVaccineCommandService
 {
-    public async Task<Vaccines?> Handle(CreateVaccineCommand command)
+    public async Task<Vaccine?> Handle(CreateVaccineCommand command)
     {
-        var vaccine = new Vaccines(command);
+        var vaccine = new Vaccine(command);
         try
         {
             await vaccineRepository.AddAsync(vaccine);
@@ -20,7 +20,7 @@ public class VaccineCommandService(IVaccineRepository vaccineRepository, IUnitOf
         catch (Exception e)
         {
             Console.WriteLine($"An error occurred while creating the vaccine: {e.Message}");
-            throw;
+            return null;
         }
     }
 }

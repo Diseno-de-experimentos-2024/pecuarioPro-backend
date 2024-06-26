@@ -24,6 +24,11 @@ using PecuarioProPlatform.API.Shared.Domain.Services;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.Shared.Interfaces.ASP.Configuration;
+using PecuarioProPlatform.API.VaccineManagment.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.VaccineManagment.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Repositories;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Services;
+using PecuarioProPlatform.API.VaccineManagment.Infrastructure.Persistence.EFC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -160,6 +165,11 @@ builder.Services.AddScoped<ICityQueryService, CityQueryService>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentCommandService, DepartmentCommandService>();
 builder.Services.AddScoped<IDepartmentQueryService, DepartmentQueryService>();
+
+//Vaccine Bounded Context Injection Configuration
+builder.Services.AddScoped<IVaccineRepository, ProfileRepository>();
+builder.Services.AddScoped<IVaccineCommandService, VaccineCommandService>();
+builder.Services.AddScoped<IVaccineQueryService, VaccineQueryService>();
 
 // IAM Bounded Context Injection Configuration
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
