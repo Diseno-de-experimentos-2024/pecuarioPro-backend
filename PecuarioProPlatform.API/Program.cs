@@ -5,6 +5,11 @@ using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.QueryS
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 using PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Repositories;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Services;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Infrastructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.IAM.Application.Internal.CommandServices;
 using PecuarioProPlatform.API.IAM.Application.Internal.OutboundServices;
 using PecuarioProPlatform.API.IAM.Application.Internal.QueryServices;
@@ -131,6 +136,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+//HealthMonitoringManagement Bounded Context Dependency Injections
+builder.Services.AddScoped<IVeterinarianRepository, VeterinariansRepository>();
+builder.Services.AddScoped<IVeterinarianCommandService, VeterinarianCommandService>();
+builder.Services.AddScoped<IVeterinarianQueryService, VeterinarianQueryService>();
 
 //BusinessAdministration Bounded Context Dependency Injections
 builder.Services.AddScoped<IBovineRepository, BovineRepository>();
@@ -144,8 +153,6 @@ builder.Services.AddScoped<ICampaignQueryService, CampaignQueryService>();
 builder.Services.AddScoped<IBreedRepository, BreedRepository>();
 builder.Services.AddScoped<IBreedCommandService, BreedCommandService>();
 builder.Services.AddScoped<IBreedQueryService, BreedQueryService>();
-
-
 
 builder.Services.AddScoped<IDistrictRepository, DistrictRepository>();
 builder.Services.AddScoped<IDistrictCommandService, DistrictCommandService>();

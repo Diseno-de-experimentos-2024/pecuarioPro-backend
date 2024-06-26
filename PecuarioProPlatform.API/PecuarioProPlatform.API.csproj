@@ -32,11 +32,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="HealthMonitoringManagement\Domain\Model\Aggregates\" />
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
       <Folder Include="StaffManagement\Interfaces\" />
-      <Folder Include="HealthMonitoringManagment\Domain\Model\Aggregates\" />
-      <Folder Include="HealthMonitoringManagment\Domain\Model\ValueObjects\" />
       <Folder Include="VaccineManagment\Domain\Model\Entities\" />
       <Folder Include="VaccineManagment\Domain\Model\ValueObjects\" />
     </ItemGroup>

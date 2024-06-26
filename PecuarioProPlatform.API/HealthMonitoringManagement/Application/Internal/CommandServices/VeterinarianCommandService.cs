@@ -8,23 +8,39 @@ namespace PecuarioProPlatform.API.HealthMonitoringManagement.Application.Interna
 
 public class VeterinarianCommandService(IVeterinarianRepository veterinarianRepository, IUnitOfWork unitOfWork) : IVeterinarianCommandService
 {
-  public async Task<Veterinarians?> Handle(CreateVeterinarianCommand command)
+  public async Task<Veterinarian?> Handle(CreateVeterinarianCommand command)
   {
-    var veterinarian = new Veterinarians(command);
+    var veterinarian = new Veterinarian(command);
     try
     {
-
       await veterinarianRepository.AddAsync(veterinarian);
       await unitOfWork.CompleteAsync();
       return veterinarian;
     }
-    catch
+    catch (Exception e)
     {
+      Console.WriteLine($"An error occurred while creating a veterinarian:{e.Message}");
       return null;
     }
   }
-  public Task<Veterinarians> Handle(DeleteVeterinarianCommand command)
+  public async Task<Veterinarian?> Handle(DeleteVeterinarianCommand command)
   {
-    throw new NotImplementedException();
+    var veterinarian = await veterinarianRepository.FindByIdAsync(command.VeterinarianId);
+    if (veterinarian == null)
+    {
+      return null;
+    }
+    veterinarianRepository.Remove(veterinarian);
+
+    try
+    {
+      await unitOfWork.CompleteAsync();
+      return veterinarian;
+    }
+    catch (Exception e)
+    {
+      Console.WriteLine($"Error deleting veterinarian: {e.Message}");
+      throw new Exception("Error deleting veterinarian, e");
+    }
   }
 }

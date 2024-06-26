@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.IAM.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
@@ -220,7 +221,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 a.Property(s => s.Country).HasColumnName("AddressCountry");
             });
         
-        
+        //Properties for  Veterinarian
+        builder.Entity<Veterinarian>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Specialty).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.PhoneNumber).IsRequired();
+            entity.Property(e => e.Email).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.City).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.PhotoUrl).HasMaxLength(200);
+        });
         // IAM Context
         builder.Entity<User>().HasKey(u => u.Id);
         builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();

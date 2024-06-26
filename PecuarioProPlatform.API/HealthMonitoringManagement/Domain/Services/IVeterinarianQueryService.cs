@@ -5,7 +5,7 @@ namespace PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Services;
 
 public interface IVeterinarianQueryService
 {
-    Task<Veterinarians?> Handle(GetVeterinariansByIdQuery query);
-    Task<Veterinarians?> Handle(GetVeterinariansBySpecialty query);
-    Task<IEnumerable<Veterinarians>> Handle(GetAllVeterinariansQuery query);
+    Task<Veterinarian?> Handle(GetVeterinariansByIdQuery query);
+    Task<Veterinarian?> Handle(GetVeterinariansBySpecialty query);
+    Task<IEnumerable<Veterinarian>> Handle(GetAllVeterinariansQuery query);
 }

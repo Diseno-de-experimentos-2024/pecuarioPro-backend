@@ -6,20 +6,15 @@ using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Repositorie
 
 namespace PecuarioProPlatform.API.HealthMonitoringManagement.Infrastructure.Persistence.EFC.Repositories;
 
-public class VeterinariansRepository(AppDbContext context): BaseRepository<Veterinarians>(context), IVeterinarianRepository
+public class VeterinariansRepository(AppDbContext context): BaseRepository<Veterinarian>(context), IVeterinarianRepository
 {
-    public Task<Veterinarians?> FindBySpecialty(string specialty)
+    public Task<Veterinarian?> FindBySpecialty(string specialty)
     {
-        return Context.Set<Veterinarians>().Where(p=>p.Specialty == specialty).FirstOrDefaultAsync();
+        return Context.Set<Veterinarian>().Where(p=>p.Specialty == specialty).FirstOrDefaultAsync();
     }
 
-    public new Task<Veterinarians?> FindByIdAsync(int id)
+    public new Task<Veterinarian?> FindByIdAsync(int id)
     {
-        return Context.Set<Veterinarians>().Where(p=>p.Id == id).FirstOrDefaultAsync();
-    }
-
-    public Task<Veterinarians?> FindByEmail(int email)
-    {
-        return Context.Set<Veterinarians>().Where(p => p.Email == email).FirstOrDefaultAsync();
+        return Context.Set<Veterinarian>().Where(p=>p.Id == id).FirstOrDefaultAsync();
     }
 }
