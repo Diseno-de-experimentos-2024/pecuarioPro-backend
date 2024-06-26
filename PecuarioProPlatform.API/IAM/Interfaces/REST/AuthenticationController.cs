@@ -1,7 +1,7 @@
 using System.Net.Mime;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PecuarioProPlatform.API.IAM.Domain.Services;
+using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
 using PecuarioProPlatform.API.IAM.Interfaces.REST.Resources;
 using PecuarioProPlatform.API.IAM.Interfaces.REST.Transform;
 

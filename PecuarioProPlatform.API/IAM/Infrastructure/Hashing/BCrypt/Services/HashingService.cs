@@ -1,5 +1,6 @@
 using PecuarioProPlatform.API.IAM.Application.Internal.OutboundServices;
 using BCryptNet=BCrypt.Net.BCrypt;
+
 namespace PecuarioProPlatform.API.IAM.Infrastructure.Hashing.BCrypt.Services;
 
 public class HashingService : IHashingService
