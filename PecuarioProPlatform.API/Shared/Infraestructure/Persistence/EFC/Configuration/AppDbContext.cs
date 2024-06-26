@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
+using PecuarioProPlatform.API.IAM.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.aggregates;
@@ -186,6 +187,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             v => v.ToDateTime(TimeOnly.MinValue),
             v => DateOnly.FromDateTime(v)
         );
+        
+        
+        // IAM Context
+        builder.Entity<User>().HasKey(u => u.Id);
+        builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(u => u.Username).IsRequired();
+        builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+        
         
         
         
