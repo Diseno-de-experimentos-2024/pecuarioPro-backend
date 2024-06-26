@@ -15,6 +15,8 @@ using PecuarioProPlatform.API.IAM.Infrastructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
 using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Services;
+using PecuarioProPlatform.API.IAM.Interfaces.ACL;
+using PecuarioProPlatform.API.IAM.Interfaces.ACL.Services;
 using PecuarioProPlatform.API.Shared.Application.Internal.CommandServices;
 using PecuarioProPlatform.API.Shared.Application.Internal.QueryServices;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
@@ -166,7 +168,7 @@ builder.Services.AddScoped<IUserCommandService, UserCommandService>();
 builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
-// builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
 var app = builder.Build();
 
 

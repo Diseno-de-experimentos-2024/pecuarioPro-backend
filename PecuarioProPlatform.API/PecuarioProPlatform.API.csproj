@@ -32,7 +32,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="IAM\Interfaces\ACL\" />
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
       <Folder Include="StaffManagement\Interfaces\" />
