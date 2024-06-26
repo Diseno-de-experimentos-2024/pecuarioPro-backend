@@ -1,6 +1,46 @@
+using System.Net.Mime;
+using PecuarioProPlatform.API.StaffManagement.Domain.Model.Queries;
+using PecuarioProPlatform.API.StaffManagement.Domain.Services;
+using PecuarioProPlatform.API.StaffManagement.Interfaces.REST.Resources;
+using PecuarioProPlatform.API.StaffManagement.Interfaces.REST.Transform;
+using Microsoft.AspNetCore.Mvc;
+
 namespace PecuarioProPlatform.API.StaffManagement.Interfaces.REST;
 
-public class StaffsController
+[ApiController]
+[Route("api/v1/[controller]")]
+[Produces(MediaTypeNames.Application.Json)]
+public class StaffsController(IStaffCommandService staffCommandService, IStaffQueryService staffQueryService)
+    : ControllerBase
 {
+    [HttpPost]
+    public async Task<IActionResult> CreateStaff(CreateStaffResource resource)
+    {
+        var createStaffCommand = CreateStaffCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var staff = await staffCommandService.Handle(createStaffCommand);
+        if (staff is null) return BadRequest();
+        var staffResource = StaffResourceFromEntityAssembler.ToResourceFromEntity(staff);
+        return CreatedAtAction(nameof(GetStaffById), new { staffId = staffResource.Id}, staffResource);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllStaffs()
+    {
+        var getAllStaffsQuery = new GetAllStaffsQuery();
+        var staffs = await staffQueryService.Handle(getAllStaffsQuery);
+        var staffResources = staffs.Select(StaffResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(staffResources);
+    }
+
+    [HttpGet("{staffId:int}")]
+    public async Task<IActionResult> GetStaffById(int staffId)
+    {
+        var getStaffByIdQuery = new GetStaffByIdQuery(staffId);
+        var staff = await staffQueryService.Handle(getStaffByIdQuery);
+        if (staff == null) return NotFound();
+        var staffResource = StaffResourceFromEntityAssembler.ToResourceFromEntity(staff);
+        return Ok(staffResource);
+    }
+    
     
 }
