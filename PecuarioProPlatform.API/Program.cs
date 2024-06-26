@@ -1,9 +1,20 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.CommandServices;
 using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.QueryServices;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 using PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.IAM.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.IAM.Application.Internal.OutboundServices;
+using PecuarioProPlatform.API.IAM.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.IAM.Domain.Repositories;
+using PecuarioProPlatform.API.IAM.Domain.Services;
+using PecuarioProPlatform.API.IAM.Infrastructure.Hashing.BCrypt.Services;
+using PecuarioProPlatform.API.IAM.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Services;
 using PecuarioProPlatform.API.Shared.Application.Internal.CommandServices;
 using PecuarioProPlatform.API.Shared.Application.Internal.QueryServices;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
@@ -19,15 +30,6 @@ builder.Services.AddControllers(options =>
 {
     options.Conventions.Add(new KebabCaseRouteNamingConvention());
 } );
-
-
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
 //Add Database Connection String
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -50,6 +52,62 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         }
     }
 });
+
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    c =>
+    {
+        c.SwaggerDoc("v1",
+            new OpenApiInfo
+            {
+                Title = "ACME.PecuarioProPlatform.API",
+                Version = "v1",
+                Description = "Pecuario Pro Platform API",
+                // TermsOfService = new Uri("https://acme-learning.com/tos"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Pecuario Pro",
+                    Email = "contact@pecuario.com"
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "Apache 2.0",
+                    Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")
+                }
+            });
+        c.EnableAnnotations();
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                },
+                Array.Empty<string>()
+            } 
+        });
+    });
+
+
+
+
 
 
 //Configure Lowercase URLs
@@ -101,8 +159,14 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentCommandService, DepartmentCommandService>();
 builder.Services.AddScoped<IDepartmentQueryService, DepartmentQueryService>();
 
-
-
+// IAM Bounded Context Injection Configuration
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+// builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
 var app = builder.Build();
 
 
@@ -126,6 +190,11 @@ if (app.Environment.IsDevelopment())
 // Apply CORS Policy
 
 app.UseCors("AllowedAllPolicy");
+
+//Add Authorization Middleware 
+
+app.UseRequestAuthorization();
+
 
 app.UseHttpsRedirection();
 
