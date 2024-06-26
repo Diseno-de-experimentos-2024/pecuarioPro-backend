@@ -5,8 +5,9 @@ namespace PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Tran
 
 public class VeterinarianResourceFromEntityAssembler
 {
-    public static VeterinarianResource ToResourceFromEntity(Veterinarians entity)
+    public static VeterinarianResource ToResourceFromEntity(Veterinarian entity)
     {
-        return new VeterinarianResource(entity.Id, entity.FirstName, entity.LastName,entity.Specialty, entity.PhoneNumber, entity.Email, entity.PhotoUrl);
+        return new VeterinarianResource(entity.Id, entity.FirstName, entity.LastName,entity.Specialty, 
+            entity.PhoneNumber, entity.Email,entity.City, entity.Status, entity.PhotoUrl);
     }
 }

@@ -7,23 +7,18 @@ namespace PecuarioProPlatform.API.HealthMonitoringManagement.Application.Interna
 
 public class VeterinarianQueryService(IVeterinarianRepository veterinarianRepository) : IVeterinarianQueryService
 {
-    public async Task<Veterinarians?> Handle(GetVeterinariansBySpecialty query)
+    public async Task<Veterinarian?> Handle(GetVeterinariansBySpecialty query)
     {
         return await veterinarianRepository.FindBySpecialty(query.Specialty);
     }
 
-    public async Task<IEnumerable<Veterinarians>> Handle(GetAllVeterinariansQuery query)
+    public async Task<IEnumerable<Veterinarian>> Handle(GetAllVeterinariansQuery query)
     {
         return await veterinarianRepository.ListAsync();
     }
 
-    public async Task<Veterinarians?> Handle(GetVeterinariansByIdQuery query)
+    public async Task<Veterinarian?> Handle(GetVeterinariansByIdQuery query)
     {
         return await veterinarianRepository.FindByIdAsync(query.IdVeterinarian);
-    }
-
-    public async Task<Veterinarians?> Handle(GetVeterinariansByEmailQuery query)
-    {
-        return await veterinarianRepository.FindByEmail(query.Email);
     }
 }

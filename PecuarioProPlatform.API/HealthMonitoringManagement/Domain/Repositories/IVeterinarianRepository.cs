@@ -3,10 +3,9 @@ using PecuarioProPlatform.API.Shared.Domain.Repositories;
 
 namespace PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Repositories;
 
-public interface IVeterinarianRepository : IBaseRepository<Veterinarians>
+public interface IVeterinarianRepository : IBaseRepository<Veterinarian>
 {
     
-    Task<Veterinarians?> FindBySpecialty(string specialty);
-    new Task<Veterinarians?> FindByIdAsync(int id);
-    Task<Veterinarians?> FindByEmail(int email);
+    Task<Veterinarian?> FindBySpecialty(string specialty);
+    new Task<Veterinarian?> FindByIdAsync(int id);
 }

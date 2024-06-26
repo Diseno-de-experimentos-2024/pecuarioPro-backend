@@ -7,6 +7,7 @@ public class CreateVeterinarianCommandFromResourceAssembler
 {
     public static CreateVeterinarianCommand ToCommandFromResource(CreateVeterinarianResource resource)
     {
-        return new CreateVeterinarianCommand(resource.Id, resource.FirstName, resource.LastName,resource.Specialty, resource.PhoneNumber, resource.Email, resource.PhotoUrl);
+        return new CreateVeterinarianCommand(resource.FirstName, resource.LastName,resource.Specialty, resource.PhoneNumber, 
+            resource.Email, resource.City, resource.Status ,resource.PhotoUrl);
     }
 }

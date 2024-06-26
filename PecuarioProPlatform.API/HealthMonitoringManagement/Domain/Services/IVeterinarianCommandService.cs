@@ -5,6 +5,6 @@ namespace PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Services;
 
 public interface IVeterinarianCommandService
 {
-    Task<Veterinarians> Handle(CreateVeterinarianCommand command);
-    Task<Veterinarians> Handle(DeleteVeterinarianCommand command);
+    Task<Veterinarian?> Handle(CreateVeterinarianCommand command);
+    Task<Veterinarian?> Handle(DeleteVeterinarianCommand command);
 }

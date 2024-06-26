@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Model.Commands;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Model.Queries;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Services;
 using PecuarioProPlatform.API.HealthMonitoringManagment.Interfaces.REST.Resources;
@@ -19,11 +20,20 @@ public class VeterinarianController(
     [HttpPost]
     public async Task<IActionResult> CreateVeterinarian(CreateVeterinarianResource createVeterinarianResource)
     {
-        var createVeterinarianCommand =
-            CreateVeterinarianCommandFromResourceAssembler.ToCommandFromResource(createVeterinarianResource);
+        var createVeterinarianCommand = CreateVeterinarianCommandFromResourceAssembler.ToCommandFromResource(createVeterinarianResource);
         var veterinarian = await veterinarianCommandService.Handle(createVeterinarianCommand);
+        if (veterinarian is null) return BadRequest();
         var resource = VeterinarianResourceFromEntityAssembler.ToResourceFromEntity(veterinarian);
         return CreatedAtAction(nameof(GetVeterinariansByIdQuery), new { veterinarianid = resource.Id }, resource);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetVeterinarianQuery()
+    {
+        var getVeterinarianQuery = new GetAllVeterinariansQuery();
+        var veterinarians = await veterinarianQueryService.Handle(getVeterinarianQuery);
+        var veterinarianResources = veterinarians.Select(VeterinarianResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(veterinarianResources);
     }
     [HttpGet("{veterinarianid}")]
     public async Task<IActionResult> GetVeterinariansByIdQuery(int veterinarianid)
@@ -35,12 +45,13 @@ public class VeterinarianController(
         return Ok(veterinarianResource);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetVeterinarianQuery()
+    [HttpDelete("{veterinarianid:int}")]
+    public async Task<IActionResult> DeleteVeterinarian([FromRoute] int veterinarianid)
     {
-        var getVeterinarianQuery = new GetAllVeterinariansQuery();
-        var veterinarians = await veterinarianQueryService.Handle(getVeterinarianQuery);
-        var veterinarianResources = veterinarians.Select(VeterinarianResourceFromEntityAssembler.ToResourceFromEntity);
-        return Ok(veterinarianResources);
+        var veterinarian = await veterinarianCommandService.Handle(new DeleteVeterinarianCommand(veterinarianid));
+        if (veterinarian is null) return BadRequest();
+        return Ok();
     }
+
+    
 }
