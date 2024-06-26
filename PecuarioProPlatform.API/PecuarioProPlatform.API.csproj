@@ -10,6 +10,9 @@
         
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
         
+
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="1.1.6" />
@@ -33,6 +36,8 @@
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
       <Folder Include="StaffManagement\Interfaces\" />
+      <Folder Include="HealthMonitoringManagment\Domain\Model\Aggregates\" />
+      <Folder Include="HealthMonitoringManagment\Domain\Model\ValueObjects\" />
       <Folder Include="VaccineManagment\Domain\Model\Entities\" />
       <Folder Include="VaccineManagment\Domain\Model\ValueObjects\" />
     </ItemGroup>
