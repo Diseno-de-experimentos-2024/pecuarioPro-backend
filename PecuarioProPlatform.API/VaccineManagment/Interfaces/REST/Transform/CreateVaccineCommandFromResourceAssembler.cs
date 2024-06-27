@@ -5,7 +5,7 @@ using PecuarioProPlatform.API.VaccineManagment.Interfaces.REST.Resources;
 
 namespace PecuarioProPlatform.API.VaccineManagment.Interfaces.REST.Transform;
 
-public class CreateProfileCommandFromResourceAssembler
+public class CreateVaccineCommandFromResourceAssembler
 {
     public static CreateVaccineCommand ToCommandFromResource(CreateVaccineResource resource)
     {

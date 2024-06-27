@@ -10,7 +10,6 @@ using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
 using PecuarioProPlatform.API.StaffManagement.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.valueobjects;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.ValueObjects;
 
 namespace PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
@@ -92,12 +91,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Vaccine>().Property(v => v.Name).IsRequired().HasMaxLength(30);
         builder.Entity<Vaccine>().Property(v => v.Date).IsRequired();
         builder.Entity<Vaccine>().Property(v => v.Reason).HasMaxLength(200);
-
-        builder.Entity<Vaccine>()
-            .Property(v => v.Code)
-            .HasConversion(
-                v => v.ToString(), // Convert VaccineCode to string when writing to the database
-                v => new VaccineCode(v)); // Convert string to VaccineCode when reading from the database
         builder.Entity<Vaccine>()
             .Property(v => v.Date)
             .HasConversion(
