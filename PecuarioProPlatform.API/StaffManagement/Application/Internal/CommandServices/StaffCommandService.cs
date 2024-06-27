@@ -22,4 +22,25 @@ public class StaffCommandService(IStaffRepository staffRepository, IUnitOfWork u
           return null;
         }
     }
+    
+    public async Task<Staff?> Handle(DeleteStaffCommand command)
+    {
+        var staff = await staffRepository.FindByIdAsync(command.StaffId);
+        if (staff == null)
+        {
+            return null;
+        }
+        staffRepository.Remove(staff);
+
+        try
+        {
+            await unitOfWork.CompleteAsync();
+            return staff;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error deleting staff: {e.Message}");
+            throw new Exception("Error deleting staff, e");
+        }
+    }
 }

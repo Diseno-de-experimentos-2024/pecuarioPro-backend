@@ -6,4 +6,6 @@ namespace PecuarioProPlatform.API.StaffManagement.Domain.Services;
 public interface IStaffCommandService
 {
     Task<Staff?> Handle(CreateStaffCommand command);
+
+    Task<Staff?> Handle(DeleteStaffCommand command);
 }

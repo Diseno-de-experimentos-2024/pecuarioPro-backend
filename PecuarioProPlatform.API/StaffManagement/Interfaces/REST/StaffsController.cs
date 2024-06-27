@@ -43,5 +43,12 @@ public class StaffsController(IStaffCommandService staffCommandService, IStaffQu
         return Ok(staffResource);
     }
     
+    [HttpDelete("{staffId:int}")]
+    public async Task<IActionResult> DeleteStaff([FromRoute] int staffId)
+    {
+        var staff = await staffCommandService.Handle(new DeleteStaffCommand(staffId));
+        if (staff is null) return BadRequest();
+        return Ok();
+    }
     
 }
