@@ -39,6 +39,11 @@ using PecuarioProPlatform.API.VaccineManagment.Application.Internal.QueryService
 using PecuarioProPlatform.API.VaccineManagment.Domain.Repositories;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Services;
 using PecuarioProPlatform.API.VaccineManagment.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.StaffManagement.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.StaffManagement.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.StaffManagement.Domain.Repositories;
+using PecuarioProPlatform.API.StaffManagement.Domain.Services;
+using PecuarioProPlatform.API.StaffManagement.Infrastructure.Persistence.EFC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -189,6 +194,11 @@ builder.Services.AddScoped<IDepartmentQueryService, DepartmentQueryService>();
 builder.Services.AddScoped<IVaccineRepository, VaccineRepository>();
 builder.Services.AddScoped<IVaccineCommandService, VaccineCommandService>();
 builder.Services.AddScoped<IVaccineQueryService, VaccineQueryService>();
+
+//StaffManagement Bounded Context Dependency Injections
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IStaffCommandService, StaffCommandService>();
+builder.Services.AddScoped<IStaffQueryService, StaffQueryService>();
 
 // IAM Bounded Context Injection Configuration
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));

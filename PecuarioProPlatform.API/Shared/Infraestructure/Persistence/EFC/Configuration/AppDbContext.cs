@@ -182,33 +182,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         
         // Properties for Staff
         
-        builder.Entity<Staff>().HasKey(s => s.Id);
-        builder.Entity<Staff>().Property(s => s.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Staff>().OwnsOne(p => p.Name,
-            n =>
-            {
-                n.WithOwner().HasForeignKey("Id");
-                n.Property(p => p.FirstName).HasColumnName("FirstName");
-                n.Property(p => p.LastName).HasColumnName("LastName");
-            });
-
-        builder.Entity<Staff>().OwnsOne(p => p.Email,
-            e =>
-            {
-                e.WithOwner().HasForeignKey("Id");
-                e.Property(a => a.Address).HasColumnName("EmailAddress");
-            });
-
-        builder.Entity<Staff>().OwnsOne(p => p.Address,
-            a =>
-            {
-                a.WithOwner().HasForeignKey("Id");
-                a.Property(s => s.Street).HasColumnName("AddressStreet");
-                a.Property(s => s.Number).HasColumnName("AddressNumber");
-                a.Property(s => s.City).HasColumnName("AddressCity");
-                a.Property(s => s.PostalCode).HasColumnName("AddressPostalCode");
-                a.Property(s => s.Country).HasColumnName("AddressCountry");
-            });
+        builder.Entity<Staff>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.JobDescription).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.PhoneNumber).IsRequired();
+            entity.Property(e => e.Email).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.City).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.PhotoUrl).HasMaxLength(200);
+        });
         
         //Properties for  Veterinarian
         builder.Entity<Veterinarian>(entity =>

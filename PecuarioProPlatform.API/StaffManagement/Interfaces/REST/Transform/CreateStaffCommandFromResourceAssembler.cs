@@ -7,8 +7,8 @@ public static class CreateStaffCommandFromResourceAssembler
 {
     public static CreateStaffCommand ToCommandFromResource(CreateStaffResource resource)
     {
-        return new CreateStaffCommand(resource.FirstName, resource.LastName, resource.Email, resource.Street,
-            resource.Number, resource.City, resource.PostalCode, resource.Country);
+        return new CreateStaffCommand(resource.FirstName, resource.LastName,resource.JobDescription, resource.PhoneNumber, 
+            resource.Email, resource.City, resource.Status ,resource.PhotoUrl);
     }
 
 }

@@ -9,9 +9,14 @@ namespace PecuarioProPlatform.API.StaffManagement.Infrastructure.Persistence.EFC
 
 public class StaffRepository(AppDbContext context) : BaseRepository<Staff>(context), IStaffRepository
 {
-    public Task<Staff?> FindStaffByEmailAsync(EmailAddress email)
+    public Task<Staff?> FindStaffByEmailAsync(string email)
     {
-        return Context.Set<Staff>().Where(s => s.Email == email).FirstOrDefaultAsync();
+        return Context.Set<Staff>().Where(p=>p.Email == email).FirstOrDefaultAsync();
+    }
+
+    public new Task<Staff?> FindByIdAsync(int id)
+    {
+        return Context.Set<Staff>().Where(p=>p.Id == id).FirstOrDefaultAsync();
     }
     
 }

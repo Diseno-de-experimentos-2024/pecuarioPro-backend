@@ -7,7 +7,8 @@ public static class StaffResourceFromEntityAssembler
 {
     public static StaffResource ToResourceFromEntity(Staff entity)
     {
-        return new StaffResource(entity.Id, entity.FullName, entity.EmailAddress, entity.StreetAddress);
+        return new StaffResource(entity.Id, entity.FirstName, entity.LastName,entity.JobDescription, 
+            entity.PhoneNumber, entity.Email,entity.City, entity.Status, entity.PhotoUrl);
     }
     
 }

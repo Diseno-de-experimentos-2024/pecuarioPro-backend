@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using PecuarioProPlatform.API.StaffManagement.Domain.Model.Commands;
 using PecuarioProPlatform.API.StaffManagement.Domain.Model.Queries;
 using PecuarioProPlatform.API.StaffManagement.Domain.Services;
 using PecuarioProPlatform.API.StaffManagement.Interfaces.REST.Resources;
