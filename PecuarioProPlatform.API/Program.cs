@@ -186,7 +186,7 @@ builder.Services.AddScoped<IDepartmentCommandService, DepartmentCommandService>(
 builder.Services.AddScoped<IDepartmentQueryService, DepartmentQueryService>();
 
 //Vaccine Bounded Context Injection Configuration
-builder.Services.AddScoped<IVaccineRepository, ProfileRepository>();
+builder.Services.AddScoped<IVaccineRepository, VaccineRepository>();
 builder.Services.AddScoped<IVaccineCommandService, VaccineCommandService>();
 builder.Services.AddScoped<IVaccineQueryService, VaccineQueryService>();
 

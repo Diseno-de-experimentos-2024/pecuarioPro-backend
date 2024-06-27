@@ -1,5 +1,7 @@
 using System.Net.Mime;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Commands;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Queries;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Services;
 using PecuarioProPlatform.API.VaccineManagment.Interfaces.REST.Resources;
@@ -15,7 +17,14 @@ public class VaccinesController(IVaccineCommandService vaccineCommandService, IV
     [HttpPost]
     public async Task<IActionResult> CreateVaccine(CreateVaccineResource resource)
     {
-        var createVaccineCommand = CreateProfileCommandFromResourceAssembler.ToCommandFromResource(resource);
+        // Validate vaccine code format
+        Regex vaccineCodePattern = new Regex(@"^[a-zA-Z]{3}\d{3}$");
+        if (!vaccineCodePattern.IsMatch(resource.Code))
+        {
+            return BadRequest("Invalid vaccine code format. The code must start with three letters followed by three numbers.");
+        }
+
+        var createVaccineCommand = CreateVaccineCommandFromResourceAssembler.ToCommandFromResource(resource);
         var vaccine = await vaccineCommandService.Handle(createVaccineCommand);
         if (vaccine is null) return BadRequest();
         var vaccineResource = VaccineResourceFromEntityAssembler.ToResourceFromEntity(vaccine);
@@ -28,9 +37,36 @@ public class VaccinesController(IVaccineCommandService vaccineCommandService, IV
         var getVaccineByIdQuery = new GetVaccineByIdQuery(vaccineId);
         var vaccine = await vaccineQueryService.Handle(getVaccineByIdQuery);
         if (vaccine is null) return NotFound();
-        var vaccineResource = VaccineResourceFromEntityAssembler.ToResourceFromEntity(vaccine);
-        return Ok(vaccineResource);
+        return Ok(vaccine);
+    }
+
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllVaccinesQuery()
+    {
+        var getAllVaccinesQuery = new GetAllVaccineQuery();
+        var vaccines = await vaccineQueryService.Handle(getAllVaccinesQuery);
+        return Ok(vaccines);
+    }
+    
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateVaccine([FromRoute] int id, [FromBody] CreateVaccineResource createVaccineResource)
+    {
+        var updateVaccineCommand = UpdateVaccineCommandFromResourceAssembler.ToCommandFromResource(id, createVaccineResource);
+        var vaccine = await vaccineCommandService.Handle(updateVaccineCommand);
+        if (vaccine == null) return NotFound();
+        var resource = VaccineResourceFromEntityAssembler.ToResourceFromEntity(vaccine);
+        return Ok(resource);
     }
         
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteVaccine([FromRoute] int id)
+    {
+        var vaccine = await vaccineCommandService.Handle(new DeleteVaccineCommand(id));
+        if (vaccine is null) return NotFound();
+        return Ok();
+    }
+    
+    
     
 }
