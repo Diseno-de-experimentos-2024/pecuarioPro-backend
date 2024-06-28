@@ -1,4 +1,4 @@
 namespace PecuarioProPlatform.API.StaffManagement.Interfaces.REST.Resources;
 
-public record CreateStaffResource(string FirstName, string LastName,string JobDescription, 
-    int PhoneNumber, string Email, string City,string Status, string PhotoUrl);
+public record CreateStaffResource(string CampaignId, string FirstName, string LastName,string JobDescription, 
+    string Email, string Status, string DateStart, string DateEnd);

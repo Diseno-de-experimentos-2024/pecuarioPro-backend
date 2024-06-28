@@ -188,11 +188,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
             entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
             entity.Property(e => e.JobDescription).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.PhoneNumber).IsRequired();
+            entity.Property(e => e.DateStart).IsRequired();
             entity.Property(e => e.Email).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.City).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.CampaignId).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Status).IsRequired().HasMaxLength(20);
-            entity.Property(e => e.PhotoUrl).HasMaxLength(200);
+            entity.Property(e => e.DateEnd).HasMaxLength(200);
         });
         
         //Properties for  Veterinarian
