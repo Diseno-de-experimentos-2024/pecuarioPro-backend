@@ -181,7 +181,6 @@ public class CampaignCommandService(ICampaignRepository campaignRepository,IDist
         campaign.AddBatch(batch);
         try
         {
-            await campaignRepository.AddAsync(campaign);
             await unitOfWork.CompleteAsync();
             return batch;
         }
