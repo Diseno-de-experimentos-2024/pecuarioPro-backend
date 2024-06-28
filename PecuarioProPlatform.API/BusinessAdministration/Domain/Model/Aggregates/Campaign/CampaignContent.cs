@@ -9,7 +9,6 @@ public partial class Campaign
     public int Duration { get; protected set; }
     public ICollection<Batch> Batches { get; set; }
     
-    public UserId UserId { get; }
 
     public Campaign()
     {

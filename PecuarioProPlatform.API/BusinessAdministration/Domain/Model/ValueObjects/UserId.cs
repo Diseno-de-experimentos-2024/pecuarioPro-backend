@@ -1,8 +1,8 @@
 namespace PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 
-public record  UserId(Guid Identifier)
+public record  UserId(int Identifier)
 {
-    public UserId() : this(Guid.NewGuid())
+    public UserId() : this(0)
     {
     }
 }

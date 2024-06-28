@@ -7,7 +7,7 @@ public static class CreateCampaignCommandFromResourceAssembler
 {
     public static CreateCampaignCommand ToCommandFromResource(CreateCampaignResource resource)
     {
-        return new CreateCampaignCommand(resource.Name, resource.DateStart, resource.DateEnd, resource.Objective);
+        return new CreateCampaignCommand(resource.Name, resource.DateStart, resource.DateEnd, resource.Objective, resource.userId);
         
     }
 }
