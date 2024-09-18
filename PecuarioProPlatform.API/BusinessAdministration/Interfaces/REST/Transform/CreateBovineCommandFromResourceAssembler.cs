@@ -8,6 +8,6 @@ public static class CreateBovineCommandFromResourceAssembler
     public static CreateBovineCommand ToCommandFromResource(CreateBovineResource resource)
     {
         return new CreateBovineCommand(resource.Name, resource.Weight, resource.Date, resource.Observations,
-            resource.BreedId, resource.DistrictId, resource.CityId,resource.DepartmentId,resource.BatchId,resource.imgUrls);
+            resource.BreedId, resource.DistrictId, resource.CityId,resource.DepartmentId,resource.BatchId,resource.UserId,resource.imgUrls);
     }
 }

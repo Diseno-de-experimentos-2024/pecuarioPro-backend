@@ -7,12 +7,8 @@ public class UpdateVaccineCommandFromResourceAssembler
 {
     public static UpdateVaccineCommand ToCommandFromResource(int vaccineId, CreateVaccineResource resource)
     {
-        DateTime date;
-        if (!DateTime.TryParse(resource.Date, out date))
-        {
-            throw new FormatException("Invalid date format");
-        }
+       
 
-        return new UpdateVaccineCommand(vaccineId, resource.Name, date, resource.Code, resource.Reason);
+        return new UpdateVaccineCommand(vaccineId, resource.Name, resource.Date, resource.Code, resource.Reason,resource.Dose);
     }
 }

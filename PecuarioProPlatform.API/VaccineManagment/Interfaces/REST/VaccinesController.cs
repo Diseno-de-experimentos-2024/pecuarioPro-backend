@@ -17,22 +17,16 @@ public class VaccinesController(IVaccineCommandService vaccineCommandService, IV
     [HttpPost]
     public async Task<IActionResult> CreateVaccine(CreateVaccineResource resource)
     {
-        // Validate vaccine code format
-        Regex vaccineCodePattern = new Regex(@"^[a-zA-Z]{3}\d{3}$");
-        if (!vaccineCodePattern.IsMatch(resource.Code))
-        {
-            return BadRequest("Invalid vaccine code format. The code must start with three letters followed by three numbers.");
-        }
-
+        
         var createVaccineCommand = CreateVaccineCommandFromResourceAssembler.ToCommandFromResource(resource);
         var vaccine = await vaccineCommandService.Handle(createVaccineCommand);
         if (vaccine is null) return BadRequest();
         var vaccineResource = VaccineResourceFromEntityAssembler.ToResourceFromEntity(vaccine);
-        return CreatedAtAction(nameof(GetVaccineByIdQuery), new { id = vaccineResource.Id }, vaccineResource);
+        return CreatedAtAction(nameof(GetVaccineById), new { id = vaccineResource.Id }, vaccineResource);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetVaccineByIdQuery(int vaccineId)
+    public async Task<IActionResult> GetVaccineById(int vaccineId)
     {
         var getVaccineByIdQuery = new GetVaccineByIdQuery(vaccineId);
         var vaccine = await vaccineQueryService.Handle(getVaccineByIdQuery);
@@ -42,12 +36,34 @@ public class VaccinesController(IVaccineCommandService vaccineCommandService, IV
 
     
     [HttpGet]
-    public async Task<IActionResult> GetAllVaccinesQuery()
+    public async Task<IActionResult> GetAllVaccines()
     {
         var getAllVaccinesQuery = new GetAllVaccineQuery();
         var vaccines = await vaccineQueryService.Handle(getAllVaccinesQuery);
         return Ok(vaccines);
     }
+
+    [HttpGet("users/{userId:int}")]
+    public async Task<IActionResult> GetAllVaccinesByUserId([FromRoute]int userId)
+    {
+        var getAllVaccinesByUserIdQuery = new GetAllVaccineByUserIdQuery(userId);
+        var vaccines = await vaccineQueryService.Handle(getAllVaccinesByUserIdQuery);
+        var resources = vaccines.Select(VaccineResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
+
+    [HttpGet("bovines/{bovineId:int}")]
+    public async Task<IActionResult> GetAllVaccinesByBovineId([FromRoute] int bovineId)
+    {
+        var getAllVaccinesByBovineIdQuery = new GetAllVaccineByBovineIdQuery(bovineId);
+        var vaccines = await vaccineQueryService.Handle(getAllVaccinesByBovineIdQuery);
+        var resources = vaccines.Select(VaccineResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+ 
+    }
+    
+    
+    
     
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateVaccine([FromRoute] int id, [FromBody] CreateVaccineResource createVaccineResource)

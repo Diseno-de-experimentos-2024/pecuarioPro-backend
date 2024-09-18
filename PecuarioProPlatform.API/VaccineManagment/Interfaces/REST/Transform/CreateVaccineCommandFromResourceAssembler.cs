@@ -9,15 +9,13 @@ public class CreateVaccineCommandFromResourceAssembler
 {
     public static CreateVaccineCommand ToCommandFromResource(CreateVaccineResource resource)
     {
-        // Assuming date is in "dd/MM/yyyy" format
-        string dateString = resource.Date;
-        string format = "dd/MM/yyyy";
-        DateTime date = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture);
-
         return new CreateVaccineCommand(
             resource.Name,
-            date,
+            resource.Date,
             resource.Code,
-            resource.Reason);
+            resource.Reason,
+            resource.Dose,
+            resource.UserId,
+            resource.BovineId);
     }
 }

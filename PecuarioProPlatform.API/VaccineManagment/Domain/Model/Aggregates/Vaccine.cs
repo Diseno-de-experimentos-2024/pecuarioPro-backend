@@ -1,5 +1,5 @@
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Commands;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.ValueObjects;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Model.valueobjects;
 
 namespace PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates
 {
@@ -16,35 +16,42 @@ namespace PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates
         public Vaccine()
         {
             Name = string.Empty;
-            Date = new VaccineDate(DateTime.Now); // Provide a default DateTime value
+            Date = DateOnly.FromDateTime(DateTime.Now); // Provide a default DateTime value
             Code = string.Empty;
             Reason = string.Empty;
         }
 
-        public Vaccine(int id, string name, VaccineDate date, string code, string reason)
+        public Vaccine(int id, string name, DateOnly date, string code, string reason,double dose, int userId, int bovineId)
         {
             Id = id;
             Name = name;
             Date = date;
             Code = code;
             Reason = reason;
+            Dose = dose;
+            UserId = new UserId(userId);
+            BovineId = new BovineId(bovineId);
         }
 
         // Constructor que inicializa las propiedades utilizando un comando CreateVaccineCommand.
         public Vaccine(CreateVaccineCommand command)
         {
             Name = command.Name;
-            Date = new VaccineDate(command.Date);
+            Date = command.Date;
             Code = command.Code;
             Reason = command.Reason;
+            Dose = command.Dose;
+            UserId = new UserId(command.UserId);
+            BovineId = new BovineId(command.BovineId);
         }
         
-        public void updateInformation(string Name, VaccineDate Date, string Code, string Reason)
+        public void updateInformation(string Name, DateOnly Date, string Code, string Reason,double Dose)
         {
             this.Name = Name;
             this.Date = Date;
             this.Code = Code;
             this.Reason = Reason;
+            this.Dose = Dose;
         }
         
         // Constructor que inicializa las propiedades utilizando un comando DeleteVaccineCommand.
@@ -56,9 +63,15 @@ namespace PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates
         // Propiedades de la clase Vaccine.
         public int Id { get; private set; }
         public string Name { get; private set; }
-        public VaccineDate Date { get; private set; }
+        public DateOnly Date { get; private set; }
         public string Code { get; private set; }
         public string Reason { get; private set; }
+        
+        public Double Dose { get; private set; }
+        
+        public UserId UserId { get; private set; }
+        
+        public BovineId BovineId { get; private set; }
 
         // Propiedad que devuelve una descripción completa de la vacuna.
         public string FullDescription => $"{Code}: {Name} - {Reason} on {Date}";

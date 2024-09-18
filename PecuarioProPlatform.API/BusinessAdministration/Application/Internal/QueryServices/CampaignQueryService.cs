@@ -1,5 +1,6 @@
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Queries;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 
@@ -34,6 +35,6 @@ public class CampaignQueryService(ICampaignRepository campaignRepository): ICamp
 
     public async Task<IEnumerable<Campaign>> Handle(GetAllCampaignsByUserIdQuery query)
     {
-        return await campaignRepository.FindByUserIdAsync(query.UserId);
+        return await campaignRepository.FindByUserIdAsync(new UserId(query.UserId));
     }
 }

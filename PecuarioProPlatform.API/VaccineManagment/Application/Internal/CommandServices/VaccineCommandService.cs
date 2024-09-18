@@ -1,7 +1,6 @@
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Commands;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.ValueObjects;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Repositories;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Services;
 
@@ -28,7 +27,7 @@ public class VaccineCommandService(IVaccineRepository vaccineRepository, IUnitOf
     public async Task<Vaccine?> Handle(UpdateVaccineCommand command)
     {
         var vaccine = await vaccineRepository.FindByIdAsync(command.Id);
-        vaccine.updateInformation(command.Name, new VaccineDate(command.Date), command.Code, command.Reason);
+        vaccine?.updateInformation(command.Name, command.Date, command.Code, command.Reason,command.Dose);
         try
         {
             await unitOfWork.CompleteAsync();

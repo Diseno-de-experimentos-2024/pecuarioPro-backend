@@ -11,7 +11,6 @@ using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
 using PecuarioProPlatform.API.StaffManagement.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.VaccineManagment.Domain.Model.Aggregates;
-using PecuarioProPlatform.API.VaccineManagment.Domain.Model.ValueObjects;
 
 namespace PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
 
@@ -61,7 +60,29 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Campaign>().Property(c => c.Objective).IsRequired().HasMaxLength(200);;
         builder.Entity<Campaign>().Property(c => c.Condition).HasMaxLength(50);;
         builder.Entity<Campaign>().Property(c => c.Duration);
+        builder.Entity<Campaign>().OwnsOne(i => i.UserId,
+            ui =>
+            {
+                ui.WithOwner().HasForeignKey("Id");
+                ui.Property(p => p.Identifier).HasColumnName("UserId");
+            });
         
+        //Relationship Bounded Context BusinessAdministration
+        builder.Entity<Campaign>().HasMany(c => c.Batches);
+        builder.Entity<Campaign>()
+            .Property(c => c.DateStart)
+            .HasConversion(
+                v => v.ToDateTime(TimeOnly.MinValue),
+                v => DateOnly.FromDateTime(v)
+            );
+        builder.Entity<Campaign>()
+            .Property(c => c.DateEnd)
+            .HasConversion(
+                v => v.ToDateTime(TimeOnly.MinValue),
+                v => DateOnly.FromDateTime(v)
+            );
+
+
         
         // Properties for Batch
         builder.Entity<Batch>().HasKey(b => b.Id);
@@ -76,7 +97,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             origin.Property(o => o.CityId).HasColumnName("CityId");
             origin.Property(o => o.DepartmentId).HasColumnName("DepartmentId");
         });
-        
+        builder.Entity<Batch>().OwnsOne(b => b.Origin, origin =>
+        {
+            origin.WithOwner().HasForeignKey("Id");
+            origin.Property(p => p.DistrictId).HasColumnName("DistrictId");
+            origin.Property(p => p.CityId).HasColumnName("CityId");
+            origin.Property(p => p.DepartmentId).HasColumnName("DepartmentId");
+            
+        });
         
         // Properties for Bovine
         builder.Entity<Bovine>().HasKey(b => b.Id);
@@ -85,19 +113,63 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<Bovine>().Property(b => b.Weight).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Date).IsRequired();
         builder.Entity<Bovine>().Property(b => b.Observations).HasMaxLength(400);
+        builder.Entity<Bovine>().OwnsOne(b => b.Origin, origin =>
+        {
+            origin.WithOwner().HasForeignKey("Id");
+            origin.Property(p => p.DistrictId).HasColumnName("DistrictId");
+            origin.Property(p => p.CityId).HasColumnName("CityId");
+            origin.Property(p => p.DepartmentId).HasColumnName("DepartmentId");
+            
+        });
+        builder.Entity<Bovine>().HasMany(bo => bo.Images);
+
+        builder.Entity<Bovine>().HasMany(bo => bo.WeightRecords)
+            .WithOne(wr => wr.Bovine)
+            .HasForeignKey(wr => wr.BovineId);
+        
+        builder.Entity<Bovine>().Property(b => b.Date).HasConversion(
+            v => v.ToDateTime(TimeOnly.MinValue),
+            v => DateOnly.FromDateTime(v)
+        );
+        
+        builder.Entity<Bovine>().OwnsOne(i => i.UserId,
+            ui =>
+            {
+                ui.WithOwner().HasForeignKey("Id");
+                ui.Property(p => p.Identifier).HasColumnName("UserId");
+            });
+        builder.Entity<Bovine>()
+            .HasOne(b => b.Breed) // Bovine tiene una Breed
+            .WithMany() // Una Breed puede estar relacionada con varios Bovine
+            .HasForeignKey(b => b.BreedId);   // Especifica la clave foránea en la entidad Bovine
+   
+        
+        
         
         //Properties for Vaccine
         builder.Entity<Vaccine>().HasKey(v => v.Id);
         builder.Entity<Vaccine>().Property(v => v.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Vaccine>().Property(v => v.Name).IsRequired().HasMaxLength(30);
         builder.Entity<Vaccine>().Property(v => v.Date).IsRequired();
+        builder.Entity<Vaccine>().Property(v => v.Dose).IsRequired();
+        builder.Entity<Vaccine>().Property(v => v.Code).HasMaxLength(30);
         builder.Entity<Vaccine>().Property(v => v.Reason).HasMaxLength(200);
-        builder.Entity<Vaccine>()
-            .Property(v => v.Date)
-            .HasConversion(
-                v => v.Value, // Convert VaccineDate to DateTime when writing to the database
-                v => (VaccineDate)v); // Convert DateTime to VaccineDate when reading from the database
-
+        builder.Entity<Vaccine>().Property(b => b.Date).HasConversion(
+            v => v.ToDateTime(TimeOnly.MinValue),
+            v => DateOnly.FromDateTime(v)
+        );
+        builder.Entity<Vaccine>().OwnsOne(v => v.UserId,
+            ui =>
+            {
+                ui.WithOwner().HasForeignKey("Id");
+                ui.Property(p => p.Identifier).HasColumnName("UserId");
+            });
+        builder.Entity<Vaccine>().OwnsOne(v => v.BovineId,
+            ui =>
+            {
+                ui.WithOwner().HasForeignKey("Id");
+                ui.Property(p => p.Identifier).HasColumnName("BovineId");
+            });
         
         //Properties for BovineVaccine
         builder.Entity<BovineVaccine>().HasKey(bv => bv.Id);
@@ -131,54 +203,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             });
         
         
-        builder.Entity<Bovine>().OwnsOne(b => b.Origin, origin =>
-        {
-            origin.WithOwner().HasForeignKey("Id");
-            origin.Property(p => p.DistrictId).HasColumnName("DistrictId");
-            origin.Property(p => p.CityId).HasColumnName("CityId");
-            origin.Property(p => p.DepartmentId).HasColumnName("DepartmentId");
-            
-        });
-        
-        builder.Entity<Batch>().OwnsOne(b => b.Origin, origin =>
-        {
-            origin.WithOwner().HasForeignKey("Id");
-            origin.Property(p => p.DistrictId).HasColumnName("DistrictId");
-            origin.Property(p => p.CityId).HasColumnName("CityId");
-            origin.Property(p => p.DepartmentId).HasColumnName("DepartmentId");
-            
-        });
-        
-        
-        //Relationship Bounded Context BusinessAdministration
-        builder.Entity<Campaign>().HasMany(c => c.Batches);
-        
-        builder.Entity<Bovine>().HasMany(bo => bo.Images);
-
-        builder.Entity<Bovine>().HasMany(bo => bo.WeightRecords)
-            .WithOne(wr => wr.Bovine)
-            .HasForeignKey(wr => wr.BovineId);
-        
-        
-        builder.Entity<Campaign>()
-            .Property(c => c.DateStart)
-            .HasConversion(
-                v => v.ToDateTime(TimeOnly.MinValue),
-                v => DateOnly.FromDateTime(v)
-            );
-
-        builder.Entity<Campaign>()
-            .Property(c => c.DateEnd)
-            .HasConversion(
-                v => v.ToDateTime(TimeOnly.MinValue),
-                v => DateOnly.FromDateTime(v)
-            );
-
-
-        builder.Entity<Bovine>().Property(b => b.Date).HasConversion(
-            v => v.ToDateTime(TimeOnly.MinValue),
-            v => DateOnly.FromDateTime(v)
-        );
         
         // Properties for Staff
         

@@ -57,6 +57,16 @@ public class CampaignsController(ICampaignCommandService campaignCommandService,
         return Ok(resource);
     }
 
+    [HttpGet("users/{userId:int}")]
+    public async Task<IActionResult> GetCampaignByUserId([FromRoute] int userId)
+    {
+        var campaigns = await campaignQueryService.Handle(new GetAllCampaignsByUserIdQuery(userId));
+        var resources = campaigns.Select(CampaignResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
+    
+    
+
     [HttpPut("{campaignId:int}/modify-duration")]
     public async Task<IActionResult> ModifyCampaignDuration([FromRoute] int campaignId, [FromBody] ModifyDurationCampaignResource modifyDurationCampaignResource)
     {

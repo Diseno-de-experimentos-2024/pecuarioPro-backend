@@ -12,7 +12,11 @@ public class CampaignRepository(AppDbContext context): BaseRepository<Campaign>(
 {
     public async Task<IEnumerable<Campaign>> FindByUserIdAsync(UserId userId)
     {
-       return await Context.Set<Campaign>().Where(c => c.UserId == userId).ToListAsync();
+        return await Context.Set<Campaign>()
+            .Where(c => c.UserId.Identifier == userId.Identifier)
+            .Include(c => c.Batches)
+            .ThenInclude(b => b.Origin)
+            .ToListAsync();
     }
 
     public async Task<Campaign?> FindByCampaignIdAndUserIdAsync(int campaignId, UserId userId)

@@ -21,8 +21,9 @@ public partial class Bovine
     public int BreedId { get; private set; }
     public int BatchId { get; private set; }
 
+    public  UserId UserId { get; private set; }
 
-    public Bovine(string name, double weight, DateOnly date, string observations, int breedId, int districtId,int cityId,int departmentId,int batchId):this()
+    public Bovine(string name, double weight, DateOnly date, string observations, int breedId, int districtId,int cityId,int departmentId,int batchId,int userId):this()
     {
         Name = name;
         Weight = weight;
@@ -31,6 +32,7 @@ public partial class Bovine
         Origin  = new Origin(districtId,cityId,departmentId);
         BreedId = breedId;
         BatchId = batchId;
+        UserId = new UserId(userId);
         WeightRecords = new List<WeightRecord>();
 
         
@@ -42,8 +44,8 @@ public partial class Bovine
 
     public Bovine(CreateBovineCommand command):this(command.Name ,
         command.Weight, command.Date, command.Observations,
-        command.RaceId,command.DistrictId,command.CityId,
-        command.DepartmentId, command.BatchId)
+        command.BreedId,command.DistrictId,command.CityId,
+        command.DepartmentId, command.BatchId,command.UserId)
     { }
 
     public void  updateInformation(String name, Double weight, DateOnly date, String observations, int breedId, int batchId)

@@ -22,6 +22,7 @@ public static class BovineResourceFromEntityAssembler
             OriginResourceFromEntityAssembler.ToResourceFromEntity(entity.Origin),
             entity.Breed.Name,
             entity.BatchId,
+            entity.UserId.Identifier,
             imageUrls
             );
     }

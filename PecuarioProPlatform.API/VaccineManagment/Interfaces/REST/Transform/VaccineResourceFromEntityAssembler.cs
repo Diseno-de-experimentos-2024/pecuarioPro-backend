@@ -7,15 +7,15 @@ public static class VaccineResourceFromEntityAssembler
 {
     public static VaccineResource ToResourceFromEntity(Vaccine entity)
     {
-        // Convert VaccineDate and VaccineCode to string
-        string date = entity.Date.ToString();
-        string code = entity.Code.ToString();
-
+        
         return new VaccineResource(
             entity.Id,
             entity.Name,
-            date,
-            code,
-            entity.Reason);
+            entity.Date,
+            entity.Code,
+            entity.Reason,
+            entity.Dose,
+            entity.UserId.Identifier,
+            entity.BovineId.Identifier);
     }
 }
