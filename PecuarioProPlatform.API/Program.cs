@@ -10,11 +10,6 @@ using PecuarioProPlatform.API.HealthMonitoringManagement.Application.Internal.Qu
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Repositories;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Services;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Infrastructure.Persistence.EFC.Repositories;
-using PecuarioProPlatform.API.InventoryManagement.Application.Internal.CommandServices;
-using PecuarioProPlatform.API.InventoryManagement.Application.Internal.QueryServices;
-using PecuarioProPlatform.API.InventoryManagement.Domain.Repositories;
-using PecuarioProPlatform.API.InventoryManagement.Domain.Services;
-using PecuarioProPlatform.API.InventoryManagement.Infrastructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.IAM.Application.Internal.CommandServices;
 using PecuarioProPlatform.API.IAM.Application.Internal.OutboundServices;
 using PecuarioProPlatform.API.IAM.Application.Internal.QueryServices;
@@ -159,9 +154,7 @@ builder.Services.AddScoped<IVeterinarianQueryService, VeterinarianQueryService>(
 
 //InventoryManagement Bounded Context Dependency Injections
 
-builder.Services.AddScoped<IInvetoryRepository, InventoryRepository>();
-builder.Services.AddScoped<IInventoryCommandService, InventoryCommandService>();
-builder.Services.AddScoped<IInventoryQueryService, InventoryQueryService>();
+
 
 //BusinessAdministration Bounded Context Dependency Injections
 builder.Services.AddScoped<IBovineRepository, BovineRepository>();

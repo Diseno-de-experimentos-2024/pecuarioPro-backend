@@ -6,7 +6,6 @@ using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.IAM.Domain.Model.Aggregates;
-using PecuarioProPlatform.API.InventoryManagement.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
 using PecuarioProPlatform.API.StaffManagement.Domain.Model.Aggregates;
@@ -235,13 +234,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         
         //properties for Inventory
         
-        builder.Entity<Inventory>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.ProductName).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.Quantity).IsRequired().HasMaxLength(50);
-            entity.Property(e => e.PhotoUrl).HasMaxLength(200);
-        });
+       
         
         // IAM Context
         builder.Entity<User>().HasKey(u => u.Id);

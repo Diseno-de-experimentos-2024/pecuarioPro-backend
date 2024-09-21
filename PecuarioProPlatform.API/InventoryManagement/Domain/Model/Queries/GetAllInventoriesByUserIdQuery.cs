@@ -1,6 +1,3 @@
 namespace PecuarioProPlatform.API.InventoryManagement.Domain.Model.Queries;
 
-public record GetAllInvetoryQuery
-{
-    
-}
+public record GetAllInventoriesByUserIdQuery(int UserId);

@@ -1,6 +1,6 @@
 namespace PecuarioProPlatform.API.InventoryManagement.Domain.Services;
 
-public interface IInventoryCommandService
+public interface IIventoryQueryService
 {
     
 }

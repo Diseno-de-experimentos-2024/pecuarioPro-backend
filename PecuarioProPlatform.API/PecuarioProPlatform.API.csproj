@@ -32,6 +32,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="InventoryManagement\Application\Internal\CommandServices\" />
+      <Folder Include="InventoryManagement\Application\Internal\QueryServices\" />
+      <Folder Include="InventoryManagement\Interfaces\REST\Resources\" />
+      <Folder Include="InventoryManagement\Interfaces\REST\Transform\" />
       <Folder Include="StaffManagement\Application\" />
       <Folder Include="StaffManagement\Infrastructure\Persistence\" />
       <Folder Include="StaffManagement\Interfaces\" />

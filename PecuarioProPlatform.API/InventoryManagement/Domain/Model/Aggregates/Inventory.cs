@@ -1,33 +1,31 @@
 using PecuarioProPlatform.API.InventoryManagement.Domain.Model.Commands;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Model.Entities;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Model.ValueObjects;
 
 namespace PecuarioProPlatform.API.InventoryManagement.Domain.Model.Aggregates;
 
-public partial class Inventory
+public class Inventory
 {
+    public int Id { get;  }
+    public UserId UserId { get; private set; }
     
-    public Inventory() { }
-
+    public ICollection<Tool> Tools { get; }
     
-    public int Id { get; }
-    public string ProductName { get; private set; }
-    public string Quantity { get; private set; }
-    public string PhotoUrl { get; private set; }
+    public ICollection<FeedSupply> FeedSupplies { get; }
+    
+    public ICollection<Medicine> Medicines { get; }
+    
+    
 
-
-    public Inventory(string productname, string quantity, string photoUrl)
+    public Inventory()
     {
-        ProductName = productname;
-        Quantity = quantity;
-        PhotoUrl = photoUrl;
+        Tools = new List<Tool>();
+        FeedSupplies = new List<FeedSupply>();
+        Medicines = new List<Medicine>();
     }
-    
-    public Inventory(CreateInventoryCommand command) : this(
-        command.ProductName,
-        command.Quantity,
-        command.PhotoUrl)
-    {}
-    
+
+    public Inventory(CreateInventoryCommand command):this()
+    {
+        UserId = new UserId(command.UserId);
+    }
 }
-
-
-
