@@ -11,4 +11,9 @@ public static class MedicineResourceFromEntityAssembler
         return new MedicineResource(entity.Id, entity.Name, entity.ExpirationDate, entity.Supplier, entity.Volume,
             entity.Status.GetDisplayName());
     }
+    
+    public static ICollection<MedicineResource> ToResourceFromEntity(ICollection<Medicine> entities)
+    {
+        return entities.Select(ToResourceFromEntity).ToList(); 
+    }
 }

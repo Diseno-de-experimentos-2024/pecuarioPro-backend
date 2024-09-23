@@ -11,4 +11,8 @@ public static class ToolResourceFromEntityAssembler
         return new ToolResource(entity.Id, entity.Name, entity.UnitPrice, entity.Quantity, entity.TotalPrice,
             entity.PurchaseDate, entity.Supplier, entity.Status.GetDisplayName(), entity.Condition.GetDisplayName());
     }
+    public static ICollection<ToolResource> ToResourceFromEntity(ICollection<Tool> entities)
+    {
+        return entities.Select(ToResourceFromEntity).ToList(); 
+    }
 }

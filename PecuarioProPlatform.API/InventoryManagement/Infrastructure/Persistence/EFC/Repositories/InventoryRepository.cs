@@ -65,4 +65,14 @@ public class InventoryRepository(AppDbContext context) : BaseRepository<Inventor
 
         return inventory?.FeedSupplies.FirstOrDefault(fs => fs.Id == feedSupplyId);
     }
+
+    public new async Task<Inventory?> FindByIdAsync(int inventoryId)
+    {
+        return await context.Set<Inventory>()
+            .Include(i => i.Tools)
+            .Include(i => i.FeedSupplies)
+            .Include(i => i.Medicines)
+            .FirstOrDefaultAsync(i => i.Id == inventoryId);
+    }
+    
 }

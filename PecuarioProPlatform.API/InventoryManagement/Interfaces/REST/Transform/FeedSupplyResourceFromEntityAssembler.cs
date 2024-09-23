@@ -11,4 +11,8 @@ public static class FeedSupplyResourceFromEntityAssembler
         return new FeedSupplyResource(entity.Id, entity.Name, entity.UnitPrice, entity.Quantity, entity.TotalPrice,
             entity.PurchaseDate, entity.Supplier, entity.UnitOfMeasurement, entity.Status.GetDisplayName());
     }
+    public static ICollection<FeedSupplyResource> ToResourceFromEntity(ICollection<FeedSupply> entities)
+    {
+        return entities.Select(ToResourceFromEntity).ToList(); 
+    }
 }

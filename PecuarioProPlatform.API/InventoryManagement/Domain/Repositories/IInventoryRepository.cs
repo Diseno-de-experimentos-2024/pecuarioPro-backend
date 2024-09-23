@@ -22,5 +22,4 @@ public interface IInventoryRepository : IBaseRepository<Inventory>
 
 
 
-
 }

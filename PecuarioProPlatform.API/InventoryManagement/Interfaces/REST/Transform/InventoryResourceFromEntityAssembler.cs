@@ -7,7 +7,8 @@ public static class InventoryResourceFromEntityAssembler
 {
     public static InventoryResource ToResourceFromEntity(Inventory inventory)
     {
-        return new InventoryResource(inventory.Id,inventory.UserId.Identifier, inventory.Tools,inventory.FeedSupplies, inventory.Medicines
+        return new InventoryResource(inventory.Id,inventory.UserId.Identifier, ToolResourceFromEntityAssembler.ToResourceFromEntity(inventory.Tools),FeedSupplyResourceFromEntityAssembler.ToResourceFromEntity(inventory.FeedSupplies),
+            MedicineResourceFromEntityAssembler.ToResourceFromEntity(inventory.Medicines)
             );
     }
 }
