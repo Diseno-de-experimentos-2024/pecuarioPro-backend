@@ -28,4 +28,21 @@ public class Inventory
     {
         UserId = new UserId(command.UserId);
     }
+
+    public void AddMedicine(Medicine medicine)
+    {
+        Medicines.Add(medicine);
+    }
+
+    public void AddTool(Tool tool)
+    {
+        Tools.Add(tool);
+    }
+
+    public void AddFeedSupply(FeedSupply feedSupply)
+    {
+        FeedSupplies.Add(feedSupply);
+    }
+    
+    
 }

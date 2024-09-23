@@ -9,11 +9,11 @@ public class FeedSupply
     
     public String Name { get; private set; }
     
-    public Double UnitPrice { get; private set; }
+    public double UnitPrice { get; private set; }
     
-    public Double Quantity { get; private set; }
+    public double Quantity { get; private set; }
     
-    public Double TotalPrice { get; private set; }
+    public double TotalPrice { get; private set; }
     
     public DateOnly PurchaseDate { get; private set; }
 
@@ -44,8 +44,7 @@ public class FeedSupply
         PurchaseDate = command.PurchaseDate;
         Supplier = command.Supplier;
         UnitOfMeasurement = command.UnitOfMeasurement;
-        Status = command.Status; 
-    }
+        Status = Enum.TryParse<EStatus>(command.Status, out var status) ? status : EStatus.Available;    }
 
     
     private double CalculateTotalPrice(double unitPrice, double quantity)
@@ -66,4 +65,11 @@ public class FeedSupply
     {
         Status = newStatus;
     }
+    
+    public void ToggleStatus()
+    {
+        Status = (Status == EStatus.Available) ? EStatus.OutOfStock : EStatus.Available;
+    }
+    
+    
 }
