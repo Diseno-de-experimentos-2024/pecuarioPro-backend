@@ -22,6 +22,11 @@ using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
 using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Services;
 using PecuarioProPlatform.API.IAM.Interfaces.ACL;
 using PecuarioProPlatform.API.IAM.Interfaces.ACL.Services;
+using PecuarioProPlatform.API.InventoryManagement.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.InventoryManagement.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Repositories;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Services;
+using PecuarioProPlatform.API.InventoryManagement.Infrastructure.Persistence.EFC.Repositories;
 using PecuarioProPlatform.API.Shared.Application.Internal.CommandServices;
 using PecuarioProPlatform.API.Shared.Application.Internal.QueryServices;
 using PecuarioProPlatform.API.Shared.Domain.Repositories;
@@ -152,10 +157,6 @@ builder.Services.AddScoped<IVeterinarianCommandService, VeterinarianCommandServi
 builder.Services.AddScoped<IVeterinarianQueryService, VeterinarianQueryService>();
 
 
-//InventoryManagement Bounded Context Dependency Injections
-
-
-
 //BusinessAdministration Bounded Context Dependency Injections
 builder.Services.AddScoped<IBovineRepository, BovineRepository>();
 builder.Services.AddScoped<IBovineCommandService, BovineCommandService>();
@@ -192,6 +193,12 @@ builder.Services.AddScoped<IVaccineQueryService, VaccineQueryService>();
 builder.Services.AddScoped<IStaffRepository, StaffRepository>();
 builder.Services.AddScoped<IStaffCommandService, StaffCommandService>();
 builder.Services.AddScoped<IStaffQueryService, StaffQueryService>();
+
+//Inventory Bounded Context Dependency Injections
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryCommandService, InventoryCommandService>();
+builder.Services.AddScoped<IInventoryQueryService, InventoryQueryService>();
+
 
 // IAM Bounded Context Injection Configuration
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));

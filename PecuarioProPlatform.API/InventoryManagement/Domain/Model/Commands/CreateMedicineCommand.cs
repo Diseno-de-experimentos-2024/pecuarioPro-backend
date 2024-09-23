@@ -7,5 +7,5 @@ public record CreateMedicineCommand(int InventoryId,
     DateOnly ExpirationDate,
     string Supplier,
     double Volume,
-    string Status
+    EStatus Status
 );

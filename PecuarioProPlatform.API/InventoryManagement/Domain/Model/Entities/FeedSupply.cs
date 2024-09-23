@@ -21,7 +21,7 @@ public class FeedSupply
     
     public string UnitOfMeasurement { get; private set; }
     
-    public EStatus Status { get; private set; }
+    public EStatus Status { get;  set; }
 
     public FeedSupply(string name, double unitPrice, double quantity, DateOnly purchaseDate, string supplier, string unitOfMeasurement, EStatus status)
     {

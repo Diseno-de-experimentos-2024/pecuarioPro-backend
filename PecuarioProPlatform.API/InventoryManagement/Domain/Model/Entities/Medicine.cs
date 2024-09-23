@@ -10,15 +10,16 @@ public class Medicine
     public DateOnly ExpirationDate { get; private set; }
     public string Supplier { get; private set; }
     public double Volume { get; private set; }
-    public EStatus Status { get; private set; }
+    public EStatus Status { get;  set; }
     
-    public Medicine(string name, DateOnly expirationDate, string supplier, double volume, string status)
+
+    public Medicine(string name, DateOnly expirationDate, string supplier, double volume, EStatus status)
     {
         Name = name;
         ExpirationDate = expirationDate;
         Supplier = supplier;
         Volume = volume;
-        Status = Enum.TryParse<EStatus>(status, out var _status) ? _status : EStatus.Available;    
+        Status = status;
     }
     public Medicine(CreateMedicineCommand command):this(command.Name,command.ExpirationDate,
         command.Supplier,command.Volume,command.Status){}

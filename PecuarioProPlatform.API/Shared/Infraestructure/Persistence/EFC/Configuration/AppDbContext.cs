@@ -6,6 +6,8 @@ using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities.vaccine;
 using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.IAM.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Model.Aggregates;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Domain.Model.Entities;
 using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration.Extensions;
 using PecuarioProPlatform.API.StaffManagement.Domain.Model.Aggregates;
@@ -232,9 +234,64 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(e => e.PhotoUrl).HasMaxLength(200);
         });
         
-        //properties for Inventory
+        // Properties for Inventory
+        builder.Entity<Inventory>().HasKey(i => i.Id);
+        builder.Entity<Inventory>().Property(i => i.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Inventory>().OwnsOne(i => i.UserId, ui =>
+        {
+            ui.WithOwner().HasForeignKey("Id");
+            ui.Property(p => p.Identifier).HasColumnName("UserId");
+        });
+        builder.Entity<Inventory>().HasMany(i => i.Tools).WithOne();
+        builder.Entity<Inventory>().HasMany(i => i.FeedSupplies).WithOne();
+        builder.Entity<Inventory>().HasMany(i => i.Medicines).WithOne();
         
-       
+        // Properties for Tool
+        builder.Entity<Tool>().HasKey(t => t.Id);
+        builder.Entity<Tool>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Tool>().Property(t => t.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<Tool>().Property(t => t.UnitPrice).IsRequired();
+        builder.Entity<Tool>().Property(t => t.Quantity).IsRequired();
+        builder.Entity<Tool>().Property(t => t.TotalPrice).IsRequired();
+        builder.Entity<Tool>().Property(t => t.PurchaseDate).IsRequired();
+        builder.Entity<Tool>().Property(t => t.Supplier).HasMaxLength(100);
+        builder.Entity<Tool>().Property(t => t.Status).IsRequired();
+        builder.Entity<Tool>().Property(t => t.Condition).IsRequired();
+        builder.Entity<Tool>().Property(b => b.PurchaseDate).HasConversion(
+            v => v.ToDateTime(TimeOnly.MinValue),
+            v => DateOnly.FromDateTime(v)
+        );
+
+        
+        // Properties for FeedSupply
+        builder.Entity<FeedSupply>().HasKey(f => f.Id);
+        builder.Entity<FeedSupply>().Property(f => f.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<FeedSupply>().Property(f => f.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<FeedSupply>().Property(f => f.UnitPrice).IsRequired();
+        builder.Entity<FeedSupply>().Property(f => f.Quantity).IsRequired();
+        builder.Entity<FeedSupply>().Property(f => f.TotalPrice).IsRequired();
+        builder.Entity<FeedSupply>().Property(f => f.PurchaseDate).IsRequired();
+        builder.Entity<FeedSupply>().Property(f => f.Supplier).HasMaxLength(100);
+        builder.Entity<FeedSupply>().Property(f => f.UnitOfMeasurement).HasMaxLength(50);
+        builder.Entity<FeedSupply>().Property(f => f.Status).IsRequired();
+        builder.Entity<FeedSupply>().Property(b => b.PurchaseDate).HasConversion(
+            v => v.ToDateTime(TimeOnly.MinValue),
+            v => DateOnly.FromDateTime(v)
+        );
+        
+        
+        // Properties for Medicine
+        builder.Entity<Medicine>().HasKey(m => m.Id);
+        builder.Entity<Medicine>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Medicine>().Property(m => m.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<Medicine>().Property(m => m.ExpirationDate).IsRequired();
+        builder.Entity<Medicine>().Property(m => m.Supplier).HasMaxLength(100);
+        builder.Entity<Medicine>().Property(m => m.Volume).IsRequired();
+        builder.Entity<Medicine>().Property(m => m.Status).IsRequired();
+        builder.Entity<Medicine>().Property(b => b.ExpirationDate).HasConversion(
+            v => v.ToDateTime(TimeOnly.MinValue),
+            v => DateOnly.FromDateTime(v)
+        );
         
         // IAM Context
         builder.Entity<User>().HasKey(u => u.Id);

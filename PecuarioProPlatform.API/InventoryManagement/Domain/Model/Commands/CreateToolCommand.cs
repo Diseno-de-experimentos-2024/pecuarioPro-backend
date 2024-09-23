@@ -8,6 +8,6 @@ public record CreateToolCommand(int InventoryId,
     double Quantity,
     DateOnly PurchaseDate,
     string Supplier,
-    string Status,
-    string Condition
+    EStatus Status,
+    EToolCondition Condition
 );

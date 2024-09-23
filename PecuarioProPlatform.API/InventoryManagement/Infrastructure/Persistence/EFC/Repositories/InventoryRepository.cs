@@ -27,14 +27,14 @@ public class InventoryRepository(AppDbContext context) : BaseRepository<Inventor
 
     public async Task<IEnumerable<Tool>> FindToolByInventoryIdAsync(int inventoryId)
     {
-        var inventory = await Context.Set<Inventory>().Include(i => i.FeedSupplies)
+        var inventory = await Context.Set<Inventory>().Include(i => i.Tools)
             .FirstOrDefaultAsync(i => i.Id == inventoryId);
         return inventory?.Tools ?? Enumerable.Empty<Tool>();
     }
 
     public async Task<IEnumerable<Medicine>> FindMedicineByInventoryIdAsync(int inventoryId)
     {
-        var inventory = await Context.Set<Inventory>().Include(i => i.FeedSupplies)
+        var inventory = await Context.Set<Inventory>().Include(i => i.Medicines)
             .FirstOrDefaultAsync(i => i.Id == inventoryId);
         return inventory?.Medicines ?? Enumerable.Empty<Medicine>();
     }

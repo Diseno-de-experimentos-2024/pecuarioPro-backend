@@ -19,11 +19,11 @@ public class Tool
     
     public string Supplier { get; private set; }
     
-    public EStatus Status { get; private set; }
+    public EStatus Status { get;  set; }
     
-    public EToolCondition Condition { get; private set; }
+    public EToolCondition Condition { get;  set; }
 
-    public Tool(string name, double unitPrice, double quantity, DateOnly purchaseDate, string supplier, string status,string condition)
+    public Tool(string name, double unitPrice, double quantity, DateOnly purchaseDate, string supplier, EStatus status,EToolCondition condition)
     {
         Name = name;
         UnitPrice = unitPrice;
@@ -31,8 +31,8 @@ public class Tool
         TotalPrice = CalculateTotalPrice(unitPrice, quantity);
         PurchaseDate = purchaseDate;
         Supplier = supplier;
-        Status = Enum.TryParse<EStatus>(status, out var _status) ? _status : EStatus.Available;    
-        Condition = Enum.TryParse<EToolCondition>(condition, out var _condition) ? _condition : EToolCondition.New;    
+        Status = EStatus.Available;
+        Condition = EToolCondition.New;    
     }
 
     public Tool(CreateToolCommand command) : this(command.Name, command.UnitPrice,
