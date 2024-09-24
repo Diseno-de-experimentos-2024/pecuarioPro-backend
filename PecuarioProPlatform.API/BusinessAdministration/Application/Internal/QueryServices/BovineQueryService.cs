@@ -1,6 +1,7 @@
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Aggregates;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Entities;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.Queries;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Model.ValueObjects;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
 using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
 
@@ -13,7 +14,7 @@ public class BovineQueryService(IBovineRepository bovineRepository):IBovineQuery
     public async Task<IEnumerable<Bovine>> Handle(GetAllBovinesByUserIdQuery query)
     {
 
-        return await bovineRepository.FindByUserIdAsync(query.UserId);
+        return await bovineRepository.FindByUserIdAsync(new UserId(query.UserId));
 
     }
 

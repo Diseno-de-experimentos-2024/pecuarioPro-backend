@@ -26,7 +26,7 @@ public class VaccinesController(IVaccineCommandService vaccineCommandService, IV
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetVaccineById(int vaccineId)
+    public async Task<IActionResult> GetVaccineById([FromRoute]int vaccineId)
     {
         var getVaccineByIdQuery = new GetVaccineByIdQuery(vaccineId);
         var vaccine = await vaccineQueryService.Handle(getVaccineByIdQuery);

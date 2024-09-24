@@ -15,7 +15,7 @@ public partial class Bovine
     public string Observations { get; private set; }
     
     public Breed Breed { get; set; }
-    public Batch Batch { get; }
+    public Batch Batch { get; set; }
     
     public Origin Origin { get; set; }
     public int BreedId { get; private set; }

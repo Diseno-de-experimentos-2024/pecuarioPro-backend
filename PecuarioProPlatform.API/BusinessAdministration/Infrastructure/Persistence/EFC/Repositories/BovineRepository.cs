@@ -97,7 +97,7 @@ public class BovineRepository(AppDbContext context) : BaseRepository<Bovine>(con
             .ThenInclude(origin => origin.City)
             .Include(bovine => bovine.Origin)
             .ThenInclude(origin => origin.Department)
-            .Where(b => b.Batch.Campaign.UserId == userId)
+            .Where(b => b.Batch.Campaign.UserId.Identifier == userId.Identifier)
             .ToListAsync();
     }
 

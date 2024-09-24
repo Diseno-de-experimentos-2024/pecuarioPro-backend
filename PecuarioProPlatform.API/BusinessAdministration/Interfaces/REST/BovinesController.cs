@@ -44,7 +44,14 @@ public class BovinesController(IBovineCommandService bovineCommandService,
         var resources = bovines.Select(BovineResourceFromEntityAssembler.ToResourceFromEntity);
         return Ok(resources);
     }
-    
+
+    [HttpGet("users/{userId:int}")]
+    public async Task<IActionResult> GetAllBovinesByUserId([FromRoute] int userId)
+    {
+        var bovines = await bovineQueryService.Handle(new GetAllBovinesByUserIdQuery(userId));
+        var resources = bovines.Select(BovineResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(resources);
+    }
     
     [HttpGet("{bovineId:int}")]
     public async Task<IActionResult> GetBovineById([FromRoute] int bovineId)
