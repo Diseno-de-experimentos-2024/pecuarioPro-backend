@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\BusinessAdministration",
+    "\\BusinessAdministration\\Application",
+    "\\BusinessAdministration\\Application\\Internal",
+    "\\BusinessAdministration\\Domain",
+    "\\BusinessAdministration\\Domain\\Model",
+    "\\BusinessAdministration\\Domain\\Model\\Aggregates",
+    "\\BusinessAdministration\\Domain\\Model\\Aggregates\\Bovine",
+    "\\obj\\Release"
+  ],
+  "SelectedNode": "\\BusinessAdministration\\Domain\\Model\\Aggregates\\Bovine\\Bovine.cs",
+  "PreviewInSolutionExplorer": false
+}

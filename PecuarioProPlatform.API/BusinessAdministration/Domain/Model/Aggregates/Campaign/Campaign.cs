@@ -17,6 +17,7 @@ public partial class Campaign
         Name = _Name;
         DateStart = _DateStart;
         DateEnd = _DateEnd ?? DateStart;
+        verifyDates(DateStart,DateEnd);
         Objective = _Objective;
         CalculateDuration();
         UserId = new UserId(userId);
@@ -25,5 +26,11 @@ public partial class Campaign
     
     
     public Campaign(CreateCampaignCommand command) : this(command.name, command.dateStart, command. dateEnd,command. objective,command.userId){}
-    
+    void verifyDates(DateOnly dateStart, DateOnly dateEnd)
+    {
+        if (dateStart > dateEnd)
+        {
+            throw new ArgumentException("The end date cannot be less than the start date");
+        }
+        }
 }

@@ -7,7 +7,7 @@ public class District
     public int CityId { get; private set; }
     public City City { get;  set; }
 
-    private District() { } 
+    public District() { } 
 
     public District(string name, int cityId)
     {
