@@ -45,6 +45,8 @@ using PecuarioProPlatform.API.StaffManagement.Domain.Repositories;
 using PecuarioProPlatform.API.StaffManagement.Domain.Services;
 using PecuarioProPlatform.API.StaffManagement.Infrastructure.Persistence.EFC.Repositories;
 
+using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Components;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -231,11 +233,9 @@ if (app.Environment.IsDevelopment())
 // Apply CORS Policy
 
 app.UseCors("AllowedAllPolicy");
-
-//Add Authorization Middleware 
+app.UseMiddleware<RequestAuthorizationMiddleware>(); // Aquí
 
 app.UseRequestAuthorization();
-
 
 app.UseHttpsRedirection();
 
