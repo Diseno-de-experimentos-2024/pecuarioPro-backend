@@ -1,51 +1,246 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.BusinessAdministration.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Repositories;
+using PecuarioProPlatform.API.BusinessAdministration.Domain.Services;
+using PecuarioProPlatform.API.BusinessAdministration.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Repositories;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Domain.Services;
+using PecuarioProPlatform.API.HealthMonitoringManagement.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.IAM.Application.Internal.CommandServices;
 using PecuarioProPlatform.API.IAM.Application.Internal.OutboundServices;
-using PecuarioProPlatform.API.IAM.Domain.Model.Queries;
+using PecuarioProPlatform.API.IAM.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.IAM.Domain.Repositories;
 using PecuarioProPlatform.API.IAM.Domain.Services;
-using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Attributes;
+using PecuarioProPlatform.API.IAM.Infrastructure.Hashing.BCrypt.Services;
+using PecuarioProPlatform.API.IAM.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+using PecuarioProPlatform.API.IAM.Infrastructure.Tokens.JWT.Services;
+using PecuarioProPlatform.API.IAM.Interfaces.ACL;
+using PecuarioProPlatform.API.IAM.Interfaces.ACL.Services;
+using PecuarioProPlatform.API.InventoryManagement.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.InventoryManagement.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Repositories;
+using PecuarioProPlatform.API.InventoryManagement.Domain.Services;
+using PecuarioProPlatform.API.InventoryManagement.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.Shared.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.Shared.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.Shared.Domain.Repositories;
+using PecuarioProPlatform.API.Shared.Domain.Services;
+using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Configuration;
+using PecuarioProPlatform.API.Shared.Infraestructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.Shared.Interfaces.ASP.Configuration;
+using PecuarioProPlatform.API.VaccineManagment.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.VaccineManagment.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Repositories;
+using PecuarioProPlatform.API.VaccineManagment.Domain.Services;
+using PecuarioProPlatform.API.VaccineManagment.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.StaffManagement.Application.Internal.CommandServices;
+using PecuarioProPlatform.API.StaffManagement.Application.Internal.QueryServices;
+using PecuarioProPlatform.API.StaffManagement.Domain.Repositories;
+using PecuarioProPlatform.API.StaffManagement.Domain.Services;
+using PecuarioProPlatform.API.StaffManagement.Infrastructure.Persistence.EFC.Repositories;
 
-namespace PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Components;
+using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Components;
 
-public class RequestAuthorizationMiddleware(RequestDelegate next)
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllers(options =>
 {
-    public async Task InvokeAsync(HttpContext context, IUserQueryService userQueryService, ITokenService tokenService)
+    options.Conventions.Add(new KebabCaseRouteNamingConvention());
+} );
+//Add Database Connection String
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+//Configure Database Context and Logging Level
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    if (connectionString != null)
     {
-        Console.WriteLine("Entering InvokeAsync");
-        // skip authorization if endpoint is decorated with [AllowAnonymous] attribute
-        var allowAnonymous = context.Request.HttpContext.GetEndpoint()!
-            .Metadata.Any(m => m.GetType() == typeof(AllowAnonymousAttribute));
-        Console.WriteLine($"Allow Anonymous is {allowAnonymous}");
-        if (allowAnonymous)
+        if (builder.Environment.IsDevelopment())
         {
-            Console.WriteLine("Skipping authorization");
-            // [AllowAnonymous] attribute is set, so skip authorization
-            await next(context);
-            return;
+            options.UseMySQL(connectionString)
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging().EnableDetailedErrors();
         }
-        Console.WriteLine("Entering authorization");
-        // Get token from request header
-        var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-        
-        // If token is null then throw exception
-        if (token is null) throw new Exception("Null or invalid token");
-        
-        // Validate token
-        var userId = await tokenService.ValidateToken(token);
-        
-        // If token is invalid then the userId will be null, so and exception must be thrown
-        if (userId is null) throw new Exception("Invalid token");
-        
-        // Create a GetUserByIdQuery object
-        var getUserByIdQuery = new GetUserByIdQuery(userId.Value);
-        
-        // Get the user by id through the userQueryService
-        var user = await userQueryService.Handle(getUserByIdQuery);
-        
-        // Set the user in HTTP Context
-        Console.WriteLine("Successful authorization. Updating Context...");
-        context.Items["User"] = user;
-        
-        // Continue with the request pipeline
-        await next(context);
-        
+        else if (builder.Environment.IsProduction())
+        {
+            options.UseMySQL(connectionString)
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableDetailedErrors();
+        }
     }
+});
+
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    c =>
+    {
+        c.SwaggerDoc("v1",
+            new OpenApiInfo
+            {
+                Title = "ACME.PecuarioProPlatform.API",
+                Version = "v1",
+                Description = "Pecuario Pro Platform API",
+                // TermsOfService = new Uri("https://acme-learning.com/tos"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Pecuario Pro",
+                    Email = "contact@pecuario.com"
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "Apache 2.0",
+                    Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")
+                }
+            });
+        c.EnableAnnotations();
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                },
+                Array.Empty<string>()
+            } 
+        });
+    });
+
+
+
+
+
+
+//Configure Lowercase URLs
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+//Add CORS Policy
+
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowedAllPolicy",
+            policy => policy.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+    });
+
+//Configure Dependency Injections
+
+//Shared Bounded Context Injection Configuration
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+//HealthMonitoringManagement Bounded Context Dependency Injections
+builder.Services.AddScoped<IVeterinarianRepository, VeterinariansRepository>();
+builder.Services.AddScoped<IVeterinarianCommandService, VeterinarianCommandService>();
+builder.Services.AddScoped<IVeterinarianQueryService, VeterinarianQueryService>();
+
+
+//BusinessAdministration Bounded Context Dependency Injections
+builder.Services.AddScoped<IBovineRepository, BovineRepository>();
+builder.Services.AddScoped<IBovineCommandService, BovineCommandService>();
+builder.Services.AddScoped<IBovineQueryService, BovineQueryService>();
+
+builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
+builder.Services.AddScoped<ICampaignCommandService, CampaignCommandService>();
+builder.Services.AddScoped<ICampaignQueryService, CampaignQueryService>();
+
+builder.Services.AddScoped<IBreedRepository, BreedRepository>();
+builder.Services.AddScoped<IBreedCommandService, BreedCommandService>();
+builder.Services.AddScoped<IBreedQueryService, BreedQueryService>();
+
+builder.Services.AddScoped<IDistrictRepository, DistrictRepository>();
+builder.Services.AddScoped<IDistrictCommandService, DistrictCommandService>();
+builder.Services.AddScoped<IDistrictQueryService, DistrictQueryService>();
+
+
+builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<ICityCommandService, CityCommandService>();
+builder.Services.AddScoped<ICityQueryService, CityQueryService>();
+
+
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDepartmentCommandService, DepartmentCommandService>();
+builder.Services.AddScoped<IDepartmentQueryService, DepartmentQueryService>();
+
+//Vaccine Bounded Context Injection Configuration
+builder.Services.AddScoped<IVaccineRepository, VaccineRepository>();
+builder.Services.AddScoped<IVaccineCommandService, VaccineCommandService>();
+builder.Services.AddScoped<IVaccineQueryService, VaccineQueryService>();
+
+//StaffManagement Bounded Context Dependency Injections
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IStaffCommandService, StaffCommandService>();
+builder.Services.AddScoped<IStaffQueryService, StaffQueryService>();
+
+//Inventory Bounded Context Dependency Injections
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryCommandService, InventoryCommandService>();
+builder.Services.AddScoped<IInventoryQueryService, InventoryQueryService>();
+
+
+// IAM Bounded Context Injection Configuration
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+var app = builder.Build();
+
+
+
+
+//Verify DataBase Objects are created
+using (var scope = app.Services.CreateScope() )
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    context.Database.EnsureCreated();
 }
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+// Apply CORS Policy
+
+app.UseCors("AllowedAllPolicy");
+app.UseMiddleware<RequestAuthorizationMiddleware>(); // Aquí
+
+app.UseRequestAuthorization();
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
