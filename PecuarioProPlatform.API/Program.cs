@@ -44,6 +44,7 @@ using PecuarioProPlatform.API.StaffManagement.Application.Internal.QueryServices
 using PecuarioProPlatform.API.StaffManagement.Domain.Repositories;
 using PecuarioProPlatform.API.StaffManagement.Domain.Services;
 using PecuarioProPlatform.API.StaffManagement.Infrastructure.Persistence.EFC.Repositories;
+using PecuarioProPlatform.API.IAM.Infrastructure.Pipeline.Middleware.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
