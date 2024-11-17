@@ -234,6 +234,8 @@ app.UseCors("AllowedAllPolicy");
 
 //Add Authorization Middleware 
 
+app.UseMiddleware<RequestAuthorizationMiddleware>();
+
 app.UseRequestAuthorization();
 
 
